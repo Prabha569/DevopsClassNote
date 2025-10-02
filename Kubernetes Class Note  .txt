@@ -1,0 +1,1141 @@
+Class--91/01
+==========
+ -----  Docker Problem  -----
+=> LoadBalancer hai hi nahi..
+=> Agar traffic badta jaega toh naya Computer kaise aaega jispar Container chaiea...
+=> Agar bahut sare container hai toh sab  containers ko manage kaun karega ? ki vo kab band ho rahe hai kab chalu ho rahe hai...
+=> To over come this problem launch new concept Kubernetes
+
+=> 2002  --> Google Borg --open source--> 2015 --> Linux foundation--> Kubernetes
+
+=> in Kubernetes Cluster me one master computer & two/more then two Node computer present/worker computer
+
+=> master computer/Control Plane ----> controller,Scheduler, API-server, ETCD contains
+
+=> Node/worker computer--> Kubectl, Kube-proxy, container-runtime etc contains 
+
+Class--92/02
+==========
+=> ChatGPT--> I want to setup k8s cluster on my personal pnprem server what should i take  ? 
+=> onprem pr setup ke disadvantages kya hai...
+=> onPrem pr setup kaise hota hai..
+
+=> Nginx aur starbucks ka pod chalana hai(nginx pod deployment) two types
+
+1) Imperative   2) Declarative
+a) kubectl      a) yaml
+
+=> Manual tarika se-HLD(AKS Deployment, ACR deployment, Bastion Host, Linux Computer, KeyVault, Radis Cache, MySQL , PostgreSQL , PgAdmin, Prometheus Grafana , Datadog with AI
+
+=> CI= GitHub Action, CD= ArgoCD
+=> Service Mesh Istio
+
+1) Cluster banana..
+2) Cluster me login karna..
+3) Kubectl use karke pod banana aur website ko hit karke dekhna..kubectl --help
+4) Pod ko delete karke dekhna.. kubectl  --help
+5) Starbucks ko K8s pr chalakar dekhna ..Dockerfile --> push --image --> run on K8s using k8s
+6) Alg alg namespace me chalana..
+
+=> chatGPT--> bhai hum naya hai.. kya kya sawal architecture discussion me puchna  chahiye customer se .. btado taki main direct customer ko direct bhj ju .. ek dum clear batana Naukri ka sawal hai...
+=> bhai ek development environment banana hai.. limited user hai 100..iske lia kya Kubernetes ka configuration hona chahhiya..
+
+=> Azure-Kubernetes-service--> 
+=> How to create azure Kubernetes cluster using azure portal
+
+
+Class--93/03
+==========
+=> Cluster bana ke Nginx aur starbucks chalana hai..
+1> AKS banaenge..
+2> Jis tarike se terraform ka cli hai us type se az cli and kubectl cli for Kubernetes
+3> Kubernetes Credentials
+4> Kubectl command to run nginx
+5> Port forward pod
+
+=> ChatGPT-> Are munna ye step complete karwa de
+
+=> Create Azure Kubernetes service in portal > > 
+
+-> k8s name->devopsinsiderk8s->
+
+=> kubectl download  & path setting
+=> az login 
+=> az account set --subscription
+=> az aks get -credentials -----------
+
+( go to portal --> name of Kubernetes cluster  --> connect--> azure Cli--> set cluster contet --> past it in azure CLI )  
+Q) kaise tum Kubernetes cluster connect karte ho ? 
+Ans-> First az login -> jis subscription me cluster banaya hua hai usko account ko  set karenga then k8s ki jo bhi credential get karenge 
+
+=> how to create pod in cli ?
+=> kubectl --help
+> kubectl run --help
+> get command --> to see the 
+> kubectl get -> here get-->kubectl api resource 
+$ kubectl get nodes 
+
+Class--94/04
+==========
+=> Kubernetes me Container ko marne nahi dunga... 
+
+=> Requirement--> Run a Nginx Image on Kubernetes cluster
+
+-> Api-Servr--> Scheduler--> kubelet made pod--> container-runtime running nginx container& kube-proxy provides in in pod
+
+-> portal me ek aks clustr banaya hai.. & nginx ke image leke pod banaya hai..
+
+=> kubectl me ek pod banana hai.'
+===================================> how to create pod in cli ?
+
+ kubectl run NAME --image=image [--env="key=value"] [--port=port] [--dry-run=server|client]
+[--overrides=inline-json] [--command] -- [COMMAND] [args...] [options]
+
+Command banana ka tarika =
+==========================
+1) [ ] bracket ->Optional -> hota hai
+2) Capital -> Jo change hoga
+3) Small -> jo fix thega
+4) | =  OR
+
+> $ kubectl run  NAME --image=image ka nam 
+->here NAME-> pod ka name
+ 
+$ kubectl run dhundu-nginx-pod --image=nginx
+
+=> here dhundu-nginx-pod is name of pod, nginx is name of image...
+
+=> Kubernetes ke under har chees ek resource hai..
+-> kubernetes----> Resource
+-> Node-> Worker node jo apne cluster se connected hai.
+
+*) Display the nodes
+$ kubectl get nodes
+
+q) private Kubernetes Cluster ( Read ) 
+
+=> To see the cluster information
+$ kubectl cluster-info
+
+=> port forwarding
+$ kubectl port-forwarding
+
+ kubectl port-forward TYPE/NAME [options] [LOCAL_PORT:]REMOTE_PORT
+[...[LOCAL_PORT_N:]REMOTE_PORT_N]
+
+> kubectl port-forward TYPE/NAME LOCAL-PORT:REMOTE-PORT
+
+> TYPE--> pod
+> NAME--> pod name(dhundu-nginx-pod)
+> LOCAL-PORT--> 9888
+> REMOTE-PORT --> 80
+
+$ kubectl port-forward pod 9888:80
+
+=> kubectl runnetflix-pod --image=devopsinsiders/netflix-clone
+
+=> To see the pod
+$ kubectl get pods
+
+$ kubectl get pods -o wide
+
+=> port forwarding:
+$ kubectl port-forward pod/netflix-pod 9777:80
+
+=> access in browser: localhost:9777:80
+
+> Terraform -> me sab -> Block
+> Kubernetes -> me sab -> Resource
+
+
+Class--95/05
+==========
+=>type google-> Kubernetes documentation
+
+> Documentation
+> Get started
+> Overview & etc...see this page 
+> Object/resource in k8s 
+
+=> Kubernetes ke mathe me jo cheese chalayge usi ko Workload kela ya ga ..
+
+=> Cluster = set of pods
+=> Cluster ke andar Pods chalega..
+=> pod = set of container
+=> Pod is a group of one or more containers, with shared storage & network resources 
+
+=> Best practice is to run one container in one pad..
+
+=> pod banae ka tarika -> 
+=========================
+1) imperetive--> Command chalao, pod Banao 
+2) Declarative  -> File banao aur Apply chalao 
+ 
+=> Local me Cluster banane ke lia --> Minicube ( google -> minicube install & path by power shell ) 
+
+=> minikube start --> karne ke lia docker desktop open karna padega 
+
+$ kubectl run nginx --image=nginx
+
+$ kubectl get pods
+
+=> port forwarding --> for access
+
+$ kubectl port-forwarding  TYPE/NAME LOCAL-PORT:REMOTE-PORT
+
+$ kubectl port-forward pod/nginx 9696:80 
+
+=> here type=pod, name=nginx, local port=9696, remote-port =nginx port 80
+
+=> access in browser: localhost:9696
+
+*) Declarative-> tarika me pod banayega
+=> .YAML ----> kubectl apply
+
+Q) pod ke under me sabse pahela container banta hai..called pause container
+=> pause container contains/store ip of pod, default namespace
+=> By default pod me hamesa 2-container banta hai.. 1-pause container,2-main container
+=> pause container, sab container ka ip aur baki details ko store karta hai...
+ 
+=> ---------- YAML ----------------- 
+
+
+Server                client
+======               ==========
+         Data Transfer Format
+        ======================
+
+1.JSON    2) YAML     3) PROTOBUFF
+
+JSON
+====
+{
+  "name": "dhoondhu",
+  "age": 66,
+  "marks": 89
+}
+
+
+=>YAML
+========
+name: dhoondhu
+age: 66
+marks: 89
+
+
+
+=> PROTOBUFF
+===========
+syntax = "proto3";
+
+message Student {
+  string name = 1;
+  int32 age = 2;
+  int32 marks = 3;
+}
+
+===============================
+✅ YAML Basic Rules & Syntax:-
+-----------------------------
+1. Key-Value Pairs
+
+name: dhoondhu
+age: 66
+
+2. Indentation Matters (Always use (2 ya 4s)spaces, NOT tabs!)
+
+student:
+  name: dhoondhu
+  age: 66
+
+3. List (Array)
+subjects:
+  - math
+  - science
+  - history
+
+4. List of Objects
+
+students:
+  - name: dhoondhu
+    age: 66
+    marks: 89
+  - name: shyamu
+    age: 65
+    marks: 90
+
+5. Comments
+# This is a comment
+name: dhoondhu  # inline comment
+
+6. Multiline Strings
+description: |
+  This is a long text.
+  It can go on multiple lines.
+  Line breaks are preserved.
+
+note: >
+  This is another long text.
+  Line breaks become spaces.
+
+7. Booleans and nulls
+
+pass: true
+fail: false
+unknown: null
+
+8. Quoting Strings (optional unless string has special characters)
+
+name: "dhoondhu"
+message: 'Hello, world!'
+
+
+
+Class--96/06
+==========
+
+=> how to write a pod in Declarative 
+=> dhundhu.yaml
+==============
+podName: dhundhu-pod
+image: nginx
+
+
+=> kubectl apply --help
+
+Usage:
+  kubectl apply (-f FILENAME | -k DIRECTORY) [options]
+
+=   kubectl apply (-f FILENAME | -k DIRECTORY) 
+
+$ kubectl apply -f dhundhu.yaml
+
+
+=> Tu na ek pod ke yaml ka structure bta de ya document dede..
+=> explain command--> get document for a resource
+
+=> kubectl explain --help
+
+Usage:
+  kubectl explain TYPE [--recursive=FALSE|TRUE] [--api-version=api-version-group]
+[-o|--output=plaintext|plaintext-openapiv2] [options]
+
+
+Usage:
+  kubectl explain TYPE 
+
+=> here TYPE --> resource--> node, pod, deployment, service, configmap,  secret, 
+
+$  kubectl explain pod
+
+=> google type > Kubernetes pod
+=> copy the sample pod yaml
+ 
+$ kubectl explain pods --recursive > pod-document.txt
+
+dhundu.yaml
+============
+apiVersion: v1
+kind: pod
+metadata:
+  name: chamkilapod   
+spec:
+  containers:
+  - name: tarasing
+    image: nginx
+      
+$  kubectl apply -f dhundu.yaml  ( here pod created)
+-> to see the pod 
+$ kubectl get pods
+
+-> port-forward  to see the container in pod in browser
+
+$ kubectl port-forward pod/chamkilapod  9090:80
+
+=> Access in browser-- http://localhost:9090/
+
+> Delete a pod
+
+$ kubectl delete pod nginx
+
+
+Class--97/07
+==========
+
+=> chat GPT->  beta chatgpt, ek kaam kar, kubectl ke through mereko jenkins, pgadmin, argocd, octopus, sonarqube, checkov, terraform, prometheus, grafana, aur apne hisab se bdia bdia tool dede bhai....
+
+=> kubectl run se dedo hai..
+
+
+=> Pod ke jarurat kyu padi ? kya chull thi?
+
+=> Pod ke jarurat padi container ko zinda rakhne ke lia... 
+
+=>  IP is assigned to a Pod not to be container
+
+=> Requirement-> Ek namespace banao development nam ka 
+=> US namespace ke andar me ak pod banao nginx ka 
+=> Pod ke andar two containers chale 2 container chle 
+=> Agar ek container ko mare, toh wapas  se nay container bn jae...
+
+=> chat GPT -> Beta sun chatgpt, bura mt manio, mereko na ek pod banana hai isme 2 nginx ke container chahiye, possible hai kya?
+
+=> ye docker compose nahi chahiya bhai kubectl se chahhiuye 
+
+=> Imperative process me 2 container nahi ban payega..use declarative  method 
+
+=> chatGPT-> yaml bana ke do jisme do nginx ka container chale .. ek pod ka 
+-> step by step btao
+
+=>  ------ yaml -------- 
+nginx-dual-pod.yaml
+-----------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-pod
+spec:
+  containers:
+    - name: nginx-01
+      image: nginx
+      ports:
+      - containerPort: 80
+
+    - name: nginx-02
+      image: nginx:alpine
+      ports:
+      - containerPort: 81  
+
+> is me kebal ek ngnx ka pod running hota hai..
+
+Class--98/08
+==========
+=> Pod is a collection of container who share shared storage & shared networking... 
+
+=> Proof = Container to container networking = localhost
+
+=> Pod to pod communication - same namespace
+
+=> pod to pod communication -different namespace
+
+=> Network Policies
+
+=> Internal Load Balancer -Cluster IP
+=> External Load Balancer -Load balancer type /Node Port
+=> Ingress Controllers
+=> 
+
+*) How Networking Works In Kubernetes ? 
+=======================================
+$ kubectl explain pod --recursive  > pod.txt
+=> ye pod lekhne ka document structure late hai..
+
+=> chatGPT-> Are bhai ye pod jo hota hai..Kubernetes me uske bhi port hota hai kya ? 
+
+1) how to communicate two container in in a single pod
+
+pod.yaml
+===========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-pod
+spec:
+  containers:
+   - name: nginx-container
+     image: nginx
+     ports:
+     - containerPort: 80
+
+   - name: firefox-container
+     image: linuxserver/firefox   
+     ports:
+     - containerPort: 3000
+      
+=> pod create karna 
+$ kubectl apply pod -f pod.yaml
+
+=> to see the pod 
+$ kubectl get pods
+
+-> port-forward  to see the container in pod in browser
+
+$ kubectl port-forward pod/dual-pod 5050:3000
+
+=> Access in browser: localhost:5050
+firefox open -->under search me localhost:80 nginx access
+
+*^) Container to Container Communication = localhost..
+
+=> Container to Container  Communicaion = localhost:<port> 
+---------------------------------
+
+2) Two different pod how to communicate within same network ? 
+
+=> Every pod get an IP
+
+=>  One pod can connect to another pod using it's private IP
+
+=> netflix-pod.yaml, firefox-pod.yaml
+
+=> pod ka details/IP address nikal na
+$ kubectl get pod -o wide
+
+netflix-pod.yaml
+===============
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dif-pod
+spec:
+  containers:
+   - name: firefox-container
+     image: linuxserver/firefox   
+     ports:
+     - containerPort: 3000
+      
+firefox-pod.yaml
+===================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: different-pod
+spec:
+  containers:
+   - name: netflix-container
+     image: devopsinsiders/netflix-clone
+     ports:
+     - containerPort: 80
+
+-> Create pod
+$ kubectl apply -f netflix-pod.yaml
+$ kubectl apply -f firefox-pod.yaml
+
+-> To see the pod 
+$ kubectl get pods
+
+-> port forwarding
+$ kubectl port-forward pod/dif-pod 9090:3000
+
+-> access dif-pod/firefox --> localhost:9090
+
+-> different-pod access by using its IP
+-> IP nikal na hai.../ details nikal na hai.. ak pod ka
+
+$  kubectl get pod -o wide
+
+=> then access -> inside firefon-> hit the IP -> 10.244.0.9
+
+&) One pod can connect to another pod using it's private IP ....
+
+=> same Namespace/different Namespace
+
+=> har pod ko ip milta hai.. vo same name ho ya different me..koi bhi pod kisi bhi namespace ka ho.. kisi bhi dusre pod ki ip ko hit mar sakta hai...
+
+=> by default two pod access if not access use network policy..
+
+Class--99/09
+==========
+              Total Recap
+             ============ 
+
+-> To see the pod creating status/
+$ kubectl get pods -w
+
+
+Class--100/10
+==========
+             Network Policy
+            ================ 
+-> network policy explain document
+$ kubectl explain networkpolicy
+
+-> network policy doc. create a file
+$ kubectl explain networkpolicy -recurc
+
+-> Network policy--> spec--> 
+
+1. egress ->( Inbound )-->  Bahar se pod ke under traffic ka rule
+
+2. Ingress ->( Outbound )->   Pod ke bahar jane wale traffic ka rule
+
+3. podSelector -> kis pod per ye policy apply hogi
+
+3.1) matchExpressions	<[]LabelSelectorRequirement>
+3.2) matchLabels	<map[string]string>
+
+4. policyType -> 
+
+-> pod ka level check karna hai..
+$ kubectl get pods --show-labels
+
+-> show pod ka IP address
+$ kubectl get pods -w wide
+
+-> show the Network policy
+$ kubectl get networkpolicy
+
+
+firefox-laila-pod.yaml
+======================
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: laila-pod
+  labels:
+    type: chamkila
+    height: 6feet
+spec:
+  containers:
+   - name: firefox-container
+     image: linuxserver/firefox   
+     ports:
+     - containerPort: 3000
+      
+ netflix-majnu-pod.yaml:
+=======================
+     
+apiVersion: v1
+kind: Pod
+metadata:
+  name: majnu-pod
+  labels:
+    type: tondu
+    height: 5feet
+spec:
+  containers:
+   - name: netflix-container
+     image: devopsinsiders/netflix-clone
+     ports:
+     - containerPort: 80
+
+NP-pod.yaml:-
+============
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: villan-np-pod
+spec:
+  podSelector:
+    matchLabels:
+      type: tondu
+
+-> Create pod 
+$ kubectl apply -f firefox-laila-pod.yaml
+
+$ kubectl apply -f  netflix-majnu-pod.yaml
+
+-> show the pod labels
+$ kubectl get pods --show-labels
+
+-> show the IP
+$ kubectl get pods -o wide
+
+-> network policy file pod create
+$ kubectl apply -f NP-pod.yaml
+
+-> show the network policy
+$ kubectl get networkpolice
+
+-> port forwarding for access
+$ kubectl port-forward pod/laila-pod 8890:3000
+
+Note: here after applying Network policy both pod are accessing 
+
+-> delete all pod 
+$ kubectl delete pod --all
+
+-> delete Network policy
+$ kubectl delete networkpolicy  --all
+
+
+Class--101/11
+==========
+
+=>Homework Aks Cluster using terraform with foreach & Map
+
+=> Netflix & Firefox ko declarative me deploy karna hai..
+
+=> Deploy marke .dono pod ek dusre ko access kar paa raha hai ke nahi vo check karna hai...
+
+=> Beach me network policy laga ke stop karna hai...
+
+*) AKS Create:- Create 2 pod Add Network policy
+
+->rg-ghatak->gnName--> clusterName-> ghatakcluster
+
+->Netwrking-->  
+
+private access->Enable private cluster:
+-> jo master node ke andar Api-server by default public hota hai..usko private karne ke lia enable karna hai..
+
+public access-> jis ip ko acces dega usne access kar paiga... 
+
+-> container networking--> Network configuration/plugin defines cluster ke pod & node ko IP address provide karta hai..
+
+-> Azure CNI Overlay-->
+========================
+> pod ko IP need ke Regarding
+>  ye fir pod ka ip internal private space se melaga.
+
+=> Azure CNI node subnet--> 
+=========================
+> Node ko IP dene ke 2 tarika
+> Automatically naya bana ne do
+> Bring your own Virtual Network
+> Virtual network jisme node hai usi ka IP utha ke pod  
+>Limitation- agar vnet me ip hi khatm ho gae to dikat hai..
+> Fayda->direct Kubernetes ke bahar se pod ko hit mar sakte hai...
+
+-> Bring your own vNet-> khud se banaya hua Virtual Network & Subnet
+
+=> Dns name prefix-> FQDN->fully qualified domine name-> ek URL hota hai.
+> 
+=> Network policy--> 
+> none-> Network policy not working(after apply NP) 
+> Calico/Azure->Networking policy working
+
+create ......
+
+=> this AKS access in Azure cli--> 
+-> open cluster -> connect--> copy Azure get subscription, Azure get Credential-> download aks credential create pod using yaml  
+
+Class--102/12
+==========
+              Total Recap
+             ============
+
+Class--103/13
+==========
+=> Pod ka kam->uske ander ke container ko zinda rakhna..
+
+=> Docker ki case me kese container marta hai..
+
+-> 1st docker run command se ek container bana te hai.
+
+-> docker run -d --name nginx-container -p 8890:80 nginx
+-> here nginx ka image ka use karke ek container ban gaya..
+-> go inside the container & kill the process
+
+$ docker exec -it nginx-container bash
+
+-> 1 container = 1 process(nginx)
+  -> if nginx process dies
+    then container will also die..
+->  🔹 ps Command:
+=================
+$ ps-> ka matlab (Process Status) ye command system me chal rahe process(Programs) ki jankari deta hai...
+
+-> ps -e/ps -A--> System me chal rahe savi process ko dekhata hai..
+
+-> ps aux -> sabhi user ke process ko detail dekhata hai..
+
+🔹 kill Command:
+================
+-> kill command ka upayag kisi process ko terminate(bandh) karne ke lia kia jata hai..
+
+$ kill pid--> kill (process ID) 
+
+🔹 What is the top Command?
+===========================
+The top command in Linux/Unix is a real-time process monitoring tool. It displays a live view of system processes, including CPU usage, memory usage, process IDs (PIDs), and more.
+$ top
+====================
+=> chatGPT-> bhai dekh mere ko na nginx ke container ke andar dekhna hai ki kon kon si process chal rahi hai..ps aur top command not found aa raha hai kya karu ? 
+
+> apt update  && age install process -y 
+> uske bad hamare ps aux top sab command chalega
+
+$ ps
+$ ps aux
+$ top 
+
+> $ ps aux  --> pid 1 me nginx ki master process chal rehe hai..
+> agar is pid ko mar du to us nginx ka container mar jata hai..
+
+$ kill pid
+$ kill 1 
+
+> Docker ps ( container killed)
+
+=> Docker ki case me khud se container create nahi hota hai..
+
+=> pod ke case me kya hota hai. dekh na hai..
+-----------------------------------
+
+=> mene yaml file use karke nginx ka ek pod banadiya 
+=> us pod ke andar ek nginx ka container hai..
+
+> Go inside the pod
+
+> kubectl exec --help
+> $ kubectl exec POD -c CONTAINER --COMMAND
+
+>  kubectl exec nginx-pod -c( container ka nam command ( bash) 
+
+>  kubectl exec nginx-pod -c nginx --bash
+
+> $ kubectl exec -it nginx-pod -c nginx -- bash
+=> this command go inside the nginx container
+
+> kill the nginx process id 
+$ kill 1 
+
+> kubectl get pods 
+
+=> here pod ki case me jitnee bar container marta hai utne bar fir se jinda ho jata  hai...
+
+--------------------------------
+
+Class--104/14
+=============
+
+=> Docker interview Question... 
+=> Kubernetes ka SABAL
+-----------------------
+> Kubernetes ka architectures ? 
+
+> Pod kya hota hai.? Pod ko IP kaise milta hai..  ?
+
+> Doo pod apas me kaise baat karta hai --IP use karke ?  
+
+> Doo pod alg alg namespace me hai toh baat kar paega ke nahi kar paega -kar paiga ?
+ 
+> Pod ke beech baat rokenge kaise ? network policy se ?
+
+> Ek pod ke andar do container kaise baat karenge --? localhost se
+
+       Topic
+       ------
+#) Persistent Volume & Persistent Volume Claims( PV & PVC )
+#) Service
+#) Replica Set
+#) Deployment
+#) Stateful Set
+#) Daemon Set
+ 
+#) Persistent Volume & Persistent Volume Claims( PV & PVC )
+======================================
+
+=> Create a pod 
+dhundhu.yaml
+-------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chamkilapod  
+spec:
+  containers:
+  - image: nginx
+    name: sample-container
+
+=> Go inside into the pod 
+$ kubectl exec -it chamkilapod -- bash
+$ ls 
+
+=> /home folder me ek file honi chahiya --> main_bhoot_hu.txt
+
+-> Create a file in the container-/home
+     main_bhoot_hu.txt
+
+$) cd/home
+$ touch main_bhoot_hu.txt
+
+=> After killing the container this file is present or not check
+
+> go back to the container & kill it
+cd ..
+
+$ kill 1 
+
+> kubectl get pods ( restart pod 1 see) 
+
+>Go inside the container and check file is present or not /here file not present so that a new logic start PV & PVC...
+
+Class--105/15
+=============
+
+=> type-> azurerm container registry
+=>      > azurerm aks
+
+=> Pods are ephemeral(alpakalina) 
+=> Data loss hone ka chance hai. due to ephemeral nature of pod.
+=> Data ka loss bachane ke lie.humne PV & PVC ka concept laya.
+=> PV cluster ke level pr ek storage resource hai jaise storage pool ya disk. 
+=> Pvc user ya pod ka request hota hai storage ke lie aur ye pv se bind hota hai..
+
+> Step-1--> First the user with admin right on cluster will create PV
+
+> Step-2-> Developer will create PVC, which will have request of storage require.
+
+> Step-3-> PVC will be bound to PV
+
+> Step-4-> Pod PVC to use karta hai...
+
+#) PV banana ka tarika--> 2 tarika
+   a) Static Provisioning
+   b) Dynamic Provisioning
+
+
+#> Docker Volume:
+================
+> Create a docker container, take data inside the container then kill the container that means data & container dead, use volume to persist the data in  docker case 
+
+> Create a docker Volume
+$ docker volume create nipun-drive
+$ docker volume ls
+
+> nipun-drive ko docker volume ke sath jodna.
+
+docker volume --help
+> create a volume
+$ docker volume create rama-volume
+> here rama-volume-> volume ka naam
+
+> Create a docker container with volume
+
+$ docker run -d --volume nipun-drive:/home nginx
+
+=> here nipun-drive--> volume ka naam
+ /home-->path(jis path me dirve rahega)
+nginx- image ka naam
+
+> Volume Check Steps:
+------------------
+> Create a container with adding volume
+
+$ docker run -d --volume nipun-volume:/home nginx
+
+> go inside the container & create a file
+
+$ docker exec -it (container-id) bash
+$ cd /home
+$ touch main_bhoot_hu.txt (create a file) 
+
+> Container kill ( first back to container ) 
+$ cd ..
+$ kill 1
+
+> checking
+> create a container with same volume in same path
+$ docker run -d --volume nipun-volume:/home nginx
+
+> go inside the container
+$ docker exec -it (container-id) bash
+$ cd /home
+
+#) proved: main_bhoot_hu.txt this file is present
+
+> checking in another path
+
+$ docker run -d --volume nipun-volume:/usr/share/nginx/html   nginx
+
+#) here also this file is present (proved) 
+===========================
+          Pod Case Volume
+         ----------------
+> Kubernetes document  > volume
+
+> Kubernetes  Volume:2 types
+  a) Ephemeral Volume
+  b) Persistent Volume(imp.) 
+
+ a) Ephemeral Volume:-
+=======================
+=> Ephemeral Volume types have a lifetime linked to a specific Pod ..
+> Aisa volume jo pod ki jivan shaily se link hota hai...
+
+ b) Persistent Volume(imp.) :-
+==============================
+=> Aisa volume jo pod ki jivan shaily se alg hota hai..
+>Persistent Volume exist beyond the lifetime of any individual pod. when a pod ceases to exist.
+
+       #) Types of Volume
+      =======================
+a) awsElasticBlockStore:-(deprecated)
+b) azureDisk:(deprecated)
+c) azureFile:-(deprecated) 
+d) cephfs(removed):-
+e) cinder(deprecated):-
+f) configMap:-
+g) downwardAPI:-
+h) emptyDir
+i) fc(fiber channel):-
+j) gcePersistentDisk(deprecated):-
+i) gitRepo(deprecated):-
+j) glusters(removed):-
+k) hostPath
+l) nfs
+m) persistentVolumeClaim:-(imp) 
+
+=> Volume declare karne ke lia
+  .spec.volumes
+  .spec.container[*].volumeMounts
+
+
+Class--106/16
+=============
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

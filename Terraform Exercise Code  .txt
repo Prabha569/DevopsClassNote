@@ -1,0 +1,1346 @@
+Module Code:-
+============
+azurerm-resource-group
+---> main.tf
+azurerm-storage-account
+---> main.tf
+
+parent module:-
+============
+parent-demo
+--> provider.tf
+--> main.tf
+
+=====================
+azurerm-resource-group
+---> main.tf
+==================
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West US"
+}
+
+=====================
+azurerm-storage-account
+---> main.tf
+====================
+resource azurerm_storage_account "stg" {
+  name                     = "krishnastg567"
+  resource_group_name      = "prabha-rg"
+  location                 = "West US"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = {
+    environment = "staging"
+  }
+=======================
+
+
+parent-demo
+main.tf
+==========
+module "resource_group" {
+  source = "../modules/azurerm_resource_group"
+}
+
+module "storage_account" {
+  depends_on = [ module.resource_group ]
+  source = "../modules/azurerm_storage_account"
+}
+
+Module New dard:
+------------------
+1> Bar Bar same chizo ko copy paste karna pad raha hai...
+2. Hard codded hai storage account ka nam...badi  dikat hai..
+
+==> terraform module --> 1. child module 2. parent module 
+=> parent module me ek .tf fil hai ... & which call the child block 
+
+=> dard ko recovery karne ke lia new concept terraform variable
+
+> dard nibarana-- Terraform Variable
+======================************==================
+*)
+=> Variable:-
+1. declare
+2. use
+3. value assign
+
+=> variable declare---> variable block banana hai..
+=> variable use ---> var.rg-name, var.rg-location
+=> variable assign-> 
+
+*) Value kaha kaha se assign kar sakta hai
+   ======================================
+1. Child Module:
+--------------
+1. Hardcoded
+2. cli
+3. default value
+4. terraform .tfvars
+5. .auto.tfvars
+
+2. Parent module--> same as child
+
+=> variable declare---> variable block banana hai..
+=> variable use ---> var.rg-name, var.rg-location
+=> variable assign-> 
+
+
+1. Child Module:
+--------------
+2. cli  --> Example
+
+variable.tf:
+============
+variable "rg-name" {
+  description = "The name of the resource group"
+  # default     = "prabha-rg"
+  type        = string
+}
+
+variable "location" {
+  description = "The location for the resource group"
+  # default     = "West US"
+  type        = string
+  
+}
+
+main.tf:
+=========
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.location
+}
+
+
+Variable assign: by cli ....
+=> here cli me jis nam pr rg dange usi nam par rg Banega
+
+
+
+3. default value : --- > Example
+==============================
+here rg name by default
+& location assign by cli
+
+variable.tf:
+===============
+variable "rg-name" {
+  description = "The name of the resource group"
+   default     = "prabha-rg"
+  type        = string
+}
+
+variable "location" {
+  description = "The location for the resource group"
+  # default     = "West US"
+  type        = string
+  
+}
+
+
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.location
+}
+
+4. terraform .tfvars: ---> Example
+===============================
+==>> terraform.tfvars which replace the default
+
+
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.location
+}
+
+variable.tf
+===========
+variable "rg-name" {
+  description = "The name of the resource group"
+  type        = string
+}
+
+variable "rg-location" {
+  description = "The location for the resource group"
+  type        = string
+  
+}
+
+terraform.tfvars
+=================
+rg-name = "rg-tungu"
+rg-location = "Central India"
+
+
+.auto.tfvars: ---> Example
+============================
+==> .auto.tfvars  which replace the terraform.tfvars 
+
+tunu.auto.tfvars
+=================
+rg-name = "rg-tungu"
+rg-location = "Central India"
+
+
+
+==> if terraform.tfvars is not present then  
+create 
+-> dev.terraform.tfvars
+-> qa.terraform.tfvars
+-> test.terraform.tfvars
+
+=> new command -> terraform plan --help
+    -var-file=filename
+
+$ terraform plan -var-file=filename
+$ terraform plan -var-file="dev.terraform.tfvars"
+
+Day--40
+=======
+=> Validation use in variable argument
+========================================
+main.tf
+======
+
+variable "rg-name" {
+    type = string
+    validation {
+    condition     = contains(["kalu", "goru", "piru"], var.rg-name)
+    error_message = "Rg must be one of these : kalu, goru, piru "
+  }
+}
+
+# variable "rg-location" { }
+
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = "Central India"
+}
+
+
+
+Parent/child -->call --> Variable Use:-
+=====================================
+using terraform .tfvars
+=> 2-ways :1.both parent & child module variable creation
+=>         2. only parent variable creation & that variable copy in child module
+
+Example:1
+Child Module:-azurerm-resource-group
+main.tf
+======
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.rg-location
+}
+
+variable.tf:
+==============
+variable "rg-name" {
+  description = "The name of the resource group"
+  type        = string
+}
+
+variable "rg-location" {
+  description = "The location for the resource group"
+  type        = string 
+}
+
+Parent Module: main.tf
+=======================
+module "resource_group" {
+  source = "../modules/azurerm_resource_group"
+  rg-name = var.rgname
+  rg-location = var.rglocation
+}
+
+variable.tf
+=============
+variable "rgname" {
+  description = "The name of the resource group"
+  type        = string
+}
+
+variable "rglocation" {
+  description = "The location for the resource group"
+  type        = string 
+}
+
+terraform.tfvars:
+=============
+rgname = "prabha-rg"
+rglocation = "West US"
+
+====================================================
+=> Requirement--> 10 rg creation
+=> only count use  / hard codded 
+
+
+
+
+=> using  variable:--
+=> count + List ---> Example
+----------------------------
+terraform.tfvars
+================
+rg_names     = ["rg-dev", "rg-test", "rg-prod"]
+rg_locations = ["East US", "West Europe", "Central India"]
+
+variable.tf:
+=========
+variable "rg_names" {
+  type = list(string)
+}
+
+variable "rg_locations" {
+  type = list(string)
+}
+
+
+main.tf:
+===========
+resource "azurerm_resource_group" "resource_group" {
+  count    = length(var.rg_names)
+  
+  name     = var.rg_names[count.index]
+  location = var.rg_locations[count.index]
+}
+
+=> here length is a function
+
+*) Count + List Problem:
+===========================
+=> Banate samay to ban jaega.. lekin agar koi ek resource delete karna hai toh fatt jaega ...
+=> so use ForEach  + List
+
+*) For Each + Set of String
+*) by using variable create 3 rg using for_each
+---------------------------------------------
+terraform.tfvars:
+===================
+rg_names = ["rg-emu2","rg-emu3","rg-emu4"]
+
+variable.tf:
+==========
+variable "rg_names" {
+  type = list(string)
+}
+
+main.tf
+======
+resource "azurerm_resource_group" "rg" {
+  for_each = toset(var.rg_names)
+  
+  name = each.value
+  location = "West US"
+}
+
+***) Dard in for_each 
+=> Different location with different rg can't create 
+Example:
+=====
+main.tf
+------------
+variable "rg-names" { }
+variable "rg-location" { }
+
+resource "azurerm_resource_group" "rg" {
+
+ for_each = toset(var.rg-names )
+ name = each.value
+ location = var.rg-location
+}
+
+terraform.tfvars:
+------------------
+rg-names = ["rg-emu2","rg-emu3","rg-emu4"]
+rg-location = ["West us", "South India", "Central India"]
+
+> here 3 rg can't create with different location 
+
+>> Use For Each + Map -----> Example--01
+===========================================
+main.tf
+=========
+resource "azurerm_resource_group" "rg" {
+  for_each = {
+     "rg1" = "Central India"
+     "rg2"  = "West US"
+     "rg3"  = "South India"
+  }
+
+  name = each.key
+  location = each.value
+}
+
+Example--02
+============
+main.tf
+=====
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rg_ki_details
+  
+  name = each.key
+  location = each.value
+}
+
+variable.tf:
+=============
+variable "rg_ki_details" {
+}
+
+terraform.tfvars
+================
+rg_ki_details = {
+    "rg10" = "Central India"
+    "rg20" = "West US"
+    "rg30" = "South India"
+}
+
+
+=> map:- problem
+=> sirf name aur location ki change ho paa rahi hai aur kuch nahi kr paa hahe hai...
+
+*) Nested Map:-
+==============
+=> kitni bhi values support kar ta hai...
+
+Example:-1
+=========
+main.tf:
+-------
+resource "azurerm_resource_group" "resource-group" {
+   for_each = tomap({
+       "rg1" = {
+        name ="rg-kulu"
+        location = "South India"
+       }
+       "rg2" = {
+        name = "rg-mulu"
+           location = "West us"
+       }
+       "rg3" = {
+         name ="rg-tulu"
+        location = "Central India"
+       }
+    })
+
+  name = each.value.name
+  location = each.value.location
+  
+}
+
+
+Example:-2
+==========
+=> variable use kar ke
+
+variable.tf
+-------------
+variable "rgs" {
+type = map(any)
+}
+
+main.tf
+-------
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+  name     = each.value.name
+  location = each.value.location
+}
+
+terraform.tfvars
+-------------------
+
+rgs = {
+  "rg1" = {
+    name     = "rg-dhondhu"
+    location = "Central India"
+  }
+  "rg2" = {
+    name     = "rg-lulu"
+    location = "South India"
+  }
+
+  "rg3" = {
+    name     = "rg-kulu"
+    location = "West us"
+  }
+}
+
+
+=================================
+storage acc. creation
+------------------
+
+variable.tf
+-----------
+variable "storageaccount" {
+  type = map(any)
+}
+
+main.tf
+------
+resource "azurerm_storage_account" "stg-account" {
+  for_each = var.storageaccount
+
+  name                     = each.value.name
+  resource_group_name      = each.value.resource_group_name
+  location                 = each.value.location
+  account_tier             = each.value.account_tier
+  account_replication_type = each.value.account_replication_type
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+terraform.tfvars
+==================
+
+storageaccount = {
+  "stg1" ={
+  name                     = "ramastg567"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+  "stg2" ={
+  name                     = "harastg5677"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+}
+
+
+***) Parent & Child call by using For Each + Map :--
+=============================================
+Example code:-- Revision  --to see the code
+==============================================
+
+
+
+
+
+
+
+
+
+====================================================
+-------------------------- Day--53 -----------------
+================ CODE  =============================
+
+1) azurerm_resource_group --> main.tf
+=====================================
+resource "azurerm_resource_group" "resource_group" {
+  name     = var.resource_group_name
+  location = var.location
+}
+
+variable.tf
+===========
+variable "resource_group_name" {
+  description = "This is resource group name"
+  type = string
+}
+variable "location" {
+  description = "This is rg location"
+  type = string
+}
+
+2) azurerm_virtual_network --> main.tf
+======================================
+resource "azurerm_network_interface" "network_interface" {
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_linux_virtual_machine" "virtual_machine" {
+  name                = var.virtual_machine_name
+  resource_group_name = var.resource_group_name
+  location            = var.vm_location
+  size                = var.vm_size
+  admin_username      = var.vm_admin_username
+  admin_password      = var.vm_admin_password
+  disable_password_authentication  = var.disable_password_authentication
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
+
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher =  var.image_publisher
+    offer     =  var.image_offer
+    sku       =  var.image_sku
+    version   =  var.image_version
+  }
+}
+
+variable.tf
+===========
+variable "network_interface_name"{
+ description = "This is network interface name"
+type = string
+}
+variable "nic_location" {
+  description = "This is nic location"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is rg name"
+  type = string
+}
+variable "subnet_id" {
+  description = "This is subnet id"
+}
+variable "virtual_machine_name" {
+  description = "This is virtual machine name"
+  type = string
+}
+variable "vm_location" {
+  description = "This is vm location"
+  type = string
+}
+variable "vm_size" {
+  description = "This is vm size"
+  type = string
+}
+variable "vm_admin_username" {
+  description = "This is vm admin username"
+  type =  string
+}
+variable "vm_admin_password" {
+  description = "This is vm admin password"
+  type = string
+}
+variable "disable_password_authentication" {
+  description = "This is password authentication"
+  type = string
+}
+variable "image_publisher" {
+  description = "This is vm image publisher"
+  type = string
+}
+variable "image_offer" {
+  description = "This is vm image offer"
+  type = string
+}
+variable "image_sku" {
+  description = "Thisi is vm image sku"
+  type = string
+}
+variable "image_version" {
+  
+}
+
+3) azurerm_subnet ----> main.tf
+=================================
+
+resource "azurerm_subnet" "subnet" {
+  name                 = var.subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = var.virtual_network_name
+  address_prefixes     = var.address_prefixes
+
+}
+
+variable.tf
+===========
+variable "subnet_name" {
+  description = "This is subnat name"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is rg name"
+  type = string
+}
+variable "virtual_network_name" {
+  description = "This is virtual network name"
+  type = string
+}
+variable "address_prefixes" {
+  description = "This is frontend subnet prifixes"
+  type = list(string)
+}
+
+4) azurerm_public_ip ---> main.tf
+==================================
+
+resource "azurerm_public_ip" "public_ip" {
+  name                = var.public_ip_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  allocation_method   = var.allocation_method
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+variable.tf
+==============
+variable "public_ip_name" {
+  description = "This is public ip name"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is  resource group name"
+  type = string
+}
+variable "location" {
+  description = "This is pip location"
+  type = string             
+}
+variable "allocation_method" {
+  description = "This is pip allocation method"
+  type = string
+}
+
+5) azurerm_virtual_machine  ---> main.tf
+========================================
+
+resource "azurerm_network_interface" "network_interface" {
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+resource "azurerm_linux_virtual_machine" "virtual_machine" {
+  name                = var.virtual_machine_name
+  resource_group_name = var.resource_group_name
+  location            = var.vm_location
+  size                = var.vm_size
+  admin_username      = var.vm_admin_username
+  admin_password      = var.vm_admin_password
+  disable_password_authentication  = var.disable_password_authentication
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
+
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher =  var.image_publisher
+    offer     =  var.image_offer
+    sku       =  var.image_sku
+    version   =  var.image_version
+  }
+}
+
+variable.tf
+=============
+
+variable "network_interface_name"{
+ description = "This is network interface name"
+type = string
+}
+variable "nic_location" {
+  description = "This is nic location"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is rg name"
+  type = string
+}
+variable "subnet_id" {
+  description = "This is subnet id"
+}
+variable "virtual_machine_name" {
+  description = "This is virtual machine name"
+  type = string
+}
+variable "vm_location" {
+  description = "This is vm location"
+  type = string
+}
+variable "vm_size" {
+  description = "This is vm size"
+  type = string
+}
+variable "vm_admin_username" {
+  description = "This is vm admin username"
+  type =  string
+}
+variable "vm_admin_password" {
+  description = "This is vm admin password"
+  type = string
+}
+variable "disable_password_authentication" {
+  description = "This is password authentication"
+  type = string
+}
+variable "image_publisher" {
+  description = "This is vm image publisher"
+  type = string
+}
+variable "image_offer" {
+  description = "This is vm image offer"
+  type = string
+}
+variable "image_sku" {
+  description = "Thisi is vm image sku"
+  type = string
+}
+variable "image_version" {
+  description = "This is image version"
+  type = string
+}
+
+6) todoapp_infra  -----> main.tf, provider.tf
+==============================================
+
+module "resource_group" {
+ source = "../modules/azurerm_resource_group"
+
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
+}
+
+module "vertual_network" {
+  depends_on = [ module.resource_group ]
+  source = "../modules/azurerm_virtual_network"
+
+  virtual_network_name = "prabha-vnet"
+  vnet_location        = "Central India"
+  resource_group_name  = "rg-prabha"
+  address_space        = ["10.0.0.0/16"]
+}
+
+module "frontend_subnet" {
+  depends_on = [ module.vertual_network ]
+  source = "../modules/azurerm_subnet"
+
+  subnet_name          = "prabha-frontend-subnet"
+  resource_group_name  = "rg-prabha"
+  virtual_network_name =  "prabha-vnet"
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+module "backend_subnet" {
+  depends_on = [ module.vertual_network ]
+  source = "../modules/azurerm_subnet"
+
+  subnet_name          = "prabha-backend-subnet"
+  resource_group_name  = "rg-prabha"
+  virtual_network_name =  "prabha-vnet"
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+module "frontend_pip" {
+  source = "../modules/azurerm_public_ip"
+
+  public_ip_name        = "prabha-frontend-pip"
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
+  allocation_method     = "Static"
+}
+
+module "backend_pip" {
+  source = "../modules/azurerm_public_ip"
+
+  public_ip_name        = "prabha-backtend-pip"
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
+  allocation_method     = "Static"
+}
+
+module "frontend-vm" {
+  depends_on = [ module.frontend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
+
+  network_interface_name  = "nic-frontendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha"
+  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-frontend-subnet"
+  virtual_machine_name    = "frontend-prabhaVM001"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
+  
+}
+
+module "backend-vm" {
+  depends_on = [ module.backend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
+
+  network_interface_name  = "nic-backendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha"
+  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-backend-subnet"
+  virtual_machine_name    = "backend-prabhaVM002"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
+
+}
+
+module "sql_server" {
+  source = "../modules/azurerm_sql_server"
+
+  sql_server_name = "prabhaserver121"
+  resource_group_name = "rg-prabha"
+  location = "Central India"
+  administrator_login = "azureuser"
+  administrator_login_password = "Prabha@321"
+}
+
+module "sql_database" {
+  depends_on = [ module.sql_server ]
+  source = "../modules/azurerm_sql_database"
+
+  sql_database_name = "prabhadb3212"
+  sql_server_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Sql/servers/prabhaserver121"
+}
+
+
+==============================================
+            SQL SERVER
+============================================
+7) azurerm_sql_server   --> main.tf
+================================
+
+resource "azurerm_mssql_server" "sql_server" {
+  name                         = var.sql_server_name
+  resource_group_name          = var.resource_group_name
+  location                     = var.location
+  version                      = "12.0"
+  administrator_login          = var.administrator_login
+  administrator_login_password = var.administrator_login_password
+
+  tags = {
+    environment = "production"
+  }
+}
+
+variable.tf
+===========
+variable "sql_server_name" {
+  description = "This is SQL server name"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is rg name"
+  type = string
+}
+variable "location" {
+  description = "This is location name"
+  type = string
+}
+variable "administrator_login" {
+  description = "This is sql server login"
+  type = string
+}
+variable "administrator_login_password" {
+  description = "This is sql server password"
+  type = string 
+}
+
+8) azurerm_sql_database -----> main.tf
+========================================
+
+resource "azurerm_mssql_database" "sql_database" {
+  name           =  var.sql_database_name
+  server_id      =  var.sql_server_id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 2
+  sku_name       = "S0"
+
+}
+
+variable.tf
+===============
+variable "sql_database_name" {
+  description = "This is sql database name"
+  type = string
+}
+variable "sql_server_id" {
+  description = "This is sql server id "
+  type = string
+}
+
+===========  DARD ====Day --54  ============
+Dard:-1)  do bar module ko bulana pad raha hai.. do vm ke lia...
+
+dard:-2)  vm ka id/password hi mar dia.. koi bhi dhkh lega.. aur vm hack ho jaegi...
+
+dard:-3) ye subnet upr bana hai.. hardcoded kyu karna hai...
+
+dard:-4) server ka id fir hardcoded.. ye to bada hi taklif bhara hai...
+
+dard:-5) sql server me admin'r/login & password ko secret ko rakhna ka sudhar ---> azure key vault
+
+----------   Connection  ----------
+
+=> connection:- vm ko nic ke sath--> implicit dependency nic.id
+---> network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
+
+==> vm ka nic & nic  ka saath public ip ka connection--> 
+nic--> main.tf --re ip_confirutation re ek argument required --> public_ip_address_id =var.public_ip_address_id or var.pip id
+=> variable create  pip ka ip 
+=> frontend vm pr subnet   ke necha dala pip_id =""
+
+=> same as backend vm  ke lia ek public ip require so parent me another public ip ka module banana hai.. pip nama --pip-todoapp-backend & that backend pip id  add in backend ka vm me
+
+=> vm ko access karne ke lia NSG ko add karke inbound port --22 karke ssh karna username@public ip  enter kara
+
+=> with out NSG vm ko access kar sakta hai yadi 
+see type -> basic & standard public ip in azure --in google
+
+       code:
+=================
+=> frontend public ip --connection  with frontend VM
+1) azurerm_network_interface  ...> main.tf, variable.tf
+=========================================
+
+  ip_configuration {
+    public_ip_address_id          = var.public_ip_address_id
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
+
+==> argument -==> public_ip_address_id    
+
+variable.tf
+============
+variable "public_ip_address_id" {
+  description = "This is public ip which connect to nic"
+  type = string
+
+2) parent Madule--> main.tf--> frontend vm module 
+=======================
+public_ip_address_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/publicIPAddresses/prabha-backtend-pip"
+
+
+==> Same as backend vm connection 
+=========================================
+          Data Block
+        =============
+==> SQL database >  me ==> Server id Requirement  --> so that ( sql_server_data ) search karke put karna hai...
+=> type terraform azurerm mssql_server
+  ----------  Code ------------
+
+=> azurerm_sql_database -->main.tf, data.tf ,variable.tf
+========================
+
+data.tf
+=======
+
+data "azurerm_mssql_server" "data_sql_server" {
+
+  name                = var.data_sql_server_name
+  resource_group_name = var.resource_group_name
+}
+
+main.tf
+=======
+
+resource "azurerm_mssql_database" "sql_database" {
+  name           =  var.sql_database_name
+  server_id      =  data.azurerm_mssql_server.data_sql_server.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 2
+  sku_name       = "S0"
+
+}
+
+variable.tf
+============
+variable "sql_database_name" {
+  description = "This is sql database name"
+  type = string
+}
+variable "data_sql_server_name" {
+  description = "This is data sql server name"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is resource group name"
+  type = string
+}
+
+
+2> parent Module --> main.tf
+==========================
+module "sql_database" {
+  depends_on = [ module.sql_server ]
+  source = "../modules/azurerm_sql_database"
+
+  sql_database_name         = "prabhadb3212"
+  data_sql_server_name      = "prabhaserver121"
+  resource_group_name       = "rg-prabha"
+}
+                
+==========================
+=> Network Interface me ip_configuration block me --> public_ip_address_id  & subnet_id ====> Requirement
+
+=> so that --> public_ip data block & subnet data block require
+
+-----------  Code ---------------
+1) azurerm_virtual_machine --> main.tf, data.tf, variable.tf 
+==============================
+main.tf
+=========
+resource "azurerm_network_interface" "network_interface" {
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
+
+  ip_configuration {
+    public_ip_address_id          = data.azurerm_public_ip.data_public_ip.id
+    name                          = "internal"
+    subnet_id                     = data.azurerm_subnet.data_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+data.tf
+======
+data "azurerm_subnet" "data_subnet" {
+  name                 = var.data_subnet_name
+  virtual_network_name = var.virtual_network_name
+  resource_group_name  = var.resource_group_name
+}
+
+data "azurerm_public_ip" "data_public_ip" {
+  name                = var.data_public_ip_name
+  resource_group_name = var.resource_group_name
+}
+
+
+variable.tf
+==========
+variable "network_interface_name"{
+ description = "This is network interface name"
+type = string
+}
+variable "nic_location" {
+  description = "This is nic location"
+  type = string
+}
+variable "resource_group_name" {
+  description = "This is rg name"
+  type = string
+}
+variable "virtual_machine_name" {
+  description = "This is virtual machine name"
+  type = string
+}
+variable "vm_location" {
+  description = "This is vm location"
+  type = string
+}
+variable "vm_size" {
+  description = "This is vm size"
+  type = string
+}
+variable "vm_admin_username" {
+  description = "This is vm admin username"
+  type =  string
+}
+variable "vm_admin_password" {
+  description = "This is vm admin password"
+  type = string
+}
+variable "disable_password_authentication" {
+  description = "This is password authentication"
+  type = string
+}
+variable "image_publisher" {
+  description = "This is vm image publisher"
+  type = string
+}
+variable "image_offer" {
+  description = "This is vm image offer"
+  type = string
+}
+variable "image_sku" {
+  description = "Thisi is vm image sku"
+  type = string
+}
+variable "image_version" {
+  description = "This is image version"
+  type = string
+}
+variable "data_subnet_name" {
+  description = "This is data subnet name"
+  type = string
+}
+variable "virtual_network_name" {
+  description = "This is virtual network name"
+  type = string
+}
+variable "data_public_ip_name" {
+  description = "This id  data public ip name"
+  type = string
+}
+
+
+2) parent module ---> main.tf
+============================
+
+module "frontend-vm" {
+  depends_on = [ module.frontend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
+
+  network_interface_name  = "nic-frontendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha" 
+  virtual_machine_name    = "frontend-prabhaVM001"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
+  data_subnet_name        = "prabha-frontend-subnet"
+  virtual_network_name    = "prabha-vnet"
+  data_public_ip_name     = "prabha-frontend-pip"
+
+}
+
+**) AZURE KEY VAULT:-      Day--55
+======================    ==========
+1)  What is Key Vault ? 
+
+Ans) Key Vault ek aisa storage ki jagha hai jo bahut secure hai aur usme hum secret, certificate aur keys rakh sakte hai...
+
+2) How to create Key Vault ?
+Ans) manual  & Automation
+
+3)  How to create secrets in key Vault manual & automation ? 
+
+4) Hot to give access to Key Vault ? Number of Ways.
+
+5) What is secret rotation policy ?
+
+6) How to restore key if deleted ?
+
+7) How to retrive the secrets from key vault & use for VM Password ?
+
+>>      --Data Block--
+        =============
+ data block --> key Vault fetch
+ data block --> vm-username
+ data block --> vm-password
+
+azurerm_virtual_machine:-child module
+data.tf
+=======
+
+data "azurerm_key_vault" "kv" {
+  name                = "kvprabha01"
+  resource_group_name = "prabha-rg"
+}
+
+data "azurerm_key_vault_secret" "kv_secret_uname" {
+  name         = "frontendvm-username"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "kv_secret_pwd" {
+  name         = "frontendvm-password"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+main.tf
+=======
+size                = var.size
+  admin_username      = data.azurerm_key_vault_secret.kv_secret_uname.value
+  admin_password      = data.azurerm_key_vault_secret.kv_secret_pwd.value
+  disable_password_authentication = var.disable_password_authentication 
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
+
+parent-module:main.tf
+--------------------
+  # admin_username       = "azureuser"
+  # admin_password       = "prabha@123"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

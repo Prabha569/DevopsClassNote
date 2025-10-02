@@ -1,0 +1,244 @@
+=> Kubernetes me one Master Node & 2/3 Worker Node -> called K8s cluster
+
+=>Kubernetes me Pod banane ke tarika-> 
+=======================================
+1)Imperetive--> Command chalao, pod Banao(kubectl)
+
+2) Declarative  -> File banao(yaml)  aur Apply chalao 
+
+1)Imperetive-->
+===============
+*) How to create pod in cli ? 
+> # Start a nginx pod
+> run command -> Run a particular image on the cluster
+
+Command banana ka tarika =
+==========================
+1) [ ] bracket ->Optional -> hota hai
+2) Capital -> Jo change hoga
+3) Small -> jo fix thega
+4) | =  OR
+
+=>  kubectl run NAME --image=image [--env="key=value"] [--port=port] [--dry-run=server|client]
+[--overrides=inline-json] [--command] -- [COMMAND] [args...] [options]
+
+> $ kubectl run  NAME --image=image ka nam 
+->here NAME-> pod ka name
+ 
+$ kubectl run dhundu-nginx-pod --image=nginx
+
+=> here dhundu-nginx-pod is name of pod, nginx is name of image...
+
+=> To see the cluster information
+$ kubectl cluster-info
+
+*) Display the nodes
+$ kubectl get nodes
+
+=> To see the pod
+$ kubectl get pods
+$ kubectl get pods -o wide
+
+=> To Delete a pod
+$ kubectl delete pod < pod ka name> 
+$ kubectl delete pod --all (This command delete all Pod) 
+
+
+-> To see the pod creating status/
+$ kubectl get pods -w ( this command terminal atak jata hai) 
+
+=> Port-forwarding--> For Access in browser
+------------------------------------------
+=> kubectl port-forward TYPE/NAME [options] [LOCAL_PORT:]REMOTE_PORT
+[...[LOCAL_PORT_N:]REMOTE_PORT_N]
+
+$ kubectl port-forwarding  TYPE/NAME LOCAL-PORT:REMOTE-PORT
+
+$ kubectl port-forward pod/nginx 9696:80 
+
+=> here type=pod, name=nginx, local port=9696, remote-port =nginx ka port 80
+
+=> access in browser: localhost:9696
+
+=> To Go inside pod 
+$ kubectl exec --help
+
+Usage:
+  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...]
+[options]
+
+> $ kubectl exec POD  -- COMMAND
+
+>  kubectl exec nginx-pod  command ( bash) 
+
+>  kubectl exec nginx-pod -- bash
+
+> $ kubectl exec -it nginx-pod -- bash
+
+note: < -- ke bad space hona jaruri> 
+=> this command go inside the nginx container
+Note: Declarative process me jab pod banta hai to usme container ka nam nahi lekhta hu islia exec command me -c container ka nam nahi likh ta hu ...
+
+> kill the nginx process id 
+$ kill 1 
+
+
+> Nginx:- kubectl run nginx-pod --image=nginx
+> Firefox: kubectl run firefox --image=linuxserver/firefox:1.2404.1
+> DevopsInsider Netflix image:- kubectl run di-netflix-pod  --image=devopsinsiders/netflix-clone
+
+> docker pull sonarqube:alpine
+> docker pull tomcat:jre8-alpine
+> docker pull nginx
+
+&&) Docker pull me dns error solve:
+==================================
+Agar tum Windows pe ho:
+----------------------
+1.Go to:
+
+Control Panel > Network and Internet > Network and Sharing Center > Change Adapter Settings
+
+
+2. Apne active network adapter pe right click > Properties
+
+3. Select: Internet Protocol Version 4 (TCP/IPv4) > Properties
+
+4. Choose:
+   --Use the following DNS server addresses:
+       --- Preferred DNS: 8.8.8.8
+       ---- Alternate DNS: 1.1.1.1
+
+5. OK > Close all
+
+
+
+
+
+
+
+
+
+2) Declarative:--
+==================
+=> File banao(yaml)  aur Apply chalao 
+=> .YAML ----> kubectl apply
+
+Q) pod ke under me sabse pahela container banta hai..called pause container
+=> pause container contains/store ip of pod, default namespace
+=> By default pod me hamesa 2-container banta hai.. 1-pause container,2-main container
+=> pause container, sab container ka ip aur baki details ko store karta hai...
+
+Class--96/06
+==========
+=> how to write a pod in Declarative
+
+*) Declarative se pod banane ke lia ek yaml file(dhundu.yaml) banake us file ko apply karenge 
+
+=> kubectl apply --help
+
+Usage:
+  kubectl apply (-f FILENAME | -k DIRECTORY) [options]
+
+=   kubectl apply (-f FILENAME | -k DIRECTORY) 
+
+$ kubectl apply -f dhundhu.yaml
+
+==> YAML file banane kaa Structure
+=> kubectl explain --help
+
+Usage:
+  kubectl explain TYPE [--recursive=FALSE|TRUE] [--api-version=api-version-group]
+[-o|--output=plaintext|plaintext-openapiv2] [options]
+
+Usage:
+  kubectl explain TYPE 
+
+=> here TYPE --> resource--> node, pod, deployment, service, configmap,  secret, 
+
+$  kubectl explain pod
+
+*) pod structure ko file me save karna 
+$ kubectl explain pods --recursive > pod-document.txt
+
+FIELDS:
+------
+ apiVersion: vi
+ kind: Pod
+ metadata  (here name = pod ka nam) 
+ spec  <PodSpec>
+ status <PodStatus>
+
+
+dhundu.yaml
+============
+apiVersion: v1
+kind: pod
+metadata:
+  name: chamkilapod   
+spec:
+  containers:
+  - name: tarasing
+    image: nginx
+      
+$  kubectl apply -f dhundu.yaml  ( here pod created)
+-> to see the pod 
+$ kubectl get pods
+
+-> port-forward  to see the container in pod in browser
+
+$ kubectl port-forward pod/chamkilapod  9090:80
+
+=> Access in browser-- http://localhost:9090/
+
+sonar.yaml
+===========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sona-pod
+spec:
+  containers:
+    - name: test-container
+      image: sonarqube:alpine
+
+Usage:
+  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...]
+
+
+> Go inside Pod
+$ kubectl exec -it chamkila-pod -c sample-container -- bash 
+           OR
+$ kubectl exec -it pod/chamkila-pod -c sample-container -- bash
+           
+> Delete a pod
+
+$ kubectl delete pod nginx
+
+Class--97/07
+==========
+*) Ek pod ke under do(2) nginx ka container kese chalaye ? 
+> Imperative me ye nahi hoga / Declarative me ho payega
+
+> IP is assigned to a Pod not to be container
+
+nginx-dual-pod.yaml
+-----------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-pod
+spec:
+  containers:
+    - name: nginx-01
+      image: nginx
+      ports:
+      - containerPort: 80
+
+    - name: nginx-02
+      image: nginx:alpine
+      ports:
+      - containerPort: 81  
+
+> is me kebal ek ngnx ka pod running hota hai...
+

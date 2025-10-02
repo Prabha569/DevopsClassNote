@@ -1,0 +1,4224 @@
+==> Create account-(portal.azure.coom )
+==> login by uid & pword--Search intra id
+==>After login -->gives->Entra Id,subscription
+==> Tanant Root Group ->Management Group-> Subscription->Resource Group
+==> Authontication & Authorisation->
+==>chapri bhai on board-> 
+13)Create user--> google-> How to create user in azure/ intra Id ?
+
+==>Reader Role-->
+==>chapri is free trail subscription-->
+owner acc.--Type subscription--click free trail--access control--> add->add-role-assignment->reader->next->click assign access to -->select member (chapri) select-->what user can do -->next-->review-assign
+
+14)contributer role-->add-role-assignment-->preveleged admin.role->select contributer->next-select member(chapri)-select-->what user can do-->next-->review-assign
+
+==>How to create Resource group-> type reso.group-create-rgname=rg-chapri->region-->review+create-create
+
+15) how to see my access-->subscription-iam-view my access
+
+==>Azure role--> reader, contributor, owner
+==> Directory Roles--> User Administration, Global Administration
+
+==> to see role --> user-chapri user- (see)->azure role assignment & assign roles-->chapri no directory assign role
+
+==>Directory role(chapri)-->assign roles-->add assignment -->user administration-->add  then refresh----> now chapri can create user
+
+==> how to create Group in azure intra Id ? 
+==> Group--> Type intra ID -user--> new group-->group Name-->Reader-chupkali group-->create--> to see the group -->all group -select  group search--> manage->add member--chapri select
+
+==>At the time of user create- create group add  role
+
+16) By Default Tenant root group--> create Sales Management group & HR management Group under Tenant Root Group
+==>type-> management group->create--MgID= salesMG--> mg display name->Sales MG--> submit
+==>type-> management group->create--MgID= HR MG--> mg display name->HR MG--> submit
+
+==> move subscription( crop-dev-01, crop-prod-01 ) in Sales mg group & Hr Mg group
+==>In this page--> Right side of crop-dev-01 Three dots is present-move -> Select new parent Mg group --> save 
+
+==> Laila user-->
+
+17) Azure CLI-->How to create RG in azure using    Azure CLI  ?
+-->create user
+
+18) Syllabus--> Azure cli install
+==> How to create RG in Azure using Azure CLI
+
+==>19) How to create RG in Azure using Azure power Shell ?
+==> Azure Storage  --> Type-4->Blob container, file share, Azure table, Azure queue
+
+20) Azure Storage Account--> How to create storage Account in azure using Azure portal ?
+
+==> Type Storage Account->click SA--> create-->Storage Account Name=dhonduStorage->Select region-->Performance=Standard--Redundancy=LRS-->Network access=Enable....review & create--> container-->create container-->c Name=sadi photo-->click sadi photo con.-->uplode--drag & drop--> select photo--> then photo uploaded
+
+==> Go to RG(rg-dhondu)-->dhonduStorage-->data Storage -->
+
+21) problem in Imperative-->1.fail in complex environment  2. No State management 3. Modules are can not work properly 4.Issues is readability & Maintenance 
+
+==>Terraform -> understood-> HCL=Hashicorp language--> .tf file access
+
+==>How to create RG in terraform ?
+==> How to installation Terraform in windows -->
+==> path-->S V--Path--new--location of tf ok...
+==cmd--> terraform -help --> output come then installed
+
+==> tenant Root group
+role-> corp-prod-01
+Day-22:-
+============
+=>download vs code
+Day-23:-
+------
+=>GitHub with copilot extension install in vscode
+=>terraform extension download in vscode 
+=> linkedin post by using copilot 
+
+Day-24:-
+=======
+=> Terraform Syllabus
+=> Terraform  Documentation =Terraform registry
+=> what is terraform ?
+=> who did made terraform ?
+=> Terraform provider 
+=> blocks 
+=> State file
+=> terraform variable=String, list, Boolean,   Map
+=> Terraform loops-Count & for each
+=> Terraform provisioners
+=> Terraform Dynamic Blocks 
+=> Terraform import Blocks
+=> Terraform Modules
+=> Conditional in Terraform
+=> Terraform Functions
+=> Terraform  Local Blocks
+=> Expression - for etc....
+
+1) What is Terraform ?
+2) How to create resource group using Terraform ?
+=> Create a file in vs code billorani.tf this file is called configuration file
+
+=> Type in google azure resource group terraform
+=> what is azurerm ?  
+=> Argument Reference means Form ka khali sthan
+=> Attribute Reference - what is the output after creating a resource group.
+=> Timeouts=  default time to for rg
+=> Import- how to import in existing rg
+=> Terraform bodyguard-- azurerm, its version....
+=> provider = azurerm 
+=> aws provider, gcp provider  
+=> azurerm is a provider of Azure
+ 
+2) What is Terraform provider ?
+
+Ans) A Terraform provider is a plugin that allows Terraform to interact with APIs of different services (like AWS, Azure, GitHub, or even databases and SaaS platforms). It's basically the bridge between Terraform and whatever system you want to manage.
+
+=> provider ek .exe ki file jiske ander us cloud ki sari rest api ki details hoti hai ..
+
+=> Azure provide is an .exe file & it contains all the details of rest API of azure cloud service
+
+Day-25:-
+========
+
+==> terraform init :- it scan the .tf file 
+
+1> .terraform file:- ye vo folder jiska ander terraform init chalane per provider ki exe ake baith jate hai
+
+2> .terraform.lock.hcl:-provider ke version ko lock karne ke lia.. taki koi dhondhu aake provider ka version ko na badal paae... 
+
+3> if i change the version of provider it refuse me  but version can upgrade  by using  terraform init --upgrade command this command also lock the version in lock file 
+
+=> why provider version changes ?
+=> terraform management kam karna start kare
+=>  security ko badha ne ke lia
+=>  optimization karne ke lia
+
+4) from the two provider version which version operate
+=> which version lock 
+=> those version lock in terraform.lock.hcl file  these version are use in currently 
+
+5) ye code Kya kai ?
+
+  < BLOCK-NAME> { 
+
+       Argument jata hai
+     
+    }
+
+=>  inside the block called argument
+
+=> Terraform ak block, required_providers ak block, provider "azurerm" is a block,
+
+=> bar bar terraform init chalana jaruri nahi ha ...
+
+
+Day-26:-
+==========
+=> terraform azure resource group
+
+=> except terraform fmt  all the terraform command  are not running without initializing the provider
+
+=> terraform fmt running under code level
+
+=> terraform init 
+   terraform fmt
+   terraform validate
+   terraform plan
+   terraform apply
+
+=> For terraform plan/apply -> required at least one feature
+
+=> terraform apply= terraform plan + apply ==says --> yes  
+
+=> under block provide argument  are two one is required other is optional 
+
+=> Block:-
+ -> terraform block 
+ -> required_provider block
+ -> provider block
+ -> feature block
+ -> resource block
+ -> Backend Block
+ -> module block
+ -> variable block 
+ -> data block
+ -> dynamic block 
+ -> local block 
+ -> import block 
+
+=> to see feature block -> azurerm feature block
+
+=> Block ka structure & type
+=> block type (string) , level 1, level 2
+*) Block type{}
+============
+eg: features{}
+
+*) Block type , level-1 :
+-----------------------
+eg - provider "azurerm"{  
+    
+       }
+
+*) Block type, level-1, level-2:
+----------------------------------
+eg:- resource "azurerm_resource_group" "example" {
+  name     = "example"
+  location = "West Europe"
+    }
+
+Day-27:-
+==========
+
+=> Terraform block ke ander attribute-> type terraform block
+=> deeply see terraform block reference
+
+=>same provider block, features block
+
+=> Terraform block, required-provider block , provider block 
+
+**) 
+
+resource "azurerm_resource_group" "example" {
+  name     = "example"
+  location = "West Europe"
+}
+
+
+=> here resource--> Type of Block
+=> "azurerm_resource_group" --> kon sa resource ka  block
+=> "example" --> block ka nam
+
+=> name & location---> Argument of resource block
+=> portal pr is naam se Banega
+=> portal pr is location pr Banega 
+
+=> create azure resource group ( 2-3) rg
+
+
+Day-28:-
+==========
+
+=> ye map kya hota hai
+
+azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.26.0"
+    }
+
+=> create resource group 
+=> terraform apply that means  one rg created again  this rg me change the name both portal name & terraform name & again terraform apply----here changes 1 destroyed  & 1 added  the rg   
+
+
+=> create a storage account  & terraform apply--> storage account created output
+
+=> from this stg changes the name  & terraform apply--output 1 destroy , 1 created
+
+=> remove all rg & stg --> terraform apply-->output  3 to destroy  0 changes 
+
+=> rg and stg dono ek sath banana par mar gaya kyun ?
+
+
+=> ye kya hai logs me
+=> ya terraform itna samjhdaar kaisa hai
+=> bar bar block p block copy karna pad raha hai bahut dikat ha
+=> rg aur stg acc. dono chizo ek saath chalane pr fatt kyu gaya
+
+=> code hi satya hai !
+=> banana hai toh block add karenge
+=> Ghatana hai to block delete karenge
+=> in production terraform destroy command chalana paap hai .
+
+
+Day-29:-
+==========
+
+=> Terraform ka Dimag = Terraform State File ( .tfstate)
+=> Pehle rg group banaya, fir stg ac. bn gaya lakin saath me nahi bn paya
+=> koi bhi resource azure me banana hai toh rg hono jaruri hai ..
+
+---------- Rg & Stg ----------
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+}
+# Creating a storage account
+resource "azurerm_storage_account" "stg" {
+  name                     = "prabha-storage"
+  resource_group_name      = "prabha-rg"
+  location                 = "West Europe"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+
+
+=> create rg & stg  ek sath chalane per
+=> 1st time --> terraform apply ---error 
+=> 2nd time --> terraform apply --not error 
+
+
+=> Terraform Dependency--> 
+  1) Implicit Dependency ( Andar Andar) 
+  2) Explicit Dependency ( bahar Bahar )
+
+  1) Implicit Dependency ( Andar Andar) 
+========================================
+
+=> Ek block ke argument/attribute ko dusre block me use kar sakte hei ---> implicit
+
+Eg:-
+
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+}
+# Creating a storage account
+resource "azurerm_storage_account" "stg" {
+  name                     = "prabha-storage"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+=> dusuro sg & stg create karna
+=> how to use dependency in terraform 
+
+==> Block comment short key---> ctrl + /
+========================================
+
+
+2) Explicit Dependency ( bahar Bahar )
+
+eg:-
+
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+}
+# Creating a storage account
+resource "azurerm_storage_account" "stg" {
+    depends_on = [ azurerm_resource_group.rg ]
+  name                     = "prabha-storage"
+  resource_group_name      = "prabha-rg"
+  location                 = "West Europe"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+=> here depends_on  --> called Meta Argument 
+==> four scenario see
+
+
+Day--30:-
+=========
+
+=> First time state file created by applying / after using ---> terraform apply
+
+=> Imp> Automation karne ke lie Manual ka pata hono jaruri hai ..
+
+=>Terraform plan me kya hogo ?
+Ans>> jis directory me chalaya us directory ko scan  karega aur .tf file search karega
+-> Resource blocks search karke list Banega 
+-> kya kya banana  hai usko btaega .. lekin banaega nahi..
+
+=> Agar terraform ka code me koi resource block nahi hai  aur terraform apply chala dia toh - tfstate Banega.. bilkul Banega ..
+
+=>
+
+Day--31:-
+=========
+
+Terraform State file :-
+-------------------------
+==> To see the state file in command 
+==> terraform -help
+==> terraform state  --help
+==> terraform state list
+==> terraform state show
+==> terraform state show help 
+
+=> terraform [global options] state show [options] ADDRESS
+==> terraform state list
+==> terraform state show azurerm_storage_account_stg
+
+=> pull all the resourse--> terraform state pull
+=> state file open in another file name-->
+ $  terraform state pull > mani.tfstate 
+
+Day--32
+=========
+=> Terraform state file revise
+=> Terraform apply --> which create .tfstate file 
+=> terraform apply--- kya karti hai
+
+1) Scan karta hai directory ko . scan karka .tf file search karta hai--->
+2) kitne resource block hai unki list banata hai..
+ -->resource"azure_resource_group""tommy"
+-->  resource"azure_resource_group""snow"
+3) ask aee dimag, tera pass kya kya hai
+ -->azurem_resource_group.tommy
+4) Compare kia aur jo bhi code me extra tha usko plan me dikha dia ..
+5) pucha , banadu ? 
+6) Toh jo bhi chize plan me dikhi thi vo sach me ban jaegi..
+7) jo jo chize ban jaegi .. un chizo ko dimag me dal dia jaega..
+
+8) scenario 3> terraform portal me list banata ha <portal - state > 
+
+=> equilibrium state(zero drif t)  -> both state & portal --> terraform refresh
+
+=> terraform apply=> terraform refresh + terraform plan + terraform apply
+
+
+Day--33
+=========
+=> code & state file from local to Remote
+
+=> Terraform code hamesa GitHub per rakhana chaia
+=> .tfstate file code hamesa Storage account  me rakhna chaia
+=> az login terraform init , terraform apply --> CICD pipeline 
+=> state file remote pr rakhna hai
+
+=> state file remote me storage account me container banake(blob type) rakne ke lia ---> new concept--> Backend Block  hai
+
+=> Local state file ko remote pr le jane process ko remote statement management /yo Backend blote hai..
+
+=> type->terraform azurerm backend 
+
+=> pre-requisites-> 
+1) Storage account & blob container should be present
+2) Backend Block leke aana hai aur code me rakhna hai
+
+=> terraform state file ---> Authenticate (az cli ) ---> Storage account
+
+=> Azure Active Directory with Azure CLI
+-------------------------------------
+
+Example Configuration of Backend
+=================================
+
+terraform {
+  backend "azurerm" {
+    use_cli              = true                                    
+    use_azuread_auth     = true                                   
+    tenant_id            = "00000000-0000-0000-0000-000000000000"  
+    storage_account_name = "abcd1234"                              
+    container_name       = "tfstate"                               
+    key                  = "prod.terraform.tfstate"              
+  }
+}
+
+Day--34
+=========
+=> Backend Block:-
+
+
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+}
+# Creating a storage account
+resource "azurerm_storage_account" "stg" {
+    
+  name                     = "prabha-storage"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+=> backend block ( this block added in terraform block
+
+ backend "azurerm" {
+    resource_group_name = "rg-prabha"
+    storage_account_name = "prabha-storage"                             
+    container_name       = "tfstate"                              
+    key                  = "prod.terraform.tfstate"                
+}
+
+=> command line command pass
+
+=> terraform init  ( here pass rg)
+=> az storage account create --name prabhastg --resource-group rg-prabha
+=> az group create --location westus --name rg-prabha
+
+
+==> State locking feature in terraform 
+---------------------------------------
+==> Terraform acquiring state lock concept operation--> dead lock
+
+=> Remove terraform lock-->process-> Acquire Lease/Break lease
+
+=> State lock todne ka tarika ? 
+1) Storage account break lease option
+2) terraform force-unlock command
+
+1) Break lease --> portal-> storage account --> container --> select tf.statefile --> Break lease--ok
+
+2) force-unlock command :-
+--------------------------
+=>  terraform --help
+=> terraform force-unlock --help
+=>  terraform [global options] force-unlock LOCK_ID
+=> terraform force-unlock LOCK-ID
+lock-id-->find error page of acquiring state lock file
+
+another command 
+=================
+$ terraform init -migrate-state
+
+=> Advantage of Remote State
+----------------------------
+1) multiple users can use the state file
+2) secure place for storing state file
+3) state locking 
+4) Redundancy- Replicas in multiple regions, zones
+
+=> interview question 
+-----------------------
+1) jab multiple people terraform play/apply command ek saath chalaega to state file kaisa behave kaega
+2) state management, multiple members ka lie kaise kaam karta hai..
+3) Remote pr stat file rakhne kya Fayda hai..
+4) Agar State file corrupt ho jata hai to kya krenge ? 
+
+
+Day--35 A/B
+=========
+
+Terraform Modules:-
+==================
+=> common_ground_parent folder
+ $ common_ground.tf 
+
+=> azurerm_resource_group folder
+ $  resource_group.tf
+
+=> azurerm_storage_account folder
+ $  storage_account.tf
+
+=> change directory method --> cd space/ dot / slash/(type some alph ) (press tab ) 
+     
+
+commonn_ground.tf
+==================
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.26.0"
+    }
+  }
+
+  backend "azurerm" {
+    resource_group_name = "rg-prabha"
+    storage_account_name = "prabha-storage"                             
+    container_name       = "tfstate"                              
+    key                  = "prod.terraform.tfstate"                
+}
+
+}
+
+provider "azurerm" {
+  features{}
+  subscription_id =""
+}
+
+module "rg"{
+    source = "D:\\Terraform\\azurerm_resource_group"
+}
+
+module "storage_account"{
+    source = "D:\\Terraform\\azurerm_storage_account_ group"
+}
+
+
+resource_group.tf
+====================
+# Create a resource group
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-prabha"
+  location = "West Europe"
+}
+
+storage_acount.tf
+=====================
+# Creating a storage account
+resource "azurerm_storage_account" "stg" {
+    
+  name                     = "prabha-storage"
+  resource_group_name      = "rg-prabha"
+  location                 = "west Europe"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+
+
+
+&) cli command--> az storage account create --name devops2103 --resource-group  rg-prabha 
+
+
+Day--36
+=========
+
+Terraform Modules:- revise
+==================
+=> GANGU-INFRA  ( MAIN FOLDER)
+=========================
+
+=> infra folder
+ -> main.tf
+ -> provider.tf
+
+=> azurerm_resource_group folder
+ $  main.tf
+
+=> azurerm_storage_account folder
+ $  main.tf
+
+===================
+ $ main.tf   /// Relative path
+------------------------------------
+
+module "resource-group" {
+  source = "../azurerm_resource_group"
+}
+
+module "storage-account" {
+  depends_on = [ module.resource-group ]
+  source = "../azurerm_storage_account"
+}
+
+=> here depends_on --> module block explicity dependency
+
+-> provider.tf
+=============
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.26.0"
+    }
+  }
+
+    backend "azurerm" {
+     resource_group_name ="nimbu-rg"
+     storage_account_name = "ramastg567"
+     container_name = "tfstate"
+     key = "prod.terraform.tfstate"
+   }
+
+}
+provider "azurerm" {
+ features {  }
+ subscription_id = "a9dcdbff-16a5-4c50-b433-974c8a920b84"
+}
+
+
+Day--37
+=========
+Module New dard:
+------------------
+1> Bar Bar same chizo ko copy paste karna pad raha hai...
+2. Hard codded hai storage account ka nam...badi  dikat hai..
+
+==> terraform module --> 1. child module 2. parent module 
+=> parent module me ek .tf fil hai ... & which call the child block 
+
+=> dard ko recovery karne ke lia new concept terraform variable
+
+*) Terraform loop:-
+=====================
+1. count     
+2. foreach
+
+*) Terraform Variable :-
+=========================
+
+1. String :- Double quote - "Rama" 
+2. Number:- no Double Quote->  1233
+3. Boolean:- no Double Quote > True/false or 0/1
+4. List/Array: fruit =[ "mango", "kiwi", "orange" ]
+             : age = [ 83, 28, 38 ]
+5. Map: naksha
+
+=> string , Number, Boolean ---> is  singular
+=> list/array, Map ---> are plural 
+
+
+Day--38
+=========
+*) Terraform Variable :- DINGDONG_INFRA
+====================================
+
+=> infra folder
+
+=> azurrm_resource_group folder
+
+=> azurerm_storage_account folder 
+
+=================================
+
+=> virtual_network folder
+=> virtual_machine_windows folder
+=> virtual_machine_linux folder
+=> virtual_machine_scale_set
+=> subnet folder
+=> azure_data_factory
+=> azure_event_hub
+=> azure_loadbalancer
+=> sql_database folder
+=> postgresesql_database
+=> cosmos database  
+=> log_analytics_workspace
+=> application_gateway
+=> front_door
+=> trafic_manager
+=> azure_firewall
+=> azure_bastion
+=> azure_kubernates_service
+=> azure_container_registry
+=> network_security_group
+=> azure_policies
+=> azure_synapse_analytics
+
+===============================
+
+=> infra1.0
+=> infra2.0
+=> infra3.0
+
+
+====================
+=> GANGU-INFRA  MAIN FOLDER
+----------------------
+=> infra folder
+=> preprod folder
+-> main.tf
+-> provider.tf
+
+=> prod folder
+-> main.tf
+-> provider.tf
+
+=> azurrm_resource_group folder
+ -> main.tf
+
+=> azurerm_storage_account folder 
+-> main.tf
+
+
+=> module Dard
+=================
+=> All the file of preprod copy & paste in infra/prod folder
+=> storage account- dingdongstorageacc--preprod
+=> alag child module nahi banana hai usi ko use karke banana hai ...
+=> new stg-> dingdongstorageacc-prod ---> 2 add & 2 destroy
+
+=> dard nibarana-- Terraform Variable
+
+=> Variable:-
+1. declare
+2. use
+3. value assign
+
+
+Day--39
+=========
+==> terraform-> module
+------------------------
+1. Child Module
+---------------
+-> Resource Blocks
+-> Variable Blocks
+-> Meta Arguments= Count & ForEach, Depends_on
+-> Dynamic Blocks
+-> Optional Attribute
+-> Output Block
+-> Local Block
+
+2. Parent Modules:
+------------------
+-> Provider Block
+-> Module Block
+-> Output Block
+-> Variable Block
+-> Meta_Argument = Depends_on
+
+Backend Intialization-after delate
+------------------------------------
+$ terraform init -migrate-state
+$ terraform init -reconfigure
+
+
+=> Value kaha kaha se assign kar sakta hai
+---------------------------------
+1. Child Module:
+--------------
+1. Hardcoded
+2. cli
+3. default value
+4. terraform .tfvars
+5. .auto.tfvars
+
+2. Parent module--> same as child
+
+=> variable declare---> variable block banana hai..
+=> variable use ---> var.rg-name, var.rg-location
+=> variable assign-> 
+
+
+child Module:
+cli:-
+==============
+=> azurerm_resource_group folder
+-> main.tf
+-> provider.tf
+
+ main.tf
+------------
+variable "rg-name" { } 
+variable "rg-location" { }
+
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.rg-location
+}
+
+=> terraform  init 
+=> terraform apply
+cli--> assign -- rg_prabha
+
+=> here cli me jis nam pr rg dange usi nam par rg Banega
+
+
+3. default Value
+---------------
+main.tf:
+---------------
+variable "rg-name1" {
+   default = "nimbu-rg10"
+  type = string
+  description = "Take Default"
+ } 
+  variable "rg-location1" {
+    default = "South India"
+  type = string
+  description = "Take Default location"
+ }
+
+resource "azurerm_resource_group" "rg1" {
+  name     = var.rg-name1
+  location = var.rg-location1
+}
+
+
+4. terraform.tfvars:
+--------------------
+==>> terraform.tfvars which replace the default
+
+main.tf:
+-----------
+variable "rg-name1" {
+   default = "nimbu-rg10"
+  type = string
+  description = "Take Default"
+ } 
+  variable "rg-location1" {
+    default = "South India"
+  type = string
+  description = "Take Default location"
+ }
+
+resource "azurerm_resource_group" "rg1" {
+  name     = var.rg-name1
+  location = var.rg-location1
+}
+
+
+  terraform.tfvars:    file
+-------------------
+rg-name1 = "nimbu-rg20"
+rg-location1 = "Central India"
+
+
+
+=> .auto.tfvars file
+------------------
+dingu.auto.tfvars:
+----------------------
+ rg-name1 = "nimbu-rg20"
+rg-location1 = "Central India"
+
+==> .auto.tfvars  which replace the terraform.tfvars  
+
+main.tf
+--------
+-> same code
+
+
+==> if terraform.tfvars is not present then  
+create 
+-> dev.terraform.tfvars
+-> qa.terraform.tfvars
+-> test.terraform.tfvars
+
+=> new command -> terraform plan --help
+    -var-file=filename
+
+$ terraform plan -var-file=filename
+$ terraform plan -var-file="dev.terraform.tfvars"
+
+Day--40
+=======
+=> Validation use in variable argument
+
+main.tf
+======
+
+variable "rg-name" {
+    type = string
+    validation {
+    condition     = contains(["kalu", "goru", "piru"], var.rg-name)
+    error_message = "Rg must be one of these : kalu, goru, piru "
+  }
+}
+
+# variable "rg-location" { }
+
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = "Central India"
+}
+
+=================
+=> azurerm-resorce group folder
+
+-> main.tf
+-> provider.tf
+-> variable.tf
+
+=> variable.tf
+===============
+variable "rg-name" {
+ type = string 
+ default = "rg-p1"
+ description =" take default" 
+}
+
+variable "rg-location" {
+ type = string 
+ default = "Central India"
+ description =" take default" 
+
+}
+
+main.tf
+========
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg-name
+  location = var.rg-location
+}
+
+
+=> five Resource group create---> terraform.tfvars
+
+=> five rg banana hai, Same location South India me
+
+=> loop(Meta Argument ) --> 2 way-
+1. count  2. for-each
+
+1. Count:-
+============
+main.tf
+provider.tf
+
+
+Note:- 01
+===========
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-prabha"
+  location = "Central India"
+}
+
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) 
+
+Note:-2
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = count.index
+  location = "Central India"
+}
+
+-> here creating 3 rg in portal  name with . 0,1,3, but naming convention  not good 
+
+Note:-3
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-tiku-${count.index}"
+  location = "Central India"
+}
+
+=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2, 
+
+
+Day--41
+=======
+=> Aaj ka Agenda
+-> count + List
+-> For-Each + List
+-> For-Each + Map
+
+=> Aaj ka requirement = 5 rg in one region
+
+==> ${count.index}==> this concept is called  string interpolation 
+
+=> count + List ---> Ex:- 01  main.tf  ( default) 
+--------------------------------------
+
+variable "bibi-ka-gahana" {
+    type = list(string)
+    default =  ["rg-jhumka", "rg-kangana", "rg-payal", "rg-judapin", "rg-mangalsutra"] 
+ }
+
+resource "azurerm_resource_group" "rg" {
+  count = 5
+  name     = var.bibi-ka-gahana[count.index]
+  location = "Central India"
+}
+
+              OR
+
+variable.tf:
+==============
+variable "rg-names" {
+type = list(string)
+    default =  ["rg-jhumka", "rg-kangana", "rg-payal", "rg-judapin", "rg-mangalsutra"] 
+
+}
+
+terraform.tfvars:
+---------------------
+rg-names =[" app-prod-eastus-rg ",
+ " app-prod-westus-rg ",
+ " app-prod-centralus-rg "]
+
+
+resource "azurerm_resource_group" "resource_group" {
+  count = length(var.rg-names)
+  name     = var.rg-names[count.index]
+  location = "Central India"
+}  
+
+
+Example Naming Convention:
+===============================
+Format: <prefix>-<env>-<location>-rg
+ex:-
+[" app-prod-eastus-rg ",
+ " app-prod-westus-rg ",
+ " app-prod-centralus-rg "]
+
+
+Day=42:
+========
+Count + list : start to end
+--------------
+Example:- 01
+===========
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-prabha"
+  location = "Central India"
+}
+
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) 
+
+Example:-2
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-tiku-${count.index}"
+  location = "Central India"
+}
+
+=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2, 
+
+Example:- 3
+===========
+variable.tf:
+==============
+variable "rg-names" {
+type = list(string)
+   
+}
+
+terraform.tfvars:
+---------------------
+rg-names =[" app-prod-eastus-rg ",
+ " app-prod-westus-rg ",
+ " app-prod-centralus-rg "]
+
+main.tf:
+=======
+resource "azurerm_resource_group" "resource_group" {
+  count = length(var.rg-names)
+  name     = var.rg-names[count.index]
+  location = "Central India"
+}  
+
+=> here length is a function
+
+*) Count + List Problem:
+===========================
+=> Banate samay to ban jaega.. lekin agar koi ek resource delete karna hai toh fatt jaega ...
+=> so use ForEach  + List
+
+
+
+Day-43 
+=========
+ForEach  + List :-
+===========================
+=> for_each = SET OF STRINGS /MAP  ---> PASS 	
+
+=> Set Of Strings:-
+------------------
+
+List -> Collection of same type of Elements
+ => can be duplicate value
+ eg:  [ "chunu", "munu" , "tunu", "chunu" ]
+
+Set:- => Collection of same type of Elements
+      => Unique value / no duplicate
+ eg:  [ "chunu", "munu" , "tunu" ]
+
+=> Block --> Chain/curly Bracket {}
+=> List/Set --> Square Bracket []
+=> Function --> Parenthesis ()
+
+=> for_each = ["rg-emu1","rg-emu2","rg-emu3"]  // --> set of string  ==> terraform understand list so that convert list into set--> using toset () function
+
+=> count --> length () function
+=> for_each  -> toset () function ( list to set convert )
+
+=> to call the function:-
+ syntax = Function_name(list) 
+
+eg:-
+   for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
+
+main.tf
+==========
+
+resource "azurerm_resource_group" "rg" {
+
+ for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
+
+ name = "rg-prabha"
+ location = "Central India"
+}
+
+=> here 3 rg created with same name(rg-prabha) but rg block naming with "rg-emu1","rg-emu2","rg-emu3"( but in portal rg-prabha created)
+
+=> for_each --> two object --> each.key , each.value
+
+
+["West us", "South India", "Central India"]
+
+main.tf:
+resource "azurerm_resource_group" "rg" {
+
+ for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
+ name = each.value
+ location = "Central India"
+}
+
+=> here 3 rg created name with-->  "rg-emu1","rg-emu2","rg-emu3"
+
+
+*) by using variable create 3 rg using for_each
+----------------------------------------------
+main.tf
+----------
+variable "rg-names" { }
+
+
+resource "azurerm_resource_group" "rg" {
+
+ for_each = toset(var.rg-names )
+ name = each.value
+ location = "Central India"
+}
+
+terraform.tfvars:
+------------------
+rg-names = ["rg-emu2","rg-emu3","rg-emu4"]
+
+
+***) Dard in for_each 
+=> Different location with different rg can't create 
+
+main.tf
+------------
+variable "rg-names" { }
+variable "rg-location" { }
+
+resource "azurerm_resource_group" "rg" {
+
+ for_each = toset(var.rg-names )
+ name = each.value
+ location = var.rg-location
+}
+
+terraform.tfvars:
+------------------
+rg-names = ["rg-emu2","rg-emu3","rg-emu4"]
+rg-location = ["West us", "South India", "Central India"]
+
+> here 3 rg can't create with different location 
+
+=> for_each = SET OF STRINGS /MAP  ---> PASS 
+
+ => MAP --> key and value
+----------------------
+main.tf:
+---------
+
+
+variable "rg-names" { }
+
+
+resource "azurerm_resource_group" "rg" {
+
+ for_each = var.rg-names 
+ name = each.key
+ location = each.value
+}
+
+terraform.tfvars:
+-------------------
+rg-names = { "rg-emu2" = "Central India"
+           "rg-emu3"  = "West us"
+           "rg-emu4"  = "South India"
+         }
+
+
+=> here 3 rg with 3 different location  created 
+
+
+
+Day-44 
+=========
+1. Count + List :-
+=================
+ Input-> rg_names =["rg1", "rg2","rg3", "rg4" ]
+
+Example:- 
+---------
+resource "azurerm_resource_group" "rg" {
+ count  = length(var.rg_names)
+ name = var.rg_names[count.index]
+ location = "Central India"
+}
+==> Delete karta time game bj jata hai
+
+2. ForEach + List :-
+====================
+a.)  Set of strings:-
+------------------
+=> Input ->rg_names =["rg1", "rg2","rg3", "rg4" ]
+
+Example:- 
+---------
+resource "azurerm_resource_group" "rg" {
+ for_each = toset(var.rg_names) -> meta_argument
+ name = each.key                -> required_agrument
+ location = "West US"           ->      ,,
+}
+
+==> Delete wala problem solve ....
+==> RG ek hi region me bana sakte hai. matlab alg alg region me nahi bn paega rg....
+
+b. ForEach + Map:-
+==================
+
+-> Input-> rg_names = {
+                       roti(key) =sabji(value)
+                       chawal = dal
+                       rajma = chawal
+                       }
+               or,
+   rg_names = {
+               "rg1" = "WestEurope"
+               "rg2" = "Central India"
+               "rg3" = "South India"
+              } 
+==> rg_names variable hai ...
+==> ye HCL ka map hai...
+==> rg alag alag region  me banana hai...
+==> key is always a string
+==> Value kuch bhi ho sakta hai..
+
+example:-2
+----------
+main.tf:-
+---------
+resource "azurerm_resource_group" "rg" {
+ for_each = {
+               "rg1" = "WestEurope"
+               "rg2" = "Central India"
+               "rg3" = "South India"
+            } 
+
+ name = var.key
+ location = var.value
+}
+
+=>FOR_EACH -> 1. Set of Strings 
+              2. Map
+
+optimization:--
+-----------
+
+variable.tf:-
+-------------
+variable "rg_ki_details" {
+  
+}
+
+main.tf:-
+---------
+resource "azurerm_resource_group" "rg" {
+
+ for_each = var.rg_ki_details
+ name = each.key
+ location = each.value
+}
+
+terraform.tfvars
+===============
+
+rg_ki_details = {
+    "rg1" = "Central India"
+    "rg2" = "East us"
+    "rg3" = "West us"
+    "rg4" = "South India"
+ }
+
+
+
+
+Day-45 
+=========
+
+=> map:- problem
+=> sirf name aur location ki change ho paa rahi hai aur kuch nahi kr paa hahe hai...
+
+*) Nested Map:-
+==============
+=> kitni bhi values support kar ta hai...
+
+rg_ki_details = {
+    "rg1" = {
+               key = value
+               name = "rg-dhondhu"
+               location = "Central India"
+            }
+    "rg2" = {
+               name = "rg-lulu"
+               location = "South India"
+            }
+
+    "rg3" = {
+               name = "rg-kulu"
+               location = "South India"
+            }
+ }
+
+=========================
+Example:-1
+=========
+main.tf:
+-------
+resource "azurerm_resource_group" "resource-group" {
+   for_each = tomap({
+       "rg1" = {
+        name ="rg-kulu"
+        location = "South India"
+       }
+       "rg2" = {
+        name = "rg-mulu"
+           location = "West us"
+       }
+       "rg3" = {
+         name ="rg-tulu"
+        location = "Central India"
+       }
+    })
+
+  name = each.value.name
+  location = each.value.location
+  
+}
+
+
+
+Example:-2
+==========
+=> variable use kar ke
+
+variable.tf
+-------------
+variable "rgs" {
+type = map(any)
+}
+
+main.tf
+-------
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+  name     = each.value.name
+  location = each.value.location
+}
+
+terraform.tfvars
+-------------------
+
+rgs = {
+  "rg1" = {
+    name     = "rg-dhondhu"
+    location = "Central India"
+  }
+  "rg2" = {
+    name     = "rg-lulu"
+    location = "South India"
+  }
+
+  "rg3" = {
+    name     = "rg-kulu"
+    location = "West us"
+  }
+}
+=================================
+storage acc. creation
+------------------
+
+variable.tf
+-----------
+variable "storageaccount" {
+  type = map(any)
+}
+
+main.tf
+------
+resource "azurerm_storage_account" "stg-account" {
+  for_each = var.storageaccount
+
+  name                     = each.value.name
+  resource_group_name      = each.value.resource_group_name
+  location                 = each.value.location
+  account_tier             = each.value.account_tier
+  account_replication_type = each.value.account_replication_type
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+terraform.tfvars
+==================
+
+storageaccount = {
+  "stg1" ={
+  name                     = "ramastg567"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+  "stg2" ={
+  name                     = "harastg5677"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+}
+
+Day-46 
+=========
+Remaining Topics:-
+================
+Dynamic Block:- Jis bhi chiz ke aage block likha hai,usme dynamic block lagega...
+=> Optional Attribute
+=> Conditions dynamic Iteration
+=> Data Block:- Already bani hui chizo ko fetch karne ke lia
+=> Import Block:- Already bani hui chizo ko fetch karne ke lia..
+=> Local Block:- koi variable me ungli karne ka lia...
+=> Functions
+=> Custom Data/User Data & provisioners for installing something on VM 
+=> Output Block
+=> 
+
+
+Day-47 
+=========
+=> Cloud me saman ko resource bolte hai
+=> Kharidna kyu hai ?
+=> Landing Zone banana ke lia ...
+=> Landing zone bana kyu rahe hai ? type:LZ( Normal & Hub and spok )
+=> Application ko baithane ke lia .. 
+
+
+=> Sab ko ChatGPT Karna:- suppose  we are designing one architecture & we are migrating from on premises to azure cloud for & monolithic  application so what questions i need to discuss with the customer at the time of HLD & LLD for customer call ..
+
+=> hierarchy set/on boarding set --> 2 reason --1. Governance and compliance 2. Authentication & authorization   
+
+=> 3 tire Application -> frontend , backend & database
+
+=> chatGPT--> bhai mereko ek vnet bana na hai azure me... ye kya hai... kyu hai.. aur kaise Banega ? 
+
+Vnet & sub net creating :
+========================
+ *) click, click karke
+
+=> Best practices while creating a network ?
+=> Address Space planning
+ 
+
+Day-48 
+=========
+=> Computer kharidne ka tarika ?
+
+=> Create a virtual Machine
+
+Day-49 
+=========
+Target 01 :- Todo Frontend VM pr chalana hai
+=============================================
+Prerequisites:-RG, Vnet and 2 Subnet banaenge 
+
+1) Linux VM provision
+2) ssh to the VM (login)
+3) Middleware Installation-nginx web server 
+4) Frontend Application ko build karenge(artifacts milega)
+5) Copy build artifacts to Nginx
+6) Application ko hit karke dekhenge ki app chl raha hai ke nahi chlraha hai...
+
+
+Target 02 :- Todo Backend VM pr chalana hai
+=============================================
+Prerequisites:-RG, Vnet and 2 Subnet banaenge 
+
+1) Linux VM provision
+2) ssh to the VM (login)
+3) Middleware Installation-nginx web server 
+4) Backtend Application ko build karenge(artifacts milega)
+5) Copy build artifacts to Nginx
+6) Application ko hit karke dekhenge ki app chl raha hai ke nahi chlraha hai...
+
+Target 03 :- Database Chalana
+=========
+
+Target 04 :- teeno ko integrate karna
+=========== 
+
+Example:- Create 
+          RG=  rg-todo-app
+          Vnet = vnet-todo-app
+          subnet1 = frontend-subnet
+          subnet2 = backend-subnet
+
+=> Create a virtual Machine = frontendVM
+
+=>VM usage:- ssh destination
+=> destination > username@ipaddress
+=> ssh prabha@192.24.34.05
+*) install nginx in VM
+=> sudo apt update
+=>sudo apt install nginx -y
+=> verify-> sudo systemctl status nginx
+=> star nginx -> sudo systemctl start nginx
+=> cd  /var/www/html
+=> remove nginx index.html -> sudo rm index.html
+=> type chatGPT => bhai sundar sa html ka application bana ke da na jisko nginx ki /var/www/html me dal saku website laal rang ki chaiya usma ho sake toh ek love calculator dal dena 
+
+=> sudo nano index.html 
+save--> ctrl + s exit ctrl + x
+
+=> sudo systemctl start nginx
+=> to see in browser 192.24.34.05:80 -> nginx server  
+=> 192.24.34.05:22 --> ssh server
+
+Frontend Todo--> 
+
+Day-50 
+=========
+https://github.com/devopsinsiders/ReactTodoUIMonolith.git
+
+> Frontend Application:-
+===========================
+Reactjs application
+--------------------
+> npm install ---> node_modules folder me dependency rahe ta hai..
+> npm run build -->  all code convert index.html, css, javascript--> build artifact 
+> reactjs --> dependency folder -->  package.json
+
+=> local me frontend app. build kara
+
+Day-51 
+==========> Anurag Shukla ---> Procrastination 
+
+
+=> 3-tire application --> todo
+
+=> frontend -> ReactJs , backend --> python & database --> my sql 
+
+1. Creation of SQL Server DB
+2. Thoda bahut data insert karke dekhenge
+
+1. Creation of VM  in Backend subnet
+2. Developer ke saath call set karke application ko somjhenge
+3. README padhke sara steps ko extract karenge  
+4. PostMan and API kya hota hai..?
+
+==> Overall -->DB Setup --> Backend Setup--> testing Backend & DB Using Postman--> Connecting Backend & Frontend --> Hit Frontend public ip & access application 
+
+=> platform as a service--> Azure SQL Server
+
+=> SQL Server--> SQL Database 1, SQL Database 2
+
+=> SQL Server Creation-> search SQL Server-> create sql Database Server->  subscription-> rg -> server name=> ghatak ,location= central India-->authentication method==> use sql authentication-> server admin login=devopsadmin password -> conform password-->networking ->  yes
+
+==> fire wall --> server ko kon access kar paiga & kon nahi kar paiga
+
+Microsoft defender --> no
+
+=>open  ghatak SQL server-> create database--> Database Name =ghatakDB--> next--next create 
+
+-> create a table in DB & insert data
+
+=> Creation of Backend VM ==> python
+=============================
+=> TodoBackendMonolith--> 
+=> Backend Setup--->
+1> Create VM
+2> Clone python in Computer & read README
+3> Install python and  pip
+4> app.py karke file me connection string update karenge 
+
+Day-52 
+=========
+*) Todo me kara kya kya ? 
+============================
+1. Infrastructure Provisioning using terraform  IAC
+2. resource group, Virtual network, subnet, virtual machine, database
+3. VM ke upper middleware kaise dalenge Automation ke through ? 
+3.1 Terraform Provisioners
+3.2 UserData/CustomData/Cloudinit
+    =======>userData good
+4. kya init, plan, apply manually hi chlate rhenge 
+ => init---> plan---> apply
+5. iske lia pipeline automation/ Branching Strategy & pipeline .
+
+
+1) VM code Automation using custom Data script
+2)  Azure DevOps pipeline/ GitHub Actions-infra automation
+2.1)  Infra Automation
+2.2) Application Deployment Automation
+    
+*) Step-1) Manual se terraform Code
+=> Folder ka name--> InfraAutomation
+=> Without For ( Each + Map )
+>INFRAAUTOMATION-> modules--> 
+1. azurerm_rsource_group
+2. azurerm_virtua_network
+3. azurerm_subnet
+4. azurerm_virtual_machine
+5. azrerm_sql_database
+>> 
+
+*) By default VM me kya kya banta hai..
+ 
+=> Virtual Machine--> Network Interface, disk, public ip, NSG, vnet, Network watcher, 
+=> Virtual Machine =>network Interface => vnet/subnet
+public Ip
+=> Network Interface ---mila -> 
+-> public ip  --> resource(public ip)
+-- &-> private Ip --> vnet
+
+*) Step-1) Manual se terraform Code
+=> Folder ka name--> InfraAutomation
+
+
+Day-53 
+=========
+*) Step-1) Manual se terraform Code
+=> Folder ka name--> InfraAutomation
+=> Without For ( Each + Map )
+>INFRAAUTOMATION-> modules--> 
+1. azurerm_rsource_group
+2. azurerm_virtua_network
+3. azurerm_subnet
+4. azurerm_virtual_machine
+5. azrerm_sql_database
+>> todoapp_infra
+  1. main.tf
+  2. provider.tf
+=> first -> rg, vnet, frontend-subnet/backend-subnet --> banake chalana hai --> terraform init/apply
+=> here rg , vnet front/backent-subnet ban jayega
+
+=> public_ip banake module set karke --> init/apply chalana hai...
+
+=> homework- ya upr wale public ip ko frontend vm ke sath attach karna hai..
+
+Note:- Argument ----> block { } ---> Attribute
+=> homework-> Create a custom vm with nginx and terraform installed
+
+===============================
+  --> class 53 ra code exercise txt re
+==========================
+
+
+Day-54 
+=========
+Dard:-1)  do bar module ko bulana pad raha hai.. do vm ke lia...
+
+dard:-2)  vm ka id/password hi mar dia.. koi bhi dhkh lega.. aur vm hack ho jaegi...
+
+dard:-3) ye subnet upr bana hai.. hardcoded kyu karna hai...
+
+dard:-4) server ka id fir hardcoded.. ye to bada hi taklif bhara hai...
+
+dard:-5) sql server me admin'r/login & password ko secret ko rakhna ka sudhar ---> azure key vault
+
+----------   Connection  ----------
+
+=> connection:- vm ko nic ke sath--> implicit dependency nic.id
+---> network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
+
+==> vm ka nic & nic  ka saath public ip ka connection--> 
+nic--> main.tf --re ip_confirutation re ek argument required --> public_ip_address_id =var.public_ip_address_id or var.pip id
+=> variable create  pip ka ip 
+=> frontend vm pr subnet   ke necha dala pip_id =""
+
+=> same as backend vm  ke lia ek public ip require so parent me another public ip ka module banana hai.. pip nama --pip-todoapp-backend & that backend pip id  add in backend ka vm me
+
+=> vm ko access karne ke lia NSG ko add karke inbound port --22 karke ssh karna username@public ip  enter kara
+
+=> with out NSG vm ko access kar sakta hai yadi 
+see type -> basic & standard public ip in azure --in google
+
+*)  new Concept DATA BLOCK :--
+================================
+=> koi bhi chiz agar azure pr already bani hui hai aur aapko uska koi details chahiya.. toh uske lie data block use karte hai...
+example--> vm ka ip addaress
+          storage account ka id
+          public ip ka id, sku etc
+type- data block in terraform
+
+=> azure resource ka google karne ka tarika:--eg-
+=> terraform virtual network azurerm
+=> terraform subnet azurerm
+
+same as
+
+=> azure data block ko google karne ka tarika:--eg
+=> terraform virtual network azurerm data
+=> terraform subnet azurerm data
+
+=> har resource ka apna alg data block hota hai...
+
+=> data block me subnet ka id required subnet ka data block google se leke child virtual machine me frontend_subnet ke nam par past karke variable create karna hai..
+
+fill-> subnet_id = data.azurerm_subnet.frontend_subnet.id
+
+=> vm ka module ka last me past karna ha ye--
+virtual_network_name ="vnet-todoapp"
+subnet_name = "frontend-subnet"
+
+=> same as backent_subne ka data source banana hai..
+
+==> Data block code see exercise
+=================================
+
+Day-55 
+=========
+=> vm ke child module banate wakt humne subnet id ko hardcode kia...
+
+=> subnet ID nikalne ke lie portal me login karna pada, virtual network me jana pdega, JSON view se lana pda....jo ke already Pehle se bana hua tha..
+
+=> jo Pehle se bana hua resource hai uski kuch bhi detais nikalne ho toh DATA BLOCK ka use karte hai...
+
+=> NIC ke andar me subnet_id pass karna hai.. 
+
+=> Data Block dhundne ke lie, terraform registry pr jaenge , waha pr subnet ka data block dhundange..
+
+type --> data azurerm subnet
+
+data "azurerm_subnet" "example" {
+  name                 = "backend"
+  virtual_network_name = "production"
+  resource_group_name  = "networking"
+}
+
+=> child module -> virtual machine --> data.tf banta hai...
+
+=> vm ka username/passwork ke security ke lia --> key vault require hai..
+
+**) AZURE KEY VAULT:-
+======================
+1)  What is Key Vault ? 
+
+Ans) Key Vault ek aisa storage ki jagha hai jo bahut secure hai aur usme hum secret, certificate aur keys rakh sakte hai...
+
+2) How to create Key Vault ?
+Ans) manual  & Automation
+
+3)  How to create secrets in key Vault manual & automation ? 
+
+4) Hot to give access to Key Vault ? Number of Ways.
+
+5) What is secret rotation policy ?
+
+6) How to restore key if deleted ?
+
+7) How to retrieve the secrets from key vault & use for VM Password ?
+
+
+2) Manual Key Vault Creation :-
+===============================
+=> type key vault -> create->  rg = rg-keyvault-->key vault name-= tijori--> region--> central India--> pricing tier --> standard--> recovery options--day retantioan---> 90 ---> purge protection--> enable/ disable
+==> access configuration--> azure role based-->network--> enable public access --tick --> allaw access from - all network--> review -> create
+
+> key Vault ko grant access dena ke lie:-
+=> PrabhaKV--> Access Control(IAM) -->add->add role assignment--> Search bottom Key Vault Administrator-->  
+
+4) Hot to give access to Key Vault ? Number of Ways
+Ans) two, 
+1) azure role-based access policy:-
+2) Vault access policy 
+
+> KV-> kisi bi user, kisi bhi managed identity ya service principle ya object key vault ko access 2-tarika se access karsakte hai..
+
+1) Key Vault banaya (Banane pr keys, certificates, & secrets ki jagah bani)
+
+2) Humne VM ka password secret me store kia(Password banana ke Pehle user ko role assign kia key vault admin ka ) 
+
+3) VM-username(key) =adminuser(value) /          VM-password(key) =Prabha@123(value) 
+
+4) KeyVault ka data block lake lgaya
+5) Secret ka data block lagaya 
+
+>>      --Data Block--
+        =============
+ data block --> key Vault fetch
+ data block --> vm-username
+ data block --> vm-password
+
+=> code ke lia exercise dekh
+
+
+Day-56 
+=========
+=>Jo Key Vault manually bana hua hai aur usko terraform se manage karna hai toh vo homework Import Block
+
+       ----- problem  -----
+
+=> Baar baar same code call karna pad raha hai..
+
+=> Public IP se hit mar rahe hai... vo dikkat hai...
+
+=> Mannually nginx dalna pad raha hai...
+
+=> Automation se nginx dal de...
+
+=> type chatGPT--> meri azure frontend vm banke ready hai terraform se, ab main chahta hu ki uspr nginx install vm bante bakt ho jaega automation se..
+      or,
+=> Humne ek frontend vm banaya hai. uspe nginx dalwana hai using terraform but not using provisioner
+
+=> Ye provisioner use nahi karna chate koi dusra tarika hoto batao..
+
+=> Automation ke lia Best practice--> Custom data
+=> Gpt-> bhai ya part samjha nahi aye..
+
+custom_data = base64encode(<<-EOF
+              #!/bin/bash
+              apt update -y
+              apt install -y nginx
+              systemctl enable nginx
+              systemctl start nginx
+              EOF)
+✅ Ans: custom_data + cloud-init (without external file)
+
+🔧 Terraform example with custom_data:
+-------------------------------------
+resource "azurerm_linux_virtual_machine" "frontend_vm" {
+  name                = "frontend-vm"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  size                = "Standard_B1s"
+  admin_username      = "azureuser"
+  network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
+  disable_password_authentication = false
+  admin_password = "StrongPassword123!" # only for example
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "20_04-lts"
+    version   = "latest"
+  }
+
+  custom_data = base64encode(<<EOF
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo systemctl enable nginx
+sudo systemctl start nginx
+EOF
+  )
+}
+
+note: key-vault secret code se banaya achha tarika nahi hota hai..
+
+=> manually key vault & key secret banaya  
+=> parent module ek key vault 
+=> module vm_username  ka module
+=> vm me dependency vault , vm uname, vm-pwd hoga
+=> login karke nginx install hua ke nahi dekhna hai.. 
+
+Day-57 
+=========
+=> Custom Data se nginx dal li lekin ho to provisioner se bhi ho sakta hai..
+
+=> Custom Data badia kyu hai provisioner se ?
+
+=> How many types of provisioners? which type can be used where ?
+
+=> Why not use provisioner in terraform ?
+
+=> Requirement- Install nginx using provisioners using terraform ...
+
+=> code ko local se utha kar SCM pr rakhne ke lia us technology ko GIT bolta hai..
+
+1) GitHub Account Creation
+2) Organization Creation
+3) Repo Creation
+4) Repo ka Clone local Computer pr
+5) Movement of code from local to Cloned Repo on Local
+6) git status , git add, 
+7) git commit -m and git push,,,
+
+=> Home Work ( code Scan)-> tflint, tfsec 
+
+
+
+Day-58 
+======
+=> sonombewefa GitHub account create
+=> Storage Account ko secure karne ka tarika
+Ans) Private Endpoint
+   & Encryption -MMK & CMK 
+
+
+Q) How we can automate end to end infra setup with devsecops best practice ? 
+
+=> Code rakhne ka 2 Strategy
+
+>) Infra Code(Terraform wala)
+>) Application Code( todo app wala)
+
+a) Trunk based (infra code)
+b) Git Flow   (Application code) 
+
+=> git dal lie..
+> Organization banaenge GitHub pr
+> Organization me repo banaenge 
+> Repo ko local PC pr clone kie
+>   
+> Create a git Hub account 
+> Create Organization Name
+
+Day-59 
+======
+
+> Git ka Interview Sawal
+------------------------
+=> Requirement-> Policy Kaise set karenge ?
+
+=> Requirement-> Ek resource group add kaise karenge best way se ?
+
+=> Requirement-> PR kaise raise karenge , Reviewer kaise set karenge ?
+
+=> Conflict kya hota hai aur kaise resolve karte hai.?
+
+=> Get pull, git fetch, aur git push me kya antar hai..?
+
+=> create a repo in git hub-> b17-todoapp-infra
+
+*) power shell khol ne ka tarika-> 
+> 1) ek folder me right click karke open in terminal -> git clone 
+> 2) in address bar write power shell & enter--> git clone
+> 3) In address bar git clone & enter
+
+=> git add. , git commit, & git push
+
+1>  Requirement-> Policy Kaise set karenge ?
+> Policy Set karna kaha pr hai ?
+> main branch
+> sir ya branch kya hota hai ? 
+
+> chatGPT-> Ae bhai mujhe na GitHub ki repo me main branch pe policy chipkani hai.. taki koi bhi kayka laal usme push na kar pae...
+
+=> policy-> Repo open karo on GitHub. 
+> upper jaake Setting pe click karo.
+> Left sidebar me "branches  pe click karo,
+> branch protection rule > add classic branch protection rule > branch name-> main-> Require a pull request merging, require approvals, 
+
+*) create a branch-> 
+> git branch <branch Name>
+> git branch feature/101-rg-addition
+> git checkout feature/101-rg-addition--> Branch create + checkout
+
+> git branch -> List all branches & kaun si branch me hai vo dikh jaega..
+
+> add a new rg in feature/101-new-rg branch--> git add . , git commit , git push ...
+
+> got to pull requests -> new pull request -> create pull request
+* base:main   <--compare:feature/101-new-rg
+
+> Add a title-> JIRA-101-Added new RG & dhoom3 story -> description> create pull request
+
+-> reviewer --> setting --> add user
+-> user reviewer-> review changes--> write something-> comment--> submit review
+> upper see -> file changed -> write some comment-> add a single comment
+
+> Aman sir remove story only add new rg--> comment- This rg is created as part of JIRA-101 ticket for project Todoapp --> git add ., git commit ,git push...comment ho gaya bhai. 
+
+=> 
+
+Day-60 
+======
+
+=> git revise(previous class) 
+=> 
+Working Area --> Staging Area --> Committed Area --> Remote Area
+
+=> Branch protection Rule
+
+=>WA--(git add)  SA--(git commit-m "message") CA --(git push) -RA
+
+=>Create repository b17-terraform-showoff 
+
+git clone in local & git add,commit,& push
+
+=> add another rg in different branch 
+
+> git checkout -b feature/101-rg-canada --> by bhavishay
+
+=> Aman sir review set
+=> bhavishay compare & pull request, Aman sir comment this code that solve by bhavishay finally any one do merge pull request -> pull request successfully merged & closed
+
+> git checkout -b feature/101-rg-india --> by binod
+
+=> binod bi same karenge conflict ayega 
+
+
+Day-61 
+======
+  Git Conflict Resolve:-
+=========================
+=> Repository name -> b17-terraform-showoff
+
+> main(branch) -->c1 ---> c2 ---> c3
+
+>feature/101-bhavishya  --> c1 -->c2--> c3 -(add 1rg)-->c4
+>feature/102-binod  --> c1 --> c2 --> c3 --(add another-rg)--> c5
+
+> whenever binod c5 commit kara conflict aya hai..
+                 Type-1
+                 ------
+> Conflict Resolve by GitHub site--> use the web editor to resolve the conflict -> click resolve conflict -> here code dekh jayega remove arrow <<<< mark put the code --> mark as resolved --> commit merge --> uskae bad (reviewer) review kar ke approve & submit --> merge pull request karna padega
+
+                 Type-1
+                 ------
+=>Ticket No1-Create a new Vnet--> vnet-dhondhu
+=>Ticket No1-Create a new Vnet--> vnet-tondu
+  
+> create branch-> feature/vnet-tondu & feature/vnet-dhondhu
+
+>feature/vnet-tondu ne vnet banake pr raise karke merge kar dia (main me)
+
+> feature/vent-dhondhu ne jab vnet banake pr raise karke merge kara conflict aya 
+
+*) Git pull-> Remote repo se code khaichne ke laega.. aur code ko local repo me rakhega..
+
+*) git pull => fetch + metge
+*) git fetch => code remote se la kar commited area me code rekhega 
+
+
+> Create branch
+$ git checkout -b feature/101-vet-tondu
+
+> Go to main branch
+$ git checkout main
+
+> Create Another branch
+$ git checkout -b feature/102-vet-dhondhu
+
+> Add vnet code  in main.tf(module) in dhondhu branch
+> git add. , commit , push kia..
+
+> new pull request(portal) (main <--> dhondhu branch ---> add title (101-added-vet-dhondhu) --> add reviewer -> create pull request--> bhavishya approve karne ke bad --> merge pull request ( code main me jayega) 
+
+> Tondu ka code 
+> Go to Tondu ka branch
+$ git checkout feature/101-vnet-tondu
+
+> Another vnet code add in main.tf  
+> git add, commit, push kara & conflict aya 
+
+> create pull request (add title-add-102-vent-Tondu) -> set reviewer -> create pull request -conflict aya -> ( Againg conflict resolve process type 1) 
+
+                Type-2
+                 ------
+> by using vs code-> 
+> create branch for subnet
+> git checkout -b feature/101-new-subnet-birju
+> git checkout -b feature/102-new-subnet-tirju
+
+> delete branch in local
+$ git branch -D < branch name> 
+
+> tirju branch me -> create a subnet code
+> git add. commit & push 
+
+> new pull request(portal) (main <--> dhondhu branch ---> add title (101-added-subnet-tirju) --> add reviewer -> create pull request--> bhavishya approve karne ke bad --> merge pull request ( code main me jayega) 
+
+>> birju ka pari--> 
+
+> birju apna branch ke jayega another subnet add karega 
+
+$ git checkout feature/101-new-subnet-birju
+ & add code  
+> git add. commit push set upstream 
+
+> create pull request (add title-add-102-subnet-birju) -> set reviewer -> create pull request -conflict aya ->
+
+> got to main branch
+$ git checkout main
+$ git pull
+
+> Ek branch se dusri branch me merge karna hai to conname use hoga -git merge 
+
+> jis branch me merge karna hai.. Pehle usme jayege aur fir command chalana hai
+$ git merge < jisme se merge karna hi> 
+
+> Go to birju ka branck
+$ git checkout feature/102-new-subnet-birju
+
+> merge karna hai...
+$ git merge main
+
+> jese git merge kara conflict aya 
+$ git status (isme kon sa file me conflict hai dekha ya ga) 
+
+> Accept both change click in vs code
+
+> git add. commit -M "fixed merge" & push
+
+> conflict Resolved 
+> reviewer ne approve karege --> merge pull request > confirm merge 
+
+Note:-  Conflict Resolution
+-------------------------
+
+1. Take git pull in all branches
+2. git merge command = jis branch me merge karna hai us branch me jayege aur branch me jake git merge < dusri branch> 
+3. git add. 
+4. git commit -m "fixed conflict"
+5. git push 
+
+ 
+=> To see the commit
+$ git log 
+
+-----------------------------
+=> HEAD:- HEAD is a pointer that points to a commit id
+   
+> ChatGPT-> bhai mera jo HEAD hai git ka , vo latest commit ko dekh rahe hai main branch me.. Mujhe is HEAD ko 4 commit pichhe leke jana hai.. koi command hai kya 
+> bhai commit id mene btaunga usme bhjna
+
+$ git reset --hard < commit-id > 
+ 
+=> complete flow of infra PR Pipeline
+=> Introduction sir ne dia hai....
+
+
+=> Infra pipeline-->  Trunk based branching strategy
+=> Application Pipeline--> Git flow branching strategy
+=> Interview preparation Introduction
+
+
+Day-62 
+======
+=> Pull Request(PR) raise karte samay hum log banate hai ek pipeline
+
+Security Scanning:-
+=================
+=> Truffle hog-Secret Scanning Tool 
+ Checkmark
+ tfsec
+ synk
+ blackduck
+ prisma scan
+ checkov
+ trivy
+ Fortify Static code Analyzer(SCA)
+
+
+=> chatGPT->  bhai Source code ko scan karne ke lia security scanning tool btao (ek puri table banake dedo)
+
+=> linking ka lia batao
+
+=> sare tools ek jaisa kaam karta hai..
+----------------------------------
+=> tool ko install karna pdega..checkov ho ya tfsec y sink...
+
+=> too dalne ke baad koi tarika hoga use code scan karwana pdega..
+command/ui/ect...
+
+=> Rule set se mila ke issue detect karega aur report dedega..
+
+=> Report me btaega..konsi file me kya kya dikkat hai ..high problem, low problem, medium problem,    
+
+=> Checkov:-
+1. Install Tool:-
+-> .exe file download
+->Ek folder me copy karwaya tha
+->PATH environment variable me us folder ka path add kia tha 
+
+2. Use Tool:-koi CLI command hoga.. vo chala denge
+
+Type google-> checkov github  
+
+> jis bhi tool ki exe file chahiye.. 
+> us tool ke GitHub repo me jao
+> waha jake releases me jao..
+> releases me exe mil jani chahiye..
+> Assets me .exe file milaga 
+
+$ checkov --help
+$ checkov -d <folder name> 
+$ checkov -d azurerm_storage_account
+
+Type google> tfsec GitHub -->releases >assets > here > exe file melega 
+
+> Rename the exe file 
+> $ tfsec --version
+$ tfsec --help
+$ tfsec azurerm_storag_account
+
+=> terraform init, fmt, validate
+> checkov -d 
+> tfsec .
+> tflint .
+> chefinspect
+> terraform plan
+> manual validation
+> terraform apply
+
+=> Pipeline ko bhi ye sob karne ke lia ek computer chahiye hogo... 
+
+=> ye agent/runner/slave apna khud ka computer bhi ho sakta hai yo koi azure cloud ka vm ya koi duniya ka pada hua computer
+
+=> Agent can be own computer or any computer present in on prem datacenter, computer workload (vm,vmss,container,pod) from any cloud
+
+=> pipeline ke lia--> azure Pipeline, GitHub Actions
+
+> git install karenge
+> terraform install karenge
+> code clone karenge
+> cd karke jaenge
+> checkov -d .
+> az login
+> init, plan, apply
+
+> Introduction  sir ne dia hai
+
+Day-63 
+======
+=> Interview me bolne ke story
+
+> End to End CICD Workflow
+> Suppose there is a ticket 101, In the Ticket a Resource Group is required to be created
+> Already in the terraform repo, child modules are created for all resource
+> jisme foreach-dynamic block-conditional & optional attributes use karke generic module banaya hai...
+> Then we have a parent module where all child modules are called and putting right dependencies and developing tfvars file to pass the required values
+> For implementations of new ticket, we will clone the repo, create one feature branch, add changes in tfvars of parent module and push changes in the feature changes
+> once changes are pushed to feature branch, we will raise PR(pull Request). As soon as we raise PR automatic PR pipeline will trigger, that will run the tfsec, checkov, tflint, terrascan, validate, fmt, plan,
+> If everything goes well, then PR will be approve by 2 reviewers, 
+> As there is a condition in pipeline, as until the PR pipeline get success, Reviewer cannot approve it...
+> Then code will get merged to main branch and then another pipeline from main branch will be triggered that will run the apply with a manual approval step.
+
+=> Pipeline Banane ka 2 tarika
+1. Classic pipeline
+  -> Azure Devops 
+
+2. YAML Pipeline
+  -> Azure Devops & GitHub Actions 
+
+=> Stage --> job --> task 
+
+=> Azure Devops kya hai ? es SAAS tool hai..pehl isko TFS bolte hai.. azure devops ek dum jabardast bana  dia 2019
+
+Pre-requisites:-
+=================
+1. Azure Devops  me acces kaise milega ?
+> dev.azure.com
+
+2. Azure DevOps ke main components ky hai ?
+> Azure Board - Ticket Management
+> Azure Repos - Code rakhne ke lia
+> Azure Pipeline - Pipeline ke lia
+> Azure Test Plans - Manual Testing ka lia
+> Azure Artifacts - Artifacts ko rakhne ke lia
+
+=> Microsoft ne GitHub ko kharid lia
+
+=> Agents 2 type
+----------------
+1. Microsoft Hosted
+2. Self Hosted
+   a) on prem--> koi bhi computer
+   b) Cloud --> AWS, Azure, GCP kahi ki bhi VM , Vmss, Kubernetes Container etc...
+ 
+=> Create a azure DevOps account
+> Create a new organization ( GravitasITSolution)
+( Gpt-> nai company kholne hai ek nam bata professional wala like TCS ) 
+> Create a project --> AIBasedTodoApp
+
+=> Delete Organization-> Organization setting --> last me delete Organization
+
+=> Organization logo change--> 
+
+google-> Adobe express--> login -> logo 
+
+=> create org. har org me 5 log,  	
+
+*) GOAL: Classic Pipeline(No YAML) se GitHub ke Terraform code ko deploy karna 
+
+Step-1: Azure DevOps Project Bana (agar nahi banaya ) 
+Step-2: Classic Pipeline Create karna aur GitHub se connect karna...
+Step-3: Tasks Add karna (Terraform ke liya)
+Step-4: Run Pipeline 				
+> create pipeline> select gitHub-> grant ->authorize microsoft-->password  
+
+Day-64 
+======
+=> Infrastructure code ko rakhne ka tarika  Trunk based Branching Strategy
+
+=> feature-101-rg --------------> main
+
+=> Pull Request(PR) raise hone pr..
+
+=> Do Chiz hona chahiya..
+
+1)  All SecOps scanning , linting & unit testing...
+
+2) Init, validate, plan tk chalega..
+
+=> Agar ye dono condition fulfil hota hai tabhi reviewer ka level isko approve karne ke lie aata hai...
+
+=> Pipeline Banana
+1.) PR Pipeline (feature Branch)
+2.) Main Pipeline (Main Branch)
+
+*) GitHub -----Pipeline-------Azure Portal 
+               ========
+                  |
+                 Agent
+                
+1) Agent Creae karna & Pipeline se online karna (2-waya)
+
+a) Microsoft Hosted
+--------------------
+> Pura control Microsoft ka hai...
+> Chota mota project 
+> Kam Security Requirement wala..
+> Microsoft network me
+
+b) Self Hosted
+----------------
+> Apan ka control
+> Apan ke Network me 
+> More Secure
+1. OnPrem    2. Cloud
+
+=> Abhi apni practice ke lie apun ka khud ka laptop ko pipeline se online karenge..
+
+2) Setting Up Classic Pipeline 
+> git install karenge
+> terraform install karenge
+> code clone karenge
+> cd karke jaenge
+> checkov -d .
+> az login
+> init, plan, apply
+
+=>chatGPT->Bhai ye pipeline ko agent dena tha. lekin main jab azure devops me gaya toh waha pr mujhe agent pool mila. toh ye agent pool kya hota hai? 
+   
+=> Agent-> ye ek machine (physical/virtural) jo tumara pipeline ko run karta hai..
+=> Agent Pool:- Group of Agents 
+
+*) Create a Agent Pool:-
+> Organization Setting--> Agent Pool--> add pool--> self-hosted --> name the pool --> desc. --> grant access....Create
+
+*) Create a Agent
+> go to created Agent pool --> Agent --> new Agent--> download the agent--> 
+
+-> in c: drive create a folder- agent & go inside to the folder extract the downloaded agent 
+-> open power shell this agent folder 
+-> .\config.cmd
+-> Enter Server URL
+https://dev/azure.com/<organization-name>
+-> Authentication(PAT)enter
+-> paste access token> .......
+-> Connecting to server
+  enter agent pool : prabh-agent-pool
+-> Enter agent name: prabha-agent1
+scanning.......
+work folder : enter
+agent as service: enter
+auto log on agent: enter
+completed:  
+-> .\run.cmd
+
+=>go to user setting --> Personal Access Tokens----> new token--> name = MyAgentToken1 --> 90 daya-->custom access--> Agent pools--: read&manage--> create 
+=> copy the token & store in notepad past in token
+
+
+Day-65 
+======
+=> my Azure Devops Organization:- https://dev.azure.com/CodeMitraTechnology/
+
+=> Pipeline--> 2 tarika 
+1. Classic Pipeline   2. YAML Pipeline
+
+=> pipeline me agent ko online ke lia 2 tarika
+1. Interactive mode--> run.cmd command in terminal
+2. service mode-->  running every time 
+-> type azure pipeline agent->self hosted Run as service
+
+
+=> Go to project-> pipeline-> use the classic editor-> select a source=GitHub--> select repository--> continue--> empty job--> Agent pool==Prabhas-Agent-Pools--> get resource = no change--> Agent job 1 == display name =my first job--> Agent pool==Prabhas-Agent-Pools-->click + sign (for task) --> search powershell-> add--> command prompt --> add.--> 
+=> select power shell script--> display name = proint Prabha --> select inlie --> past the script(chatGPT) --save--save
+=> running the pipeline --> select Queue--> Run
+
+=> another job--> edit pipeline--> select pipeline 3-dot--> add an agent job--> change display name -> agent pool --> add task  ....same on first job
+
+=> 
+----------------------------------
+job1---> Agent1 Windows
+task1---> Power Shell command--> command dia-iam Prabha print
+task2---> command prompt
+=> job ke under task add karne ke lia--> click plus sign( + ) 
+
+=> GPT-> bhai mere ko likhna hai powershell me ASCII ART me I am PRABHA kese karu
+=> give me power shell command this 
+
+=> Recap:--
+> Pipeline ke andar job hota hai.aur jobs ke andar task hota hai..
+> Alg Alg job ..Alg Alg agent pr chal sakte hai..
+> Ek job ke andar multiple task ho sakte hai..
+> Task ke example hote hai jaise ki PowerShell pr kuch chalana .. Command Prompt pr kuch chalana etc...
+> Ek Pipeline kitni bhi baar chl sakti hai..jitni baar bhi pipeline chlegi utni baar us pipeline ke andar dale hue sab jobs execute honge..
+
+=> Agar Hum log ek dum khali pipeline banaenge jisme ek khali job hoga toh vo bhi code do clone to krega hai...
+
+=> Terraform-empty-pipeline--> Time-pass-job -> es job task nahi tha--> and run kya mera git file clone kara-> to kis folder me hua..
+=> "C:\Agent\_work\2\s"  es folder me mera git file clone hua hai..
+
+
+Day-66 
+======
+=> Assumption:-All tools are already installed on Agents. Git, az cli, Terraform, Chekov, Tfsec, tflint etc...
+
+=> First -Terraform empty Pipeline  running --> which download the repo in destination file 
+-> Again terraform init , frm , validate, pwd  command running pipeline in ps script so that download the .terraform file that means pipeline success 
+
+> take a Agent Job( power shell script)
+inline:   cd  C:\Agent\_work\8\s\todoapp_parent
+
+ls
+pwd 
+
+terraform init
+terraform fmt
+terraform validate
+
+
+=> disable pipeline-->  edit pipeline --> select PS script  agent(right click) click disable selected task--> 
+  
+=> az login--> ka pipeline
+=> chatGPT--> Humko classic pipeline chalana hai babu. hum ko karna az login kese kare
+
+=> az login=> 5 tarika (Authentication to Azure) 
+=====================
+
+1) Authenticating to Azure using the Azure CLI
+
+2) Authenticating to Azure using Managed Service Identity
+
+3)  Authenticating to Azure using a Service Principal and a Client Certificate
+
+4) Authenticating to Azure using a Service Principal and a Client Secret
+
+5)  Authenticating to Azure using OpenID Connect
+
+=> Service Principle/App Registration ke throw
+============================
+> create Dummy user
+> Pehle ye dummy user banaenge,jisko bolte hai Service Principle(SPN) 
+> Grant access on Subscription/resource group/etc as per requirement..
+> Ye spn banana ke baad melega..
+
+> CLIENT_ID:- dummy user ka id,..
+ CLIENT_SECRET:-dummy user ka password
+
+> TENANT_ID:- Entra_id ka tanent id
+ SUBSCRIPTION_ID:-Subsctiption ka id
+ 
+
+=> App Registration:--
+> in portal --> search intra id--> App Registration--> new registration--> name = Prabha-SP--> register
+
+=> App Registation(user)  --> provides --> Client_id 
+
+> Click Add Certificate & sectet--> new client secret--> description = mera password --> add
+
+> copy the Client Secret value
+
+> Access the SP under subscription :--> 
+-------------------
+> Go to subscription -> Select sub'n--> Access Control(IAM) click add--> add roll assignment--> privileged administration roles--> select contributor --> next-->select member --> select Sp name --> select -> review & assign 
+
+=> chatGPT-> Bhai maine azure pr ek service principle banaya hai aur usko subscription pr access de dia hai... mere paas ab clientid hai aur clientsecret hai..
+mereko azure p login karna hai using az cli... kya main kar sakta hu.. aur agar kar sakta hu toh kaise
+
+
+az login using cli--> az login --service-principal \
+  -u "<CLIENT_ID>" \
+  -p "<CLIENT_SECRET>" \
+  --tenant "<TENANT_ID>"
+
+-> is command ko pipeline ke power shell me chalaye ge login hoga 
+
+-> another job  me terraform plan
+cd c:....
+ls
+pwd 
+terraform plan
+
+Day-67 
+======
+     Dard:-
+     ======
+=> Ye Password plain text me pass kr rahe , ye mahapaap hai..
+> Sab kuch as a code hon  chahiye vo chiz nahi ho rahi.. Pipeline ko scan nahi kr paa rahe...
+> 
+=> go to azure board workitems--> new work item--> task--> create a new rg named - rg-canada  
+
+> comment:@manager can you please tell in which location we have to create the RG ? 
+> answer the manage .......location
+>state me doing likhke save karna hai..
+
+> latest repo ko copy kara git clone in vs code ( hamara code a gaya) 
+>create a branch feature/canada-rg
+> create rg code in this branch 
+> then git add, git commit, git push
+
+Note:- Two git account  sharing data
+chatGPT:-403 error ko paste karke puchha 
+
+=> mera code sonambewafaa per code hai(jisko me clone kya hai) magar main devopsinsider git account se code ko push karta hu..
+
+       Collaboration:-
+      ----------------
+==> go to sonambewafaa account --> setting-> collaboration--> password-> confirm-->add people--> devopsinsider-> add devopsinsider
+
+*) access the invite in devopsinsider account in notification(inbox image right top side)open & accept invitation 
+=> owner acc. --> sonambewafaa--> manager
+code push karega (contributor)->devopins.
+
+=> devopsinsider jo PR raise karega sonambewafaa is code ko approve karega
+
+=> Go to pull request(dev.ins.ac)-> new pull Request-> create pull request->add reviewer(sonam)-->  create pull request
+
+
+=> Go to sonambewafaa account-> add reviewer --> approve-> submit reviewer 
+=> go to sanam acc. -> & merge pull request--> conform merge 
+
+==> go to devops account pipeline & run Pipeline in main branch..
+
+-> How to go azure Repo work ? 
+=> go to project(TodoApp01)--> Repos-->click TodoApp01 < --> new repository 
+
+=> Git hub ka code import karke azure repo me laya 
+
+   Dard:-
+     ======
+=> Service principle ko ek plain text me pas karna pipeline(classic pe)  chalana  ek dard hai..
+
+chatGPT:-bhai mere paas ClientID, client secret,  tanantId, subscriptionId sab details hai..classic pipeline hum bana raha hai..toh service connection kese banaenge azure devops me ? 
+
+Create Service Connection:-
+-----------------------
+> Go to project --> project setting--> service connection--> new service connection--> Azure resource manager-->next --> fill the form 
+
+>new service connection(form fill ) identity type = app registration or managed identity(manual) --> credential = secret--> Env. = azure cloud -->scope level = subscription-->  fill subscription id & name--> fill application client id & tenant Id --> credential = service principle key --> client secret => paste the client secret value --> verify --> service connection name = PrabhaSC --> click grant access--> verify & save 
+
+> import repository create a new pipeline
+
+==> pipeline --> Agent job => Terraform plan apply job --> add task --> terraform --> get it free--> install proceed to org...
+
+> add task terraform:azurerm --> display name=terraform init --> configuration directory=c:agent......azure backend service connetion = prabhaSC --> fill backend details --> is pipeline wrong due to source directory wrong
+> add pre-defined directory then pipeline  run... $(System.DefaultWorkingDirectory)\todoapp-infra   deke terraform init ke task plan  ke & apply ke ek task terraform -azurerm lake pipeline banaya 
+
+>Azure repo se git clone karke fir ak our pipeline banaya hai--> backend block config
+> backend block add. karke in main.branch then git add. commit push karke pr raise karke 
+
+ChatGPT:- Bhai ek chiz bata.. ki hum jb code push kr rahe hai. azure pipeline apne app chal jae simble banata.. classic  se bata.. 
+
+> Code push karte hi pipeline automatically trigger ho.. (setting kare) yeha azure repo use kya hai..
+
+> Go to pipeline--> edit--> trigger--> click enable continuous integration --> save & save
+
+> pull request-> create pull request--> title = backend block add --> create --> Reviewer add & approve  & merge 
+
+*) feature/backend  into   main branch pr
+
+==> workload identity federation ke through ---> Service connection banaya (last 10min video) 
+
+> dif.. workload identity federation & client secret ...
+==> new Service connection--> azure resource manager fill the form --> identity type==App registration or managed identity--> credential = Workload identity federation --> service connection name= PrabhSC-WIF--> environment=azure cloud--> fill the tenant ID--> Next--> (next karne ke bad is me 2 URL ayaga --> goto portal -intra id -app registration user--> certificate & secret --> click federated Credential --> add credential --> scenario = other issue--> here fill the issuer & value URL(next karne ke bad jo ayatha URL)--> ( Issuer = issuer URL, & subject identifier== value URL) ---> name= Prabha-Fed--> add --> & fill the subscription id & subscription name & client id --> 
+
+ChatGPT--> bhai ye jo configuration directory hai bar bar uska path humko classic pipeline me match karke dal na pad raha hai..
+C:\Agent\_work\10\s\todoapp_parent
+
+Day-67 
+==***==
+=> Azure Classic pipeline Structure
+>  Job --> Steps 
+
+=> Azure YAML pipeline Structure
+> Stages --> Jobs --> Steps --> task 
+
+>ChatGPT-> Are bidu,ek kam kardo azure pipeline de ek dum simple yaml basic pipeline de..terraform ka do
+
+> last 20 min. pipeline doc.
+> google:- azure pipeline yaml (type) 
+> Azure schema reference for azure pipeline ---> pipeline steps 
+
+Day-68
+======   YAML Pipeline
+        --------------
+> GitOps -> Everything's as a Code 
+
+> Pipeline--> 
+  1. Classic Pipeline
+  2. Pipeline as Code( .YAML file) --->linting/scanning
+
+-> YAML Azure pipeline Structure
+=> Stages--> 
+      -> stage1, stage2, stage3 ...
+=> Jobs--->
+     -> job1, job2, job3 ....
+=> job1-->
+     -> steps --> task1, task2, task3....
+
+ChatGPT-> Are bidu ek kaam kar na azure pipeline de ek dum simple yaml basic terraform ka pipeline de..
+
+=> chatGPT se use kar ke em simple yaml based pipeline create karna hai...
+
+=> pipeline banana hai.. assistant ke madad se.
+
+=> Google type azure pipeline yaml--> Yaml schema reference for azure pipelines
+
+=> implementations--> pipeline with steps doc..
+
+=> pipeline with steps
+
+pool: prabhaAgent
+
+trigger: none
+
+steps:  
+
+> ( assistant jana hai..powershell inline hello world---karte samye mera cursur steps ke neche rahana hai..) 
+
+> (first task power shell hello world , 2nd task terraform  install, 3dr task terraform init is me directory /todoapp_infra dena padega fill backend details )
+
+
+Day-69
+======
+
+Pipeline prerequisites:-
+------------------------
+1. Agent is online, in not, ./run.cmd se ho jaega
+2. Service  connection check karna .. & access hona chahiye..
+3. Code repo me properly hon chahiye..
+
+pipeline:
+---------
+trigger: none
+pool: prabha-agent
+steps:
+ terraform install
+ terraform init
+ terraform fmt
+ terraform validate 
+ terraform plan 
+ terraform apply ( --auto-approve) extra command
+
+=> Repeated action --> working directory, service connection, 
+
+*) Repeated action ke lia--> use variable  
+
+=> you can specify variable at the pipeline stage or job level..
+
+=> filter me type--> Variables
+
+variables:   $('PrabhaSC-WIF')
+  config_path:'$(System.DefaultWorkingDirectory)/todoapp_infra
+
+> WorkingDirectory: $(config_path)
+> environmentServiceConn..... : $('workload_Identity_testing')
+
+
+*) Pipeline With variables assign :-
+=====================================
+trigger: none
+pool: Prabhas-Agent-Pools
+
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/todoapp_parent'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  displayName: Terrafomr Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: $(config_path)
+    backendServiceArm: $(service_conn)
+    backendAzureRmStorageAccountName: 'krishnastg5678'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'prod.terraform.tfstate'
+
+- task: TerraformTask@5
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: $(config_path)
+
+- task: TerraformTask@5
+  displayName: Terraform Plan 
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: $(config_path)
+    environmentServiceNameAzureRM: $(service_conn)
+
+
+
+=> ChatGPT-> bhai mereko ye batao, ki pipeline me user input kaise use karenge, ye batao mera code ye hai. init, plan, apply, fmt, sab kuch user se puche pipeline kar painge ke nahi kar painge( here past my code) 
+
+=> ChatGPT-> Sabka alg alg job bana ke de.. aur har job ka dependency set kar ke dedo..
+
+=> parameter use & condition--eq('${{ parameters.doInit }}', true)
+
+=> search doc.. filter me type- parameter
+
+
+Day-70
+======
+> same trigger, pool , variable steps me terraform install, init, fmt, validate, apply
+
+=> type-> how to change default branch in azure repo  ? 
+Ans-go to repo--> main branch click 3dot set as default branch 
+
+=> task: create a RG raksha-rg , clone the repo & and a feature/raksh-101 branch  create RG  git add. commit push
+ 
+1>  jese hi feature branch me push kie, automatic pipeline feature branch se pipeline  chlna chahiya ...
+
+2) Pipeline  plan tak hi chal na chahiye (matlab pipeline me condition hoga, pipeline feature branch se chle aur plan succussed ho tobhi reviewer is ko merge kar paega, plan ke aage jae hi nahi...)  
+
+3) laptop ---push---(feature-branch)---pull Request----(main branch) 
+
+
+
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+
+pool: Prabhas-Agent-Pools
+  
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/todoapp_parent'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: $(work_dir)
+    backendServiceArm: $(service_conn)
+    backendAzureRmStorageAccountName: 'krishnastg567'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'test.terraform.tfstate'
+
+- task: TerraformTask@5
+  displayName: Terraform fmt
+  inputs:
+    provider: 'azurerm'
+    command: 'custom'
+    workingDirectory: $(work_dir)
+    outputTo: 'console'
+    customCommand: 'fmt'
+    environmentServiceNameAzureRM: $(service_conn)
+
+- task: TerraformTask@5
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: $(work_dir)
+
+- task: TerraformTask@5
+  displayName: Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: $(work_dir)
+    environmentServiceNameAzureRM: $(service_conn)
+
+# - task: TerraformTask@5
+#   displayName: Terraform Apply
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+#   inputs:
+#     provider: 'azurerm'
+#     command: 'apply'
+#     workingDirectory: $(work_dir)
+#     commandOptions: '--auto-approve'
+#     environmentServiceNameAzureRM: $(service_conn)
+
+- task: TerraformTask@5
+  displayName: Terraform  Destroy
+  inputs:
+    provider: 'azurerm'
+    command: 'destroy'
+    workingDirectory: '$(work_dir)'
+    commandOptions: '--auto-approve'
+    environmentServiceNameAzureRM: '$(service_conn)'
+
+4) manual validation
+
+
+Day-71  
+======
+=> Ticket-> Create a new RG-> farzi-bhagat
+
+=> first clone the repo/ repo link ko add to bookmark karke save karte hai..
+
+=> har din ham main branch se jake  latest pull lenge--> git pull ( main branch me reheke )
+(mere pas 2-branch hai-feature/raksha-101 & main) 
+
+$ git checkout feature/raksha-101 
+$ git merge main ( feature branch me rehe ke main ko merge karna) 
+
+=> pipeline me plan tak chalega
+=> create a pull request is me again pipeline apply tak pura chalega 
+
+
+=> manual validation set-->   
+
+manual validation:-       
+
+Notify users = sonom24@gmai.com
+Approves:   same gmail
+instruction= plan check karke add karna 
+on timeout= Reject
+( last press) Add 
+
+=> error aya hei chatGpt me puche..
+
+=> YAML pipeline likhte time agar sirf steps bhi likhe to by default andar me ek job bn jata hai. jo kisi agent per chalta hai...
+
+=> Pipeline --> Sequence of tasks that run on an agent/computer
+
+          or/and
+=> Pipeline-> Sequence of tasks, clubbed inside jobs that can run on different agent/computer
+
+=>Manual validation  terraform pipeline -->  Structure
+==============================
+
+>      job-1  -----> Pool: prabha-agent
+
+ task1 - install Terraform 
+ task2 - Terraform  init
+ task3 - Terraform  fmt
+ task4 - Terraform  validate
+ task5 - Terraform  plan
+
+>    Job-2 ----->Pool: Server
+ task6 - Manual Validation 
+
+>    Job-3 -----> Pool: prabha-Agen 
+ task7 - Terraform  Apply
+
+
+=> Agent job level pr allocate karte hai...
+
+=> Advantages of Jobs
+1. Multiple agent use kar sakte hai...
+2. Parallel Execution 
+3. Dependency set kar sakte hai..
+4. Logs readability became easy
+5. Dif. workspace/ isolation pr chalega
+
+
+
+Day-72  
+======
+=> Ticket-> Create a new RG-> rg-sanjay-gupta
+
+-> description--Effort 2hour by sonom 
+-> git clone karke fresh repo laige 
+-> git checkeout/task-101-new-sanjay-rg
+-> create new rg git add, commit & git push 
+-> create pr raise, set reviewer , Reviewer  review  the code and approve it & merge it 
+
+=>Manual validation  terraform:-
+--------------------------------
+=> Pipeline With job:
+=====================
+*) Pipeline Definition:-
+1. Pipeline :steps
+   -> Sari steps ek hi agent pr chlti hai toh we do not have any option to run multiple tasks on different agent
+2. Pipeline:job
+   -> Multiple agents can be used in a single pipeline.
+
+=> jobs: [ job | deployment | template ]  
+
+> choko dabba--> List/Array
+> | = OR
+
+=> filter me job search kare( jobs.job)
+
+1. Pipeline :jobs
+---------------
+trigger:
+- main
+- feature/*
+
+jobs:
+- job: TerraformInitPlan
+  displayName: Terraform Init & Plan job
+  pool: Agent-ka-jhund
+  steps:
+  - task1- terraform Install
+  - task2- terraform init
+  - task3- terraform validate
+  - task4- terraform plan 
+
+- job: manualValidation
+  displayName: Manual Validation
+  dependsOn: terraformInitPlan
+  pool: server
+  steps:
+  - task1- manualValidation
+
+- job: TerraformApply
+  displayName: Terraform Apply
+  dependsOn: ManualValidation
+  pool: Agent-ka-jhund
+  steps:
+  - task1- Terraform Apply
+
+***) is pipeline me manual validation deneke bad terraform apply chalega magar ye error ayega kuon ke each job is an isolated (module not installed error) aya hai..
+-> solution --> Job3(terraform apply me ) 
+
+
+- job: TerraformApply
+  displayName: Terraform Apply
+  dependsOn: ManualValidation
+  pool: Agent-ka-jhund
+  steps:
+  - task1- Terraform Init
+  - task2- Terraform Apply
+
+=> Run the pipeline 
+
+2. Pipeline :jobs---------------
+trigger:
+- main
+- feature/*
+
+parameters:
+- name: scanRequired
+  displayName: Scan Required
+  type: string
+  value:
+  - true
+  - false
+
+jobs:
+- job: TerraformInitPlan
+  displayName: Terraform Init & Plan job
+  pool: Agent-ka-jhund
+  steps:
+  - task1- terraform Install
+  - task2- terraform init
+  - task3- terraform validate
+  - task4- terraform plan 
+
+- job: scanningJob
+  displayName: Scanning Wala Job
+  condition: eq(${{parameters.scanRequired}}, 'true') 
+  pool: Agent-ka-jhund
+  steps:
+  - task1- tfsec@1
+
+- job: manualValidation
+  displayName: Manual Validation
+  dependsOn: terraformInitPlan
+  pool: Agent-ka-jhund
+  steps:
+  - task1- 
+
+- job: TerraformApply
+  displayName: Terraform Apply
+  dependsOn: ManualValidation
+  pool: Agent-ka-jhund
+  steps:
+  - task1- Terraform Init
+  - task2- Terraform Apply
+
+=> Scanning 2 types -> 1. SAST 2. DAST
+
+==> terraform plan, apply * scan ko parameter set kar sakte hei ( init ko nahi) 
+
+=>filter me type parameters (document see)
+> parameters: [ parameter ] 
+
+> parameters set:(job level) doc. 
+----------------
+parameters:
+- name:
+  displayName:
+  type:
+  default:
+  value: 
+
+> parameters set:(job level)
+
+parameters:
+- name: planRequired
+  displayName: Plan Required
+  type: string
+  value:
+  - true
+  - false
+
+- name: scanRequired
+  displayName: Scan Required
+  type: string
+  value:
+  - true
+  - false
+
+- name: applyRequired
+  displayName: Apply Required
+  type: string
+  value:
+  - true
+  - false
+
+
+Day-73  
+======
+3. Pipeline :Jobs
+---------------
+trigger:
+- main
+- feature/*
+
+pool: agent-ka-jhund
+
+parameters:
+- name: scanRequired
+  displayName: Scan Required
+  type: string
+  value:
+  - true
+  - false
+
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/todoapp_parent'
+  service_conn: 'PrabhaSC-WIF'
+
+
+jobs:
+- job: TerraformInitPlan
+  displayName: Terraform Init & Plan job
+  pool: Agent-ka-jhund
+  steps:
+  - task1- terraform Install
+  - task2- terraform init
+  - task3- terraform validate
+  - task4- terraform plan 
+
+- job: scanningJob
+  displayName: Scanning Wala Job
+  condition: eq(${{parameters.scanRequired}}, 'true') 
+  pool: server
+  steps:
+  - task1- tfsec@1
+
+- job: manualValidation
+  displayName: Manual Validation
+  dependsOn: terraformInitPlan
+  pool: Agent-ka-jhund
+  steps:
+  - task1- 
+
+- job: TerraformApply
+  displayName: Terraform Apply
+  dependsOn: ManualValidation
+  pool: Agent-ka-jhund
+  steps:
+  - task1- Terraform Init
+  - task2- Terraform Apply
+=========================================
+complete code of manual Validation & parameter set
+=========================================
+
+trigger: none
+#  branches:
+#    include:
+#      - feature/*
+#      - main
+
+pool:  Prabhas-Agent-Pools
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/infra_parent'
+  service_conn: 'PrabhaSC-WIF'
+
+parameters:
+  - name: scanningRequired
+    displayName: Scanning Required
+    type: string
+    values:
+      - true
+      - false
+
+  - name: planRequired
+    displayName: Plan Required
+    type: string
+    values:
+      - true
+      - false
+
+  - name: applyRequired
+    displayName: Apply Required
+    type: string
+    values:
+      - true
+      - false
+jobs:
+- job: terraformInitPlanJob
+  displayName: Terraform Init & Plan Job
+  pool: Prabhas-Agent-Pools
+  steps: 
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'prod.terraform.tfstate'
+  
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: $(work_dir)
+
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(work_dir)
+      environmentServiceNameAzureRM: $(service_conn)
+
+- job: ScanningJob
+  displayName: Scanning Job
+  condition: eq('${{ parameters.scanningRequired }}', true)
+  pool: Prabhas-Agent-Pools
+  steps:
+  - task: tfsec@1
+    inputs:
+      version: 'v1.26.0'
+      dir: '$(work_dir)'
+
+- job: manualValidation
+  displayName: Manual Validation Job
+  dependsOn: terraformInitPlanJob
+  pool: server
+  steps: 
+  - task: ManualValidation@1
+    inputs:
+      notifyUsers: 'prabhakarnayak993@gmail.com'
+      approvers: 'prabhakarnayak993@gmail.com'
+      instructions: 'Please Check Plan'
+
+- job: terraformApplyJob
+  displayName: Terraform Apply
+  dependsOn:  manualValidation
+  pool: Prabhas-Agent-Pools
+  steps:
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'prod.terraform.tfstate'
+
+  - task: TerraformTask@5
+    displayName: Terraform Apply
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: $(work_dir)
+      commandOptions: '--auto-approve'
+      environmentServiceNameAzureRM: $(service_conn)
+
+  # - task: TerraformTask@5
+  #   displayName: Terraform Destroy
+  #   inputs:
+  #     provider: 'azurerm'
+  #     command: 'destroy'
+  #     workingDirectory: '$(work_dir)'
+  #     environmentServiceNameAzureRM: 'PrabhaSC-WIF'
+
+
+=========================================
+
+>  chatGpt: Azure pipeline me agar app pool pipeline level pr set kardo aur job level pr bhi set kardo to job kispe chalega ? 
+
+
+1> Jo job level pr pool set hota hai vo pipeline level wale pool ko override kar data hai..
+
+2> Lekin agar kini job me koi pool dia hai toh vo job pipeline level wale pool pr chl jata hai...
+
+> Scanning me condition dal ne ka tarika :
+
+> ChatGPT-> paste the scaning job code in chatGPT
+
+- job: scanningJob
+  displayName: Scanning Wala Job
+   
+  pool: server
+  steps:
+  - task1- tfsec@1
+
+I want to run the scanning job when the parameter value  of ScanRequired is true please give me the condition
+
+> I want a condition that makes my job run only main branch 
+
+*) Parallelism In Pipeline ? -Running multiple job simultaneously . Job pehla aur dusra job ke beech me dependency nahi hoga ? 
+
+*) Ho to enable this ? 
+
+*) Advantage of parallel job ? 
+
+ 
+> terraform init & plan(5min) ---manual approval --------apply(5min) 
+|| parallel job 
+> scanning(20min) ---------^^
+
+=> Multi region infra deployment with terraform  
+
+=> kya parallelism ek agent pr ho sakta hai ? 
+
+  -------------------------------------stages--------------------------
+
+        <-- BUILD ->                           <- SCANNING ->                   <- DEPLOY -> 
+terraform init, fmt & validate job -----> TFSEC scanning job -------> manual validation job
+terraform init & plan job    -------->    TFLINT scanning job ------> terraform Apply job  
+
+> filter me--> stages.stage se stage likhna hai..
+
+==> Pipeline with  stages:-
+--------------------------
+trigger:
+-feature/*
+-main
+
+pool: agent-ka-jhund
+
+parameters:
+- name: scanRequired
+  displayName: Scan Required
+  type: string
+  value:
+  - true
+  - false
+
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/todoapp_parent'
+  service_conn: 'PrabhaSC-WIF'
+
+
+stages:
+- stage: build
+  displayName: Build
+  jobs:
+  - job: terraforminitFmtValidate
+    displayName: terraform Init Fmt, Validate job
+    steps:
+    - task: terraform init
+    - task: terraform fmt
+    - task terraform validate
+  
+  - job: terraformInitPlan
+    displayName: Terraform Init Plan
+    steps:
+    - task: terraform init
+      task: terraform plan
+ 
+- stage: scanning
+  displayName: Scanning
+  jobs:
+  - job: tfsecScenningJob
+    displayName: TFSEC Scanning Job
+    steps:
+    - task: tfsec@1
+  
+  - job: tflintScanningJob
+    displayName: TFLINT Scanning Job
+    steps:
+    - task: cmdline@2
+      
+- stage: deploy
+  displayName: Deploy
+  jobs:
+  - job: manualValidation
+    displayName: Manual Validation
+    dependsOn: terraformInitPlan
+    pool: server
+    steps:
+    - task: manualValidation
+  
+  - job: terraformApply
+    displayName: Terraform Apply
+    dependsOn: manualValidation
+    pool: agent-ka-jhund
+    steps:
+    - task: terraformtask@1
+      
+
+Day-74  
+======
+=> Landing Zone---> 
+1. Normal Landing Zone
+2. Hub-Spoke Landing Zone
+
+=> Terraform:- -----> 
+1. blocks
+2. modules
+3. More control over State management
+4. Open Source Multi-Cloud
+
+=> Terraform 3-reason / Good
+1. Community Support
+2. Multi Cloud
+3. More control over State management
+  
+=> upper same pipeline code
+
+=> Home Work:-
+1. Variable Groups
+2. Environment & Deployment Group
+3. How to monitor Pipeline- DORA Metrics
+4. How to Integrate Secrets in pipeline
+5. Task Group
+6. Roll Back Pipeline
+7. How to optimize Pipeline
+8. Pipeline Templates
+9. How to troubleshoot pipeline
+10. Test Cases in Infra Pipeline
+11. Calling Main pipeline from another pipeline
+12. Type of Variable in azure devops
+13. How to use variables Groups ?
+14. tflint  linting in pipeline
+15. Dif.. between parameters & variabls
+16. How to schedule a pipeline ? 
+
+
+=> If the load on the VM increased, What can be done ? 
+
+=> VMSS - Virtual machine Scale Set
+
+=> VMSS ki Virtual Machines pr equal load distribution  kaise hoga ?
+
+=> Azure Load Balancer  
+
+=> Ab machine pr private IP ho gya toh VM Connect karke, website kaise dalenge nginx folder me ? 
+
+=> Azure Bastion
+
+=> Ticket-> Disable Public IP From VM
+-> We can remove Public IP bu we lill need a azure bastion
+
+=> In portal first create RG, vnet, subnet & also create VM
+
+
+Day-75  
+======
+=>ChatGPT: Main azure bastion pd raha hu taza taza Interview ke sawal kya ho sakte hai uspe bta na yaar . Answer ke saath English me do
+
+=>Create a VM /login karke dalna hai starbucks application us application ko hit marte hai / load testing ke Jmeter use kare
+
+> Vm login kara 
+> sudo apt update
+> sudo apt install nginx
+> git clone statbucks url
+> cd starbucks-clone /
+> ls
+> sudo cp -r * /var/www/html/
+> access in browser 130.45.48.11:80
+
+ChatGPT:-How to use jmeter to do load testing to see how many users it can handle  ?  https: //42.1.12.45/
+
+> load badne pr VM marjata hai solution VMSS banao policy set kar 70% load hoga to vm banta jaya 
+
+> Homework:-VMSS banayo test jmeter
+> vmss as a agent
+
+
+*) LoadBalancing Service:-
+-------------------------- 
+> FrontendIP Configuration
+> Backend Pools
+> LoadBalancing Rules
+> Health Probe
+
+Steps:1:- Virtual Network(1) Subnet(1) & 2 Linux machne with Starbucks installed 
+
+> Create a starbucks-vnet(default 1 subnet)
+> Create StarbucksVM-01 & 02 VM In same vnet
+
+> Create azure bastion vm isme public ip denge 
+
+> login bastion VM & jump to starbucksVM-01(ssh azureuser@<privat-IP>  
+> Vm login kara 
+> sudo apt update
+> sudo apt install nginx
+> git clone statbucks url
+> cd starbucks-clone /
+> ls
+> sudo cp -r * /var/www/html/
+
+> Exit /or vm 1 se ssh karke ja sakte hai
+
+> login bastion VM & jump to starbucksVM-02(ssh azureuser@<privat-IP>  
+> Vm login kara 
+> sudo apt update
+> sudo apt install nginx
+> git clone statbucks url/ streamFlix.git
+> cd starbucks-clone /
+> ls
+> sudo cp -r * /var/www/html/
+
+
+> Create Load Balancer:-
+type load balancer--> click create standard Load balancer--> 
+
+
+> TCP & UDP transport layer ke protocol hai jo data ko bhjne ke lie hota hai.
+
+> TCP Ip aur port pr kaam karta hai. aur isme three way handshake hota hai...
+
+
+
+Day-76  
+======
+=> Azure Load Balancer:-
+========================
+> Frontend IP configuration me agar IP public ho to usiko called external load Balancer/public LB & agar IP private ho to usiko called Internal LB
+
+=> Azure Load Balancing Service type:-
+=====================================
+1. Azure Load Balancer
+2. Application Gateway
+3. Traffic Manager
+4. Front Door
+
+1. Azure Load Balancer:-
+======================
+> L4 Load Balancer
+> TDP/UDP pr kaam karta hai
+> Transport layer
+> IP/Port Based Routing
+
+2. Application Gateway:-
+=========================
+> L7 Load Balancer 
+> Host/Path based Routing
+> HTTP/HTTPS pr kaam karta hai.
+> Regional Service hai..
+> SSL Certificate
+> Multisite Hosting Capability
+> Web Application Firewall- WAF
+
+3. Traffic Manager:-
+====================
+> Global Service
+> L7 Load Balancer 
+> DNS based Service
+
+4. Front Door:-
+================
+> Global Service
+> L7 Load Balancer 
+> DNS based Service
+> CDN available
+
+=> Terraform se Load Balancer Create:-
+---------------------------------------
+=> load Balancer 4-component
+1. frontend ip- configuration
+2. backend address_pool
+3. health probe
+4. load balancer rule
+
+azurerm-loadbalancer:-
+=======================
+resource "azurerm_lb" "example" {
+  name                = "TestLoadBalancer"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  frontend_ip_configuration {
+    name                 = "PublicIPAddress"
+    public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+=> public ip child me bana hua hai usika id nikal neke lia data.tf hia..
+azurerm-terraform public ip data:
+---------date.tf----------------
+
+data "azurerm_public_ip" "example" {
+  name                = "name_of_public_ip"
+  resource_group_name = "name_of_resource_group"
+}
+
+azurerm terraform backend pool:
+-----------------------------
+resource "azurerm_lb_backend_address_pool" "example" {
+  loadbalancer_id = azurerm_lb.example.id
+  name            = "BackEndAddressPool"
+}
+
+azurerm terraform health probe :
+
+resource "azurerm_lb_probe" "example" {
+  loadbalancer_id = azurerm_lb.example.id
+  name            = "ssh-running-probe"
+  port            = 80
+}
+
+azurerm terraform lb rule    :
+-------IP & port based Routing ---------------
+resource "azurerm_lb_rule" "example" {
+  loadbalancer_id                = azurerm_lb.example.id
+  name                           = "LBRule"
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 80
+  frontend_ip_configuration_name = "PublicIPAddress"
+
+baclend_address_pool_ids   = [implicitly dependency]
+probe_id  = implicitly dependency
+}
+
+=> load balancer ko ip & port based routing kehete hai..because-azurelb rule banate hai in the rule what we
+=> pool me vm ko attach: aman-1.40min
+
+> Vnet(name vnet-lb) , frontend subnet , public IP (pip-lb) vm ka change hoga  
+           or
+> Vnet, subnet, chinki_VM, pinki_VM, public_ip_lb, module_lb, 
+ 
+*) module load Balancer
+
+module "lb" {
+depends_on = [azurerm_publc_ip_lb]
+source="../../azurerm_loadbalancer"
+
+}
+
+
+Day-77  
+======
+=> Backend pool configuration karne ka tarika
+
+=>type-->  Backend pool configuration NIC azurerm terraform
+=> azurerm_nic_lb_association(child module)create kara
+
+=> Backend address pool me VM ko jodna :-
+==========================================
+azurerm_nic_lb_association:
+============================
+
+resource "azurerm_network_interface_backend_address_pool_association" "example" {
+  network_interface_id    = azurerm_network_interface.example.id
+  ip_configuration_name   = "testconfiguration1"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.example.id
+}
+
+data.tf
+========
+data "azurerm_network_interface" "example" {
+  name                = "acctest-nic"
+  resource_group_name = "networking"
+}
+
+data "azurerm_lb_backend_address_pool" "example" {
+  name            = "first"
+  loadbalancer_id = data.azurerm_lb.example.id
+}
+
+data "azurerm_lb" "example" {
+  name                = "example-lb"
+  resource_group_name = "example-resources"
+}
+
+=> create all variable in nic_lb_associatin folder
+
+
+module
+======main.tf
+================
+
+
+module "pinki2lb_jod_yojna" {
+
+source = "../modules/azurerm_nic_lb_association"
+
+nic_name = "nic-pinki-vm"
+resource_group_name = "rg-devopsinsiders"
+lb_name  = "hrsaheb-1b"
+bap_name = "1b-BackEndAddressPool1"
+ip_configuration_name = "internal"
+
+}
+
+module "chinki2lb_jod_yojna" {
+
+source = "../modules/azurerm_nic_lb_association"
+
+nic_name = "nic-chinki-vm"
+resource_group_name = "rg-devopsinsiders"
+lb_name  = "hrsaheb-1b"
+bap_name = "1b-BackEndAddressPool1"
+ip_configuration_name = "internal"
+
+}
+
+azurerm_bastion:
+================
+main.tf
+-------
+resource "azurerm_bastion_host" "example" {
+  name                = "examplebastion"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  ip_configuration {
+    name                 = "configuration"
+    subnet_id            = azurerm_subnet.example.id
+    public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+data.tf (subnet)
+=========
+data "azurerm_subnet" "example" {
+  name                 = "backend"
+  virtual_network_name = "production"
+  resource_group_name  = "networking"
+}
+
+data.tf(public _ip)
+===========
+data "azurerm_public_ip" "example" {
+  name                = "name_of_public_ip"
+  resource_group_name = "name_of_resource_group"
+}
+
+=> create all variable 
+=> create module
+
+module "bastion" {
+source = "../.."
+subnet name = ""
+vnet name = ""
+rg name= ""
+pip name= ""
+bastion_name = ""
+location = ""
+}
+
+=> Create a Domain name in hostinger side
+jhandu.shop
+
+=> jhandu.shop -----> 80.80.38.01
+=>   DNS Records Table
+     =====================
+ > 'A' record  ---- > 80.80.38.01
+
+=> create NSG in virtual machine (child module) 
+
+=> associated with NiC
+
+resource "azurerm_network_interface_security_group_association" "example" {
+  network_interface_id      = azurerm_network_interface.example.id
+  network_security_group_id = azurerm_network_security_group.example.id
+}
+
+Dard in Load Balancer:-
+======================
+> Layer 4 pr kaam karta hai..
+> IP Address: Port pr chlta hai..
+> No Host/URL/ Path based routing
+> No SSL termination
+> No WAF
+> No Cookie based Session Affinity
+> Basic Health Probe
+
+=> Application GateWay me ye sab dard KHATAM 
+
+
+
+Day-78  
+======
+1. Azure Load Balancer:-
+======================
+> L4 Load Balancer
+> TDP/UDP pr kaam karta hai
+> Transport layer
+> IP/Port Based Routing
+
+2. Application Gateway:-
+========================= 
+> L7 Load Balancer 
+> Host/Path based Routing
+> HTTP/HTTPS pr kaam karta hai.
+> Regional Service hai..
+> SSL Certificate
+> Multisite Hosting Capability
+> Web Application Firewall- WAF
+
+=> type: DNS checker check the ip address
+
+=> application Gateway understand using proper diagram   
+
+=> Create application Gateway using portal 
+ 
+=> ChatGPT: Create a table of difference between azure load balancer & Application Gateway 
+
+=> Read:- Web Application Firewall & SSL certificate & front door & traffic manager 
+
+Day-79  
+======
+Dard of App. Gateway:-
+> Regional Service Hai.. Global Routing ka support nahi hai...
+
+=> What is a SSL Certificate ?
+=> Where to keep SSL Certificate ? 
+
+-> What is a SSL Certificate ?
+    =>  2 chabi ka joda
+     > Public Key 
+     > Private Key
+
+=> HTTPS = HTTP + SSL
+=> HTTP ek protocol hai jo web browser aur server ke bich data transfer karta hai...
+
+=> Application Gateway prerequisites
+1. Domain kharidna hai mast wala
+2. Serves ka setup karna pdega
+3. Application Gateway configure hona chahiye..
+4. App. Gateway ko public IP domain se attach hon chahiye. A record
+5. Create a SSL Certificate
+6. How to integrate SSL in App. Gateway 
+
+=> SSL Termination
+> user ---Https -- AG(ssl certificate)  ---http--vm1 & vm2
+
+=> end to end encryption 
+ Https ------ https 
+
+=> Create a SSL Certificate
+=> download : openssl for windows
+=> path set bin folder tak
+ChatGPT: how to create ssl certificate with openssl
+
+Step-by-step:
+============
+# 1. Generate a private key
+openssl genrsa -out jhandu.key 2048
+
+# 2. Generate a self-signed certificate 
+
+openssl req -new  -key jhandu.key -out jhandu.crt 
+
+Country Name : IN
+state or province name : Karnataka
+locality Name: bangaluru
+Organization Name: Devops Insider
+Organization unit Name: b17
+common Name:  jhandu.shop
+email address: info@devopsinsider.com
+
+challenge password: test@123
+optional Name:  
+
+openssl x509 -req -days 365 -in jhandu.csr -signkey jhandu.key -out jhandu.crt 
+
+GPT: bhai dekh mereko application gateway pr lagana hai..
+
+openssl me aya: .crt file .key file 
+=> in don file mila ke .pfx file hota hai..
+
+=> convert .crt + .key to .pfx file
+
+openssl pkcs12 -export -out jhandu.pfx -inkey jhandu.key -in jhandu.crt 
+
+=> enter password : test@123
+
+SSL Certificate type: 
+1. self signed certificate
+2. Certificate Authorities wala certificate
+
+=> type: SSL Certificate authority
+
+=> Web Application Firewall:
+=> Cookie Based Session Affinity
+
+=> Web Application Firewall:
+----------------------------
+> Unwanted Traffic ko rokega
+
+> user() --traffic  --WAF ---> AG
+> WAF will prevent: 
+> unwanted:- Bot Attack
+           - SQL Injection  
+           
+> GPT:-WaF kon kon se traffic ko accha manta hai aur kon kon se traffic ko bura manta hai..
+  
+=Gpt: Give an heading 
+
+=> Cookie Based Session Affinity:
+---------------------------------
+=> 
+=> Front Door:--
+==============
+HW:-FrontDoor, & Traffic Manager padna hai..
+=> Service Endpoint & Private End point padna hai..
+=> Storage Account:
+> Public hai direct kon bhi access kar sakta hai..
+
+
+Day-80  
+======
+Endpoint in Azure:-
+1. Service Endpoint 
+2. Private Endpoint
+
+=> Why Endpoints ? Kya need hai iski ? 
+=> Create Storage Account:
+Q-> Redundancy, STG life cycle(hot,cold,cool)
+
+=> Azure Storage Explorer:
+
+=> Storage Account Authentication Options:
+1. az login
+2. Storage Account key
+3. SAS shared Access Signature  
+
+=> Job Storage Account banta hai.to kya vo secue hota hai.? 
+
+=> Internet pr exposed hota hai by default 
+
+=> Secure to hota hai pr fully secure nah hota hai kyuke agar SAS token kisi ne dekh lia toh game baj jaega..
+
+=> Oops. Credentials leak ho gya galti se .. ab koi bhi access kar sakta hai..
+
+=> Jab apne computer se file upload kar rhe hai.. vo data kis raste jaa raha hai..? 
+
+=> public Internet ke through jaa raha hai mast ghoomta ghoomata
+
+Endpoint in Azure:-
+1. Service Endpoint 
+2. Private Endpoint
+
+1. Service Endpoint:-
+===================== 
+=> Blob Container:
+=> Filter: Agar traffic subnet1 se aaega toh hi access ho paega..
+
+=> Filter lagane ke bar hum khund ke network se access karnge to Denay hoga 
+
+Note: Azure(subnet) -- Microsoft Backbone Network ---> Azure (blob) 
+
+>Type: Service Endpoint Azure doc 
+
+> Service Endpoint practical:-Prerequisite 
+------------
+> Storage Account 
+> Vnet, subnet , & VM 
+> VM Se access karne ke lia kusis karege
+> Filter Use karege 
+Do/Doing
+> Create Vnet, Create Subnet, Create A VM (image Windows), Create Storage Account
+
+> Service Endpoint Steps:-
+=========================
+1. Subnet pr jake service endpoint enable karna pdega us service ke lia jis service pr aapko filter lagana hai..
+
+2. Storage Account me network setting me kuch karna pdega jis se sirf ek subnet hi access ho pae..
+
+=> RDP ke jake storage account ko access karege kese 
+
+
+
+Day-81  
+======
+=> Security Benefits of Service Endpoints:
+=================
+> Data travel via azure backbone not internet
+> Access only from authorised Vnet & Subnet
+
+=> Problem:
+==============
+> Abhi bhi public ip hai hi vo kahi nahi gaya..
+> Security concerns ho sakte hai bahut secure environments me...
+
+2. Private Endpoint:-
+======================
+> True private access to Azure Storage Account with Private IP.
+> No public Exposure, everything within your vnet Better Security 
+> Better Security
+> Private Endpoint is best way.. 
+
+> jitne bhi azure ke resource hai directly aapke vnet ke andar ek private IP azzign karta hai.. isse traffic public internet se bypass karke completely private network se route hota hai..
+
+> Prerequisites:-
+------------------
+> Storage account with public access disable.
+> dedicated Vnet & subnet
+> Configure private Endpoint
+> Configure DNS  Zones
+> Create VM in Vnet & will chck if the storage account got an private IP or not 
+>
+
+=> Domain Purchase --jhandu.shop
+>> Agar kisi domain ko IP se map karna hai toh A record use hota hai..
+
+> jhandu.shop--> A record(40.39.83.38)
+
+> Agar kisi domain ko IP se Map karna 
+
+>> Agar kisi domain ko dusre domain se  map karna hai toh CNAME record use hota hai..
+
+> jhundu.chop  ------ shop.jhandu.com
+
+> Supported Private Endpoint Service---> Private Link resources 
+eg: Storage Account
+> SQL Database
+> Synapse Analytics 
+
+> Type: Private Link resource
+
+
+Create private Endpoint
+
+=> Home work:-Azure Monitor, Log Analytics workspace 
+=> Azure Load balancer ka terraform code
+
+
+Day-82  
+======
+> Hub & Spoke Landing Zone:-
+---------------------------
+1. On Boarding Solution:-
+> Subscription Creation, user Creation Group Creation, Access Management etc.
+
+2. Off Boarding Solution:-
+>Subscription Deletion, User Deletion Group Deletion,  Access Management etc.
+
+=>  subscription(team people)
+> App1VNet, Subnet, bastion, firewalll
+
+=> CAF:- Cloud Application Framework
+=>Governance/Guardrails(Policies/RBAC, Naming, Tagging)
+=> Network Connectivity
+=> IAM, 
+=> Migration Waves
+=> Automated Testing, Rollback Validation
+=> Agile Sprint Based Delivery
+=> phage 0-2 Sprints -21*2 = 42
+=> KPI - key Performance Indicator
+1. Who will be the Stakeholders ? 
+2. Skill Gap Analysis/ Training Plan 
+=> Phase-1 Discovery & Assessment Stage
+1. Current Inventory
+2. OS Details & abhi jo jo bhi hai sab pata laganege
+=> Phase 2- Target Architecture(HLD & LLD) 
+1. Tenant Onboarding, Architecture , Hub & spoke Design, VPN connectivity, Azure AD Setup, Governance, Security, Monitoring , Logging tagging Backup, DR, Failover test, BCP  etc..
+2. LLD me detailed naam hoga har resource ka   
+=> Phase -3:- Landing Zone Implementation 
+1. Deploy Platform Service using IAC
+> Creation of management  Group & Subscription Hierarchy
+> Setup network hub Connectivity to onprem - VPN EXPRESSROUTE
+> Log Analytics
+> Enforce Governance Policies, Implement Security Baseline
+=> Phase-4: Azure Migrate & Testing Plan
+=> Setup of Azure Migrate, Azure site Recovery
+=> Phase-5: Migration Execution
+> Setup of Azure Migrate, Azure site Recovery 
+> Premigration Checklist
+> Postmigration Checklist
+=> Phase-6: Production level cutover & signoff
+=> phase-7: Decommission  Cleanup & closure
+
+> Home Work:- AD Migration , Database migration, DR/high availability, Governance Policy, Security & Compliance, Monitoring & logging
+
+=> Terraform Recap:-
+====================
+=> Basic of Cloud Computing
+=> Terraform Other IAC tools
+=> Open Source, Multi cloud support, state management
+=> How to install terraform & setup VSCODE & az cli
+=> How to install terraform & setup VScode
+=> Terraform Providers(have all apis of cloud) - azurerm, aws & google
+=> Terraform Providers(have all apis of clouds) 
+=> Terraform Configuration fie - Terraform Blocks
+=> Terraform block, module block, resource block, etc
+=> Terraform init, fmt, fmt, validate, plan, & apply terraform state commands
+
+=> Kya kya bachta hai terraform me ?
+1. Dynamic Block
+2. Import Block
+3. Local Block
+4. Provisioner Block
+5. Terraform Functions 
+6. Null Block 
+7. Output Block
+8. Lifecycle Block
+9. Terraform Workspace
+10. For-each Count me conversion
+11. Count Loop usage
+12. Lifecycle Block
+13. Terraform with Excel 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://dev.azure.com/GravitasITSolutions/AIBasedTodoApp/_git/infra-code.git/pullrequest/6
+
+
+
+
+
+
+
+
+

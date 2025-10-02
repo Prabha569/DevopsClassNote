@@ -1,0 +1,931 @@
+java application -> Artifact- <name>.jar/war
+Reactjs application -> Artifact-> /build - folder
+dotnet application ->Artifact-> /publish -folder -<nam>.dll
+
+Day--75
+===========
+
+=> Docker Syllabus
+=> Docker Installation process
+
+Docker:-
+========
+ Create a Docker Container using nginx image
+
+1) pull Download Image
+2) Create and Run Image
+
+1)Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+docker pull NAME --> docker pull nginx
+
+2) Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+$ docker run IMAGE --> docker run nginx
+*) here small =constant  & capital = Variable
+
+=======================================
+
+Execution below command to see docker status.
+$ docker info
+
+BASIC DOCKER COMMANDS:-
+======================
+
+ Display docker images available in our machine
+$ docker images
+
+ Download docker image.
+$ docker pull <image-name / image-id>
+
+ Run docker image.
+$ docker run <image-name / image-id>
+   or,
+  docker run -d nginx
+
+ Delete docker image.
+$ docker rmi <image-name / image-id>
+
+ Delete docker image forcefully.
+$ docker rmi  -f <image-id>
+$ docker rmi <image-id> --force
+
+ Display all running docker containers.
+$ docker ps 	
+
+ Display all running and stopped containers.
+$ docker ps -a
+
+ Delete docker container.
+$ docker rm <container-id>
+$ docker rm <container-id> --force
+
+ Stop Docker container.
+$ docker stop <container-id>
+
+ Stop Docker container.
+$ docker start <container-id>
+
+ Delete all stopped containers and unused images and unused networks.
+$ docker system prune -a
+
+=======================================
+Day-77   Formula Making command
+------   ======================
+1) docker --help
+
+Usage:  docker [OPTIONS] COMMAND
+
+2) docker run --help
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+-> docker run IMAGE
+*) here small -> constant & capital -> Variable
+
+3) docker run -d --name dhondhu_container nginx
+
+*) Here, -d --> detach mode
+=> --name -> To give Name of the container
+=> nging --> Name of image
+
+3) docker exec  --help
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+=> docker exec CONTAINER COMMAND
+=> docker exec dhondhu_container ls
+
+=> Execute a command in a running container
+
+4) - `-it`: Combines `-i` (interactive) and `-t` (allocate a pseudo-TTY) to run commands 
+
+=> docker exec -i -t dhondhu_container bash
+- `-it`: Combines `-i` (interactive) and `-t` (allocate a pseudo-TTY) to run commands 
+==> This command Go inside the dhondhu_container
+
+4) docker port maping
+-------------------
+Syntax**: `docker run -p <host_port>:<container_port>`
+
+=>  <host_port>`: The port on the host system where you want to access the service.
+
+=> <container_port>`: The port within the container that the application listens to.
+
+=> docker run -p 8080:80 nginx
+
+=>  This maps port 80 inside the container (where Nginx runs by default) to port 8080 on the host machine. Now, accessing `http://localhost:8080` will interact with the Nginx service running in the container.
+
+#### Multiple Port Mappings:
+-------------------------
+You can map multiple ports by specifying more `-p` flags:
+```bash
+docker run -p 8080:80 -p 443:443 nginx
+```
+=> This exposes both HTTP (port 80) and HTTPS (port 443) services to the host system.
+
+
+
+
+
+
+
+
+
+====================================
+
+Day--79
+-----------
+Docker Network--> 
+1. Bridge Network
+2. Host
+3. None
+
+4. MacVlan
+5. Overlay  Network
+
+Bridge Network:-
+=================
+
+1) docker network --help
+=> create a network
+$ docker network create --help
+$ docker network create sample_network 
+$ docker network create --driver bridge  sample_network
+$ docker network ls
+
+
+2) Lists the available Docker networks.
+$ docker network ls
+
+=> download image ( by using pull )
+
+3) run nginx container under default bridge network
+$ docker run -d --network bridge --name nginx nginx
+
+=> here bridge is default bridge network
+ --d means detach mode 
+ --network bridge--> under which(bridge)  network container is created
+  here by default in bridge network,   container created
+--name nginx => here name of container
+  nginx==> nginx image
+
+4) to see the which container connect to the which network
+$ docker network inspect bridge
+
+==> here bridge is default network
+Usage:  docker network COMMAND
+   docker network --help
+Usage:  docker network inspect [OPTIONS] NETWORK [NETWORK...]
+
+      $ docker network inspect bridge
+
+==> docker run -d -name sample_container -p 7000:3000 --network  bridge  linuxserver/firefox:135.0.1
+
+==> 7000 <host_port> & 3000-> <container_Port>
+
+==> output of ip --> myipaddress in google type
+==> ipconfig command in PowerShell ( ipvp4 see) 
+==> my pc-> internet & network > properties --> see ipvp4 
+
+==> How to access after create container from images(nginx) by using port
+==> my ip:7000 ( eg 193:68:0:1:7000 ) here it open firefox
+    docker inspect (nginx id) here copy ip address
+==> docker inspect container id/name  --> ipaddress copy hit in firefox side
+
+
+
+2) Host-Network:-
+=================
+$ docker run -d --network host --name dhondhu_nginx  nginx
+
+=> Access---:localhost see the nginx page
+
+3) non- Network:-
+===============
+$ docker run -d --network none --name sama_nginx nginx
+
+4) MacVlan
+
+5) Overlay  Network  
+
+
+=====================================
+Day--80     CUSTOM  IMAGE 
+========
+
+1) docker pull nginx
+2) docker pull ollema/ollema
+
+==>  create container
+$ docker run -d -p 8080:80 dhondhu_container nginx
+
+=> Access-> localhost:8080 ( in browser )
+
+==>  create container
+$ docker run -d -p 8081:80 tondu_container nginx
+
+    Create Custom Image
+=============================
+1) docker run -d -p 8080:80 --name tondu_container nginx
+
+2) docker exec  -it tondu_container bash
+
+3) cd  /usr/share/nginx/html
+
+4) nano index.html ( here show command not found ) 
+
+5) apt update
+
+6) apt install nano
+
+7) nano index.html ( change Welcome to devops )
+
+8) Access localhost:8080 changes gone
+
+
+**) from changed container to create image
+==================================
+=> docker --help
+=> docker commit --help
+
+$ docker commit dhondhu_container devopsinsiderimage:v1
+
+*) Docker Image Name: <REPOSITORY>:<TAG>
+
+ Note:-  here repository means image name & : version if not put colon it become latest
+
+*) to see the images
+$ docker images
+
+*) docker run -d -p 8085:80 --name pilu devopsinsiderimage 
+
+*) Access localhost:8085
+
+==================================
+** Streamflix Custom Image
+------------------------
+1) docker run -d -p 8080:80 --name temporary_container nginx
+
+2) docker exec -it temporary_container bash
+
+3) Go to devopsinsider GitHub search StreamFlix copy the URL
+
+4) apt update  & install git
+
+5) apt install git
+
+6)cd /usr/share/nginx/html  git clone  past the URL
+
+7) remove 50x.html & index.html
+rm 50x.html
+
+8) cd StreamFlix
+
+9) copy/move all file to /usr/share/nginx/html
+
+$ cp -r *  /usr/share/nginx/html
+
+             or,
+$ cp -r * ../
+
+$ cd ..  & ls
+
+10) remove StreamFlix
+$ rm -r StreamFlix
+
+11) Then access in browser
+$ localhost:8080
+
+then exit from there
+
+**) From Temporary_container create image
+
+1) docker commit temporary_container nteflix:v1
+
+2) docker images
+
+3) remove the  temporary_container
+$ docker rm temporary_container --force
+
+
+Assignment: Starbucks Custom Image create
+==================================
+
+Day--81
+==========
+Create custom image of Starbucks
+---------------------------
+
+1) docker run -d -p 9090:80 --name faltu_container nginx
+
+2)docker exec -it faltu_container bash
+
+3) cd /usr/share/nginx/html/
+  $ ls
+  $ rm -f * ( remove all file) 
+
+4) cd / ( root per jouge)
+   cd home/ get clone Starbucks
+ 
+5) cp -r . /usr/share/nginx/html
+
+ check: ls /usr/share/nginx/html/
+
+6)access :localhost:9090
+
+          OR,
+4)Git clone in my pc
+docker cp --help
+$ docker cp  . faltu_container  /usr/share/nginx/html
+
+5) check and access
+ localhost:9090
+
+          or,
+create a Dockerfile (create same git clone folder ) 
+
+FROM nginx
+COPY . /usr/share/nginx/html
+
+=> docker build --help
+
+$ docker buildx build .
+
+
+
+
+
+Day--82
+=======
+
+
+======================================
+Day--83
+========
+==> docker file reference  type In GOOGLE 
+==>docker build --help
+=> docker buildx build [OPTIONS] PATH | URL |  -
+=> here,capital=VARIABLE, small=CONSTANT, |= OR
+$ docker builsx build PATH
+$ docker buildx build  
+
+*) To give name of image command
+=> docker buildx build --help
+note: -t, --tag stringArray         Name and optionally a tag (format: "name:tag")
+
+$ docker buildx build  -t sampleimage:v1 .
+-> here sampleimage means name of image : v1 = version  & dot means current folder/location
+
+==> sampleimage created & by run the image create container
+
+*) create a container 
+$ docker run -d -p 9090:80 --name cap-container sampleimage:v1
+
+*) try hard code change  then again create image in version2 and create again container & hit changes gone
+-> hard code change
+-> docker buildx build -t sampleimage:v2
+-> docker run -d -p 9999:80 --name core-container sampleimage:v2
+--> hit in the browser changes will be gone
+
+
+
+note: -f, --file string    Name of the Dockerfile (default:  "PATH/Dockerfile")
+=> it means give default dockerfile changed-> Dockerfile--> dhondufile
+
+
+Dockerfile
+
+FROM nginx
+COPY . /usr/share/nginx/html
+
+
+===============================
+Day--84
+======= 
+=> Docker FrontEnd
+*) Elearn frontEnd:- ReactJs
+https://github.com/devopsinsiders/elearn-frontend.git
+
+=> Docker BackEnd
+*)Elearn Backand:-dotNet
+https://github.com/devopsinsiders/elearn-backend.git
+
+=>Docker Database:-
+-------------------
+
+
+
+==>ROW CODE --> BUILD --> ARTIFACTS --> NGINX  
+
+
+*)ReactJs--> build--> nodejs
+
+
+
+
+Docerfile:-
+--------------
+1) First Run:-
+==============
+
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+note:- first dot= computer ka directory * 2nd dot = terminal directory
+
+*) build:-docker build -t frontend-image:v1 .
+
+=> here last dot = location on dockerfile
+
+*) create container:
+$ docker run -d --name front-container frontendimage:v1
+    OR,
+$ docker run -d -it --name front-container frontendimage:v1 bash 
+    OR,
+docker run -it frontimage:v1 bash
+
+
+2) Second Run:-
+=================
+Dockerfile:
+-----------
+
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+
+*) create image:
+$ docker build -t frontendimage:v2 .
+
+=> here last dot = location on dockerfile
+
+*) create container:
+$ docker run -it frontendimage:v2 bash
+
+Note: here create a node-modules directory and check  ls
+
+3)Third Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /usr/share/nginx/html
+
+
+*) create image:
+$ docker build -t frontendimage:v3 .
+
+=> here last dot = location on dockerfile
+
+*) create container:
+$ docker run -it frontendimage:v3 bash
+
+*) docker run -it -p 9090:80 frontendimage:v3 bash
+
+=> Access in browser localhost:9090
+
+
+
+*)nodejs-container:-
+------------------
+1) Create new folder/Dir.- /dhondhu
+2) cd dhondhu
+3 copy the Row code in this container
+4 npn install
+5 npn run build
+
+==========================================
+Day--85
+======= 
+
+*) Default folder of nginx on the top of ubuntu/Linux  is /var/www/html
+
+4) Fourth Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+
+
+*) create image:
+$ docker build -t frontendimage:v1 .
+
+=> here last dot = location on dockerfile
+
+*) create container:
+*) docker run -d -p 9090:80  frontendimage:v1
+
+=> Access in browser localhost:9090
+it is dead/not running container
+
+5) Fifth Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+RUN nginx -g "daemon off;"
+
+*) create image:
+$ docker build -t front endimage:v2 .
+
+=> docker build not stop because nginx continuous running in temporary container
+
+6) Sixth Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+
+
+*) create image:
+$ docker build -t front endimage:v3 .
+=> here image created
+
+*) create container by using command
+=> docker run [OPTIONS] IMAGE [COMMAND][ARG...]
+
+$ docker run -d -p 9090:80 frontendimage:v3 nginx -g 'demon off;'
+
+=> here container created & nginx background & by using this command nginx foreground running(means one process milgaya)
+=> application deploy success localhost:9090
+
+
+7) Seventh Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+CMD nginx -g "daemon off;"
+
+*) create image:
+$ docker build -t front endimage:v4 .
+=> here image created
+
+CMD => Specify default commands.
+
+*) create container 
+$ docker run -d -p 9090:80 frontendimage:v4 
+
+=> application deploy success localhost:9090
+
+======================================
+Day--86
+======= 
+
+=> CMD nginx -g "daemon off;"
+
+=> CMD command override by using a command at the time of running container
+
+$ docker run frontendimage:v4 ls
+
+=> here output ---ls ( that means cmd command override to ls )
+
+=> to over come this problem use ENTRYPOINT
+=> ENTRYPOINT command not override the command/instruction
+
+7) Seventh Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+ENTRYPOINT nginx -g "daemon off;"
+
+*) create image:
+$ docker build -t frontendimage:v5 .
+=> here image created
+
+*) create container
+$ docker run frontendimage:v5 ls
+
+=> here ls command not override because of ENTRYPOINT
+
+
+8) Eighth Run:-
+=================
+Dockerfile:
+-----------
+FROM node
+WORKDIR /dhondhu
+COPY . .  
+
+RUN npm nstall
+RUN npmrun build
+ 
+RUN apt update
+RUN apt install nginx -y
+RUN cp -r build/*  /var/www/html
+CMD ls
+
+*) create image:
+$ docker build -t frontendimage:v6 .
+=> here image created
+
+*) create container
+$ docker run frontendimage:v6 
+
+=> here output is ls( open all the files of dhondhu folder) 
+=> $ docker run frontendimage:v6 pwd
+=> here docker container dead
+=> $ docker run frontendimage:v6 nginx -g "daemon off;"
+=> here docker container run properly in foreground
+=> here total size=> 1.46 GB
+
+*) to go into the container
+$ docker exec -it <containerid> bash
+=> run ls & pwd 
+=> cd /var/www/html
+=> ls ( to see all ) 
+
+*) Assignment:- How to use CMD & ENTRYPOINT in one docker file
+
+=> ADD vs COPY
+=> CMD vs ENTRYPOINT
+=> ARG vs ENV
+
+ Multi Stage docker file:-
+===============================
+
+9) Nineth Run:-
+=================
+Dockerfile:
+-----------
+FROM node AS ramu
+WORKDIR /dhondhu
+COPY . .
+RUN npm install
+RUN npm run build
+# /dhondhu folder
+# pura code hai
+# /dhondhu/build
+
+FROM nginx AS timu
+# /usr/share/nginx/html
+# /dhondhu/build
+COPY --from=ramu /dhondhu/build  /usr/share/nginx/html 
+
+*) Create image
+$ docker build -t elearn-frontend:v1 .
+
+*) Create container
+$ docker run -d -p 9090:80 elearn-frontend:v1 
+=> here total size=> 1.46 GB se 195MB
+
+=> nginx:stable-alpine-perl as tamu -> is smallest nginx
+=> here total size -> 195 MB se 87 MB
+
+======================================
+Day--87
+======= 
+mcr.microsoft.com/dotnet/sdk:8.0
+
+mcr.microsoft.com/dotnet/sdk:8.0-alpine
+
+mcr.microsoft.com/dotnet/runtime:8.0 
+
+mcr.microsoft.com/dotnet/aspnet:8.0
+
+Interview :
+------------
+=> Docker best practice
+=> cmd and entrypoint
+
+
+Elearn-Backend:-
+==================
+1) First Run:-
+--------------
+Dockerfile:-
+-------------
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /dhondhu
+COPY . .
+RUN dotnet restore
+RUN dotnet build --configuration Release
+RUN dotnet publish -c Release -o ./publish
+
+WORKDIR /dhondhu/publish
+
+*) Create Image
+$ docker build -t elearn-backend:v1 .
+
+*) create container
+$ docker run -d -p 22222:8080 elearn-backend:v5 dotnet ElearnBackend.ddl
+
+=> it access localhost:22222/swagger
+
+
+2) Second Run:-
+=================
+Dockerfile:
+----------
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /dhondhu
+COPY . .
+RUN dotnet restore
+RUN dotnet build --configuration Release
+RUN dotnet publish -c Release -o ./publish
+
+WORKDIR /dhondhu/publish
+ENTRYPOINT dotnet ElearnBackend.dll
+
+
+*) Create Image
+$ docker build -t elearn-backend:v2 .
+
+*) create container
+$ docker run -d -p 11111:8080 elearn-backend:v2
+
+=> it access localhost:11111/swagger
+=> here total size is=> 1.15 GB
+
+ Multi Stage docker file:-
+===============================
+dontNet SKD --> .net Runntime -->
+3) Third Run:-
+=================
+Dockerfile:
+----------
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /dhondhu
+COPY . .
+RUN dotnet restore
+RUN dotnet build --configuration Release
+RUN dotnet publish -c Release -o ./publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS timu
+WORKDIR /dotnet_artifacts 
+COPY --from=build /dhondhu/publish .
+ENTRYPOINT dotnet ElearnBackend.dll
+
+*) Create Image
+$ docker build -t elearn-backend:v3 .
+
+*) create container
+$ docker run -d -p 3333:8080 elearn-backend:v2
+
+=> it access localhost:3333/swagger
+=> here total size is=> 1.15 GB se-> 226 MB 
+
+
+======================================
+Day--88
+======= 
+=> connection  database
+=> go inside docker hub type MySQL & in tag type 8.0 & copy it docker pull mysql:8.0
+
+=> create a MySQL image  pull it
+$ docker pull mysql:8.0
+
+=> to create a MySQL container da chatGPT
+type how to create a container by using MySQL 8.0 image
+
+
+Step 1: Pull the MySQL 8.0 Image
+$ docker pull mysql:8.0
+
+Step 2: Run the MySQL Container
+$ docker run --name my-mysql \
+  -e MYSQL_ROOT_PASSWORD=123456 \
+  -p 3306:3306 \
+  -d mysql:8.0
+
+Step 3: Check if it’s Running
+$ docker ps
+
+🔹 Step 4: Log Into MySQL Inside the Container
+$ docker exec -it my-mysql mysql -u root -p
+=> It will ask for the password — type 123456 and hit enter.
+
+You’ll be inside MySQL, like this:
+mysql>
+
+step 5 : Step-by-Step: Create a Database
+$ mysql> CREATE DATABASE mydatabase;
+Query OK, 1 row affected (0.01 sec)
+
+step 6:  Check if It Worked
+$ SHOW DATABASES;
+
+Step-7: Create table
+=> To create table to see read me file for query
+=> USE elearn_db
+
+step 1 : backend and database connection
+$ mysql://<username>:<password>@<host>:<port>/<database>
+
+=> go to application .json & edit it localhost , database name, password 
+
+*) Frontend & Backend connection:
+===================================
+=> in frontend application open home.js  edit in post mode localhost:8082 & AddNewCourse.js edit localhost:8082 connection established.
+
+======================================
+Day--89
+======= 
+1)MySQL Database
+================
+=> create a MySQL image  pull it
+$ docker pull mysql:8.0
+ 
+$ docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=dhondhu@123 -d mysql:8.0
+
+=> check it is running or not 
+$ docker ps
+
+=> Go inside  to the container 
+$ docker exec -it mysql-container bash
+
+=> Access MySQL 
+mysql -u root -p
+-> type password dhondhu@123
+
+=> Create database
+$ CREATE DATABASE elearndb;
+
+=> to check database create or not
+=> show database
+
+=> use database
+$ USE  elearndb;
+
+=> create table 
+-> type query to see the query in table.me file
+
+=> connection string ( backend to database connection )
+
+*) edit  appsetting.json 
+user root passwd - dhondhu@123
+
+2) backend image  creation and container creation by using docker file 
+
+=> open postman type Api 
+http://localhost:8082/api/course
+
+=> copy body from swagger  to postman fill it
+=> select body-> row- json & past json format page and fill
+
+======================================
+Day--90
+======= 
+
+
