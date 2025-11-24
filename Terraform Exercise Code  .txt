@@ -280,19 +280,86 @@ rglocation = "West US"
 
 ====================================================
 => Requirement--> 10 rg creation
-=> only count use  / hard codded 
+=> loop(Meta Argument ) --> 2 way-
+1. count  2. for-each
+
+1. Count:-
+============
+Note:- 01
+===========
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-prabha"
+  location = "Central India"
+}
+
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) in portal rg create(eg-rg-prabha) 
+
+Note:-2
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = count.index
+  location = "Central India"
+}
+
+-> here creating 3 rg in portal  name with . 0,1,3, but naming convention  not good 
+
+Note:-3
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-tiku-${count.index}"
+  location = "Central India"
+}
+
+=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2, 
 
 
 
-
-=> using  variable:--
 => count + List ---> Example
 ----------------------------
-terraform.tfvars
-================
-rg_names     = ["rg-dev", "rg-test", "rg-prod"]
-rg_locations = ["East US", "West Europe", "Central India"]
+=> Without using variables:-Note-1
+------------------------------------
+resource "azurerm_resource_group" "RG" {
+  count = length(["dev", "test", "prod"])
 
+  name     = "rg-${["dev", "test", "prod"][count.index]}"
+  location = "West Europe"
+
+=> with use of variable:- Note-2
+------------------------
+variable "rg_names" {
+  type = list(string)
+  default = ["feature", "demo", "preprod"]
+}
+
+resource "azurerm_resource_group" "RG" {
+  count =  3
+       Or
+  count =  length(var.rg_names)
+
+  name     = var.rg_names[count.index]
+  location = "West Europe"
+}
+
+Note: if terraform.tfvars define (rg_names = ["dev", "test", "prod"]) then  tfvars replace the default value ..
+
+=> here length is a function (built-in-function)
+
+Note-3
+=======
+
+main.tf:
+===========
+resource "azurerm_resource_group" "resource_group" {
+  count    = length(var.rg_names)
+  
+  name     = var.rg_names[count.index]
+  location = var.rg_locations[count.index]
+}
 variable.tf:
 =========
 variable "rg_names" {
@@ -303,15 +370,10 @@ variable "rg_locations" {
   type = list(string)
 }
 
-
-main.tf:
-===========
-resource "azurerm_resource_group" "resource_group" {
-  count    = length(var.rg_names)
-  
-  name     = var.rg_names[count.index]
-  location = var.rg_locations[count.index]
-}
+terraform.tfvars
+================
+rg_names     = ["rg-dev", "rg-test", "rg-prod"]
+rg_locations = ["East US", "West Europe", "Central India"]
 
 => here length is a function
 
@@ -320,7 +382,46 @@ resource "azurerm_resource_group" "resource_group" {
 => Banate samay to ban jaega.. lekin agar koi ek resource delete karna hai toh fatt jaega ...
 => so use ForEach  + List
 
-*) For Each + Set of String
+ForEach  + List :-
+===========================
+=> for_each = SET OF STRINGS /MAP  ---> PASS 	
+
+=> Set Of Strings:-
+------------------
+
+List -> Collection of same type of Elements
+ => can be duplicate value
+ eg:  [ "chunu", "munu" , "tunu", "chunu" ]
+
+Set:- => Collection of same type of Elements
+      => Unique value / no duplicate
+ eg:  [ "chunu", "munu" , "tunu" ]
+
+=> Block --> Chain/curly Bracket {}
+=> List/Set --> Square Bracket []
+=> Function --> Parenthesis ()
+
+=> for_each = ["rg-emu1","rg-emu2","rg-emu3"]  // --> set of string  ==> terraform understand list so that convert list into set--> using toset () function
+
+=> count --> length () function
+=> for_each  -> toset () function ( list to set convert )
+
+=> to call the function:-
+ syntax = Function_name(list) 
+
+eg:-
+   for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
+
+*) without using variable:- For_Each
+===================================
+resource "azurerm_resource_group" "RG" {
+  for_each = toset(["feature", "demo", "preprod"])
+
+  name     = each.value
+  location = "West Europe"
+}
+
+
 *) by using variable create 3 rg using for_each
 ---------------------------------------------
 terraform.tfvars:
@@ -536,9 +637,9 @@ storageaccount = {
 
 
 ***) Parent & Child call by using For Each + Map :--
-=============================================
+=========================================
 Example code:-- Revision  --to see the code
-==============================================
+=========================================
 
 
 
@@ -548,8 +649,8 @@ Example code:-- Revision  --to see the code
 
 
 
-====================================================
--------------------------- Day--53 -----------------
+=========================================
+-Day--53 -----------------
 ================ CODE  =============================
 
 1) azurerm_resource_group --> main.tf
@@ -1330,17 +1431,112 @@ parent-module:main.tf
   # admin_password       = "prabha@123"
 
 
+Day=82 
+======   Output Block
+        --------------
+1. Use Case1:-(Output Block in Child Module)  Ek Module se bahar kuch nikal na   &  dusure modul me kuch pass karna hai..
 
 
+module(azurerm_storage_account): main.tf
+--------------------------------------- 
+variable "stg_name" {
+}
+variable "rg_name" {
+}
+variable "location" {
+}
+variable "account_tier" {
+}
+variable "account_replication_type" {
+}
+
+resource "azurerm_storage_account" "stg" {
+  name                     = var.stg_name
+  resource_group_name      = var.rg_name
+  location                 = var.location
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
+
+}
+
+output "stg_id" {
+  value = azurerm_storage_account.stg.id
+  
+}
+
+=> module(azurerm_blob_storage_account):main.tf
+-----------------------------------------
+
+variable "blob_container_name" {
+}
+variable "storage_account_id" {
+}
+variable "container_access_type" {
+}
+
+resource "azurerm_storage_container" "blob_container" {
+  name                  = var.blob_container_name
+  storage_account_id    = var.storage_account_id
+  container_access_type = var.container_access_type
+}
+
+preprod(main.tf) :-
+==================
+module "resource_group" {
+  source   = "../../modules/azurerm_resource_group"
+  rg_name  = "prabha-rg"
+  location = "Central India"
+}
+
+module "rama_storage_account" {
+  source     = "../../modules/azuererm_storage_account"
+  depends_on = [module.resource_group]
+
+  stg_name                 = "ramastg3939"
+  rg_name                  = "prabha-rg"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+module "blob_container" {
+  source = "../../modules/blob_storage_container"
+
+  blob_container_name   = "tfstate"
+  storage_account_id    = module.rama_storage_account.stg_id
+  container_access_type = "private"
+}
 
 
+2. Use Case2:- (Output Block in Parent Module) How to print something after terraform  apply 
 
+preprod(main.tf) :-
+==================
 
+output "Dhundu" {
+  value = "Hello, I am dhundu "
+}
+output "Storage_Account_Name" {
+  value = "ramastg3939"
+}
+output "blob_container_name" {
+  value = "tfstate"
+}
 
+*) Output print in CLI:-
+------------------------
+ + Dhundu  = "Hello, I am dhundu "
+ + Storage_Account_Name = "ramastg3939"
+ + blob_container_name  = "tfstate"
 
+usecase:-2 (print vm pip)
+-------------
+source "azurerm_linux_virtual_machine.vm{
+}
 
-
-
+output "vm_pip" {
+value =azurerm_linux_virtual_machine.vm.public_ip_address 
+}
 
 
 

@@ -242,3 +242,199 @@ spec:
 
 > is me kebal ek ngnx ka pod running hota hai...
 
+Class--98/08
+==========
+=> Pod is a collection of container who share shared storage & shared networking... 
+
+=> Proof = Container to container networking = localhost
+
+=> Pod to pod communication - same namespace
+
+=> pod to pod communication -different namespace
+
+1) how to communicate two container in in a single pod
+
+dual-image-pod.yaml
+========================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-image-pod
+spec:  
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+
+    - name: firefox-container
+      image: linuxserver/firefox  
+      ports:
+      - containerPort: 3000
+
+=> run the pod
+$ kubectl apply -f dual-image-pod.yaml
+
+=> port forward
+$ kubectl port-forward pod/dual-image-pod 6060:3000
+
+=> In a Single pod two container communicate by using localhost
+
+=> localhost:6060 ( open firefox inside firefox search localhost:80 -- access nginx) 
+
+
+*)  One pod can connect to another pod using it's private IP ....
+
+nginx-pd.yaml
+=============
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: two-diff-pod1
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+
+firefox-pod.yaml
+================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-diff-pod2
+spec:
+  containers:
+    - name: firefox-container
+      image: linuxserver/firefox  
+      ports:
+      - containerPort: 3000
+
+> Run the two pod
+$ kubectl apply -f nginx-pod.yaml
+$ kubectl apply -f firefox-pod.yaml
+
+> Port-forward
+$ kubectl port-forward pod/two-diff-pod2  5050:3000
+
+> to show the ip of pod
+$ kubectl get pods -o wide
+
+> access localhost: 5050 inside firefox search 10.244.0.9 --> nginx accessed 
+
+=> by default two pod access if not access using  network policy..
+
+
+Class--100/10
+==========   Network Policy =====
+
+-> network policy doc. create a file
+$ kubectl explain networkpolicy -recursive > NP-doc.txt
+
+*) Default:- Agar kisi pod pe netwok policy laga di toh sab block h jata hia by default .. 
+
+-> pod ka level check karna hai..
+$ kubectl get pods --show-labels
+
+-> show pod ka IP address
+$ kubectl get pods -w wide
+
+-> show the Network policy
+$ kubectl get networkpolicy
+
+==> Create 2 pod in a cluster . by default 2 pod communicate using localhost & its ip but using network policy 2 pod can't communicate 
+
+firefox-laila-pod.yaml
+======================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: laila-pod
+  labels:
+    type: chamkila
+    height: 6feet
+spec:
+  containers:
+   - name: firefox-container
+     image: linuxserver/firefox   
+     ports:
+     - containerPort: 3000
+      
+ netflix-majnu-pod.yaml:
+=======================     
+apiVersion: v1
+kind: Pod
+metadata:
+  name: majnu-pod
+  labels:
+    type: tondu
+    height: 5feet
+spec:
+  containers:
+   - name: netflix-container
+     image: devopsinsiders/netflix-clone
+     ports:
+     - containerPort: 80
+
+add-NP.yaml:-
+============
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: villan-np-pod
+spec:
+  podSelector:
+    matchLabels:
+      type: tondu
+
+Note: minikube cluster me Network policy kan nahi karta hai...
+
+-> Create pod 
+$ kubectl apply -f firefox-laila-pod.yaml
+
+$ kubectl apply -f  netflix-majnu-pod.yaml
+
+-> show the pod labels
+$ kubectl get pods --show-labels
+
+-> show the IP
+$ kubectl get pods -o wide
+
+> Network policy create (run)
+$ kubectl  apply -f add-np.yaml
+
+-> show the network policy
+$ kubectl get networkpolice
+
+-> port forwarding for access
+$ kubectl port-forward pod/laila-pod 8890:3000
+
+> Delete Network Policy
+$ kubectl delete networkpolicy villen-np
+$ kubectl delete networkpolicy --all
+
+Class--101/11
+==========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
