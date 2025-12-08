@@ -1,0 +1,281 @@
+1. Azure Fundamentals – Resource Groups, ARM & Governance
+=======================================
+
+01) What is a Resource Group in Azure and why do we use it?
+02) What is Azure Resource Manager (ARM)?
+03) How do you control access to Azure resources (RBAC)?
+04) What are Azure Blueprints and why are they useful?
+05) What is Azure Policy and how do you enforce it?
+06) What tools are used for Azure governance and policy management?
+07) What are the Azure Well-Architected Framework pillars?
+08) What are the key design principles for an Azure Landing Zone?
+09) Setting up an Azure Landing Zone with Hub-and-Spoke Architecture — explain the best-practice design.
+
+2. Virtual Networks – VNet, Subnetting, Peering & Name Resolution
+=====================================
+
+10) What is a Virtual Network (VNet) in Azure?
+11) What is a subnet and how is it used inside a VNet?
+12) Given CIDR 192.168.1.0/24, how would you create two subnets (address planning)?
+13) What is VNet peering and how is it configured?
+14) What are network peering limitations?
+15) What is Azure DNS? How do you configure DNS zones (Public vs Private)?
+16) I have a Public DNS Zone and a Private DNS Zone — what’s the difference?
+17) User sees DNS resolution errors and slow response for an app hosted on AKS — how would you troubleshoot and fix?
+18) How do you troubleshoot connectivity between VNets?
+
+3. Secure Connectivity – VPN, ExpressRoute, Site-to-Site
+==============================
+ 
+19) What information is required to establish a site-to-site VPN connection?
+20) What is an ExpressRoute circuit and how is it different from VPN Gateway?
+21) How do you connect on-prem resources to Azure via VPN Gateway?
+22) Define Hub & Spoke Architecture — brief the design and when to use it.
+23) In hub–spoke peering, which options do you select on the hub to peer with the remote/spoke VNet?
+
+4. Load Balancing & Traffic – LB, App Gateway, WAF, Front Door, Traffic Manager, CDN
+=======================================
+
+24) What are the types of Load Balancers in Azure (internal/external)? Use cases?
+25) Difference between Load Balancer (L4) and Application Gateway (L7)?
+26) What is Application Gateway, and what are its core components?
+27) How do you configure routing rules in Application Gateway?
+28) What is WAF (Web Application Firewall)? Difference between Detection and Prevention modes?
+29) How do you troubleshoot 403 WAF block errors?
+30) What’s the difference between Azure Front Door and Traffic Manager?
+31) What routing methods does Traffic Manager provide?
+32) What is a CDN? Why and where would you create Azure CDN?
+33) In Kubernetes, when you need an L7 load balancer (App Gateway Ingress Controller), what must you configure?
+
+5. Private Access & Perimeter Security – Private Endpoints, Bastion, NSG, Firewall
+====================================
+
+34) What is a Private Endpoint and when do you use it?
+35) Have you created a Private Endpoint for a Storage Account? Steps and validation?
+36) VM, Storage Account, SQL DB, App Service are in the same subnet and Storage has a Private Endpoint — how will the VM resolve the Storage FQDN privately?
+37) What is Azure Bastion and why is it used?
+38) Explain NSG (Network Security Group) — priorities and rule design.
+39) Application Security Group (ASG) vs NSG — explain and compare.
+40) What is the difference between NSG and Azure Firewall? When do you use each?
+41) How do you configure Firewall rules in Azure (threat-intel, DNAT/SNAT, FQDN tags)?
+42) End-to-end: how would you manage Firewall and DNS setup for a secure application?
+
+6. Identities, Keys & Secrets – Managed Identity, Key Vault, RBAC
+=================================
+
+43) What are Managed Identities in Azure?
+44) What is Azure Key Vault and how do you integrate it with applications and pipelines?
+45) Purpose of Key Vault — typical use cases (keys, secrets, certificates).
+46) How do you implement role-based access control (RBAC) for least-privilege?
+47) How would you integrate Azure Key Vault with AKS for pod secrets (CSI driver/Secret Store)?
+
+7. Storage – Accounts, Security, Tiers & Access
+==================================
+
+48) How do you secure Storage Accounts (public access disable, TLS, private endpoints, SAS policies)?
+49) What are the network access settings for a Storage Account? Explain options.
+50) How do you configure firewall rules for Storage Accounts?
+51) What is Blob Storage and what are its access tiers (Hot/Cool/Archive)?
+52) How can you restrict public access to your Storage Account?
+
+8. Compute & App Platform – VM, VMSS, App Service, AKS (Access & Scale)
+======================================
+
+53) What resources do you create when provisioning a VM (NIC, NSG, Disk, VNet/Subnet, PIP)?
+54) What is an Availability Set vs Availability Zone?
+55) What is VMSS and when would you prefer it over individual VMs?
+56) If you need two VMs and two databases — when would you choose VMSS?
+57) How do you patch your VMs?
+58) What is swap space in a Linux VM?
+59) How do you connect to a VM with only a private IP (Bastion/Jumpbox/PE)?
+60) How will you horizontally scale your App Services?
+61) How will you make AKS private (private cluster, private endpoints, UDRs, DNS)?
+62) What compute services do you commonly use in Azure?
+
+9. Availability, BCDR & Backup
+======================================
+
+63) What is Azure Site Recovery (ASR)?
+64) Define RPO and RTO in DR design.
+65) What is BCDR in Azure? Difference between BCDR and DR?
+66) How do you perform DR drills in Azure?
+67) How have you configured VM backups — what policies do you apply?
+68) If a VM has crashed and is inaccessible, how will you take/restore a backup?
+69) MABS vs MARS agent — when to use which?
+70) Where are your DR servers located (region pair considerations)?
+
+10. Monitoring, Logs & Security Alerts
+======================================
+
+71) What is Azure Monitor and how does it help track performance?
+72) What are metrics and logs in Azure Monitor?
+73) What are Diagnostic Settings and common log categories?
+74) How do you analyze Activity Logs and Security Alerts?
+75) How do you monitor Application Gateway logs in Log Analytics (WAF logs, access logs)?
+76) What is Application Insights and when do you use it?
+77) What are options to monitor network traffic (NSG flow logs, NPM/Workbooks)?
+78) There are certain security alerts in Azure — how would you triage and remediate them?
+79) Suppose Microsoft announces new Azure services — where do you get official updates?
+
+11. Cost, Architecture & Landing Zone Readiness
+======================================
+
+80) What is cost optimization and which Azure tools help (Cost Management, Advisor, Reservations, Spot, Autoscale)?
+81) What are Availability Zones and their benefits?
+82) What services of Azure have you used (VMs, VNets, NSGs, LB, Storage, App GW, AKS, App Service)?
+83) What are the pillars of the Well-Architected Framework?
+84) What are the key design principles for an enterprise Landing Zone (policy, guardrails, identity, networking, management)?
+85) How will you secure your frontend deployment (WAF, Front Door, Private Link, Managed Identity, secret scanning)?
+86) How will you work across multi-environment setups in Azure (dev/test/prod isolation, subscriptions, policies)?
+
+12. Migration & Platform Operations
+=====================================
+
+87) What are the steps to migrate on-prem servers/VMs to Azure?
+88) What are the steps to migrate on-prem VMs to Azure with minimal downtime?
+89) How do you handle platform updates in Azure Infra (patches, reboots, host OS updates)?
+90) What’s the process to move workloads between regions or subscriptions?
+
+13. Storage, Backup & Region Placement – Practical Checks
+==================================
+
+91) How do you configure Azure Backup and retention policies?
+92) Where are your VMs located — which region and why?
+93) 
+Where are your DR servers located — region pair and compliance?
+
+
+14. Quickfire: Clarifications & Choose the Right Service
+=====================================
+
+94) Difference between Availability Zone and Availability Set?
+95) Difference between Azure DNS and Azure Front Door?
+96) Azure Front Door vs Traffic Manager — when to use which?
+97) CDN vs Traffic Manager — main differences and placement in architecture?
+98) Types of Load Balancer — explain internal vs external scenarios.
+99) Application Gateway (Standard vs WAF SKU) — differences and selection.
+100) Private Endpoint vs Service Endpoint — differences and selection.
+
+15. Real-World Scenarios
+===============================
+
+101) “We have VM, Storage Account, SQL DB, App Service in one subnet, and a Private Endpoint on Storage” — how will the VM resolve the Storage FQDN privately?
+102) “AKS app is slow and has DNS resolution errors” — walk through end-to-end troubleshooting (CoreDNS, Private DNS Zone links, NSGs/UDRs, health probes).
+103) “How have you used Azure Load Balancers (internal/external) and Application Gateway?” Give examples.
+104) “How do you secure Storage Account access?” (Private endpoints, deny public, SAS, scoped tokens, firewall, RBAC)
+105) “Tell me where you used NSG and Virtual Network Gateway in your project.”
+
+16. Cross-Cloud & Edge Case (Bonus)
+==================================
+
+106) Your EC2 instance in a private subnet must download packages but no NAT Gateway exists — what alternatives (VPC endpoints, Instance Connect, proxy, S3/Dynamo endpoints) apply?
+107) What is the difference between PaaS, IaaS, and SaaS in Azure?
+
+17. Misc / Screening (Non-Tech)
+==================================
+
+108) Are you open to working from office 3 days a week and relocation?
+
+
+18. Azure Infrastructure & Networking
+======================================
+
+109) How can we connect to VPN securely?
+110) What is VNet Peering?
+111) Explain Basic Load Balancer (Layer 4).
+112) Explain Application Gateway (Layer 7).
+113) What is an Application Gateway and what are its components?
+114) How do you apply NSG (Network Security Group) in your network?
+115) Did you implement firewall with NSG?
+116) What resources have you used to enhance network security? (Subnets, NSG, Firewall)
+117) Difference between Service Endpoints and Private Endpoints?
+118) What is the role of Azure Bastion in network security?
+119) Can you elaborate on Availability Zones in Azure?
+120) What is an Availability Set in Azure? 
+121) What arguments are required when creating a Resource Group?
+122) What resources do you use when creating a VM in Azure?
+123) Difference between VM and VMSS (Virtual Machine Scale Sets).
+124) If you need to create two VMs and two databases, which approach will you follow: VM or VMSS?
+125) How do you manage multiple Azure subscriptions in Azure DevOps?
+126) How would you manage 1500 subscriptions from Azure DevOps level?
+127) 
+What is a Service Principal and Managed Identity?
+128) What is Least Privilege Access?
+129) What is the difference between public and private IPs?
+130) What is a Service Endpoint and Private Link?
+131) What is Bastion Host and why is it used?
+132) What is Azure Function?
+133) How do you horizontally scale your app services?
+134) What are the different replication types in Azure?
+135) What is Azure Key Vault and how do you secure secrets?
+136) What is Azure Storage Account and how to secure it?
+
+19. Azure Services & Serverless
+=================================
+
+137) Have you used Azure Function App? What is its role?
+138) Which Azure resource is used to distribute static and dynamic content?
+139) Have you used Azure App Service?
+140) What is difference between App Service and VM Service?
+141) What is Azure Front Door?
+142) What is Azure Dashboard?
+143) How do you configure auto-scaling for AKS using Azure native tools?
+
+
+144)
+145)
+146)
+147)
+148)
+149)
+150)
+151)
+152)
+153)
+154)
+155)
+156)
+157)
+158)
+159)
+160)
+161)
+162)
+163)
+164)
+165)
+166)
+167)
+168)
+169)
+170)
+171)
+172)
+173)
+174)
+175)
+176)
+177)
+178)
+179)
+180)
+181)
+182)
+183)
+184)
+185)
+186)
+187)
+188)
+189)
+190)
+191)
+192)
+193)
+194)
+195)
+196)
+197)
+198)
+199)
+200)

@@ -1,0 +1,726 @@
+1. Terraform- Fundamentals & Core Concepts
+====================================
+1) What is terraform ? 
+Ans) 🌍 Terraform Overview
+Terraform is an Infrastructure as Code (IaC) tool by HashiCorp used to provision, manage, and version cloud infrastructure declaratively.
+
+Supports multiple clouds (Azure, AWS, GCP, VMware, etc.) using providers.
+Executes infra creation via a dependency graph and plans changes before applying.
+Ensures reproducibility & consistency — same code = same infra every time.
+In Practice: I use Terraform to manage multi-env infra (Dev, QA, Prod) from same codebase using workspaces and variables.
+
+2) What is a provider in terraform ? 
+3) What is a resource block ?
+4) What is a variable in terraform ?
+5) What is the use of output block and how to pass it in pipeline?
+6) What is data block in Terraform?
+7) How to write code with module and for_each?
+8) What is terraform show?
+9) What is terraform fmt?
+10) What is terraform function?
+
+2) Terraform- Workspaces, Execution & State Management 
+====================================
+
+11) What is terraform workspace and why we use it?
+12) What is the use of terraform slug?
+13) What is the difference between terraform plan and terraform apply?
+14) What is the purpose of terraform import?
+15) What is the use of dynamic block?
+16) How do you secure your Terraform setup?
+17) What is drift condition in Terraform?
+18) How do you handle state management with multiple people?
+19) What is Terraform Core?
+
+3. Terraform – Configuration Language, State & Variables
+======================================
+
+20) What is Terraform Configuration Language?
+21) What are Terraform Providers?
+22) What are Terraform Modules?
+23) What is Terraform State?
+24) What is the difference between Terraform Core and Provider?
+25) What is a .tf file?
+26) What are input variables in Terraform?
+27) What are output variables in Terraform?
+28) What is the use of backend in Terraform?
+
+4. Terraform – Resources, Meta-Arguments, Loops & Provisioners
+====================================
+
+29) What is a resource in Terraform?
+30) What are meta-arguments in Terraform? 
+31) What is the lifecycle block in Terraform?
+32) What is the purpose of depends_on in Terraform?
+33) What is the function of count and for_each in Terraform?
+34) What is the use of locals in Terraform?
+35) What are provisioners in Terraform? 
+36) What is the use of data block in Terraform?
+37) What is the use of Terraform?
+38) What are Terraform Meta Arguments overall purpose?
+
+5. Terraform – Installation & Setup
+===================================
+
+39) How to install Terraform?
+40) What is the latest version of Terraform?
+41) Which command is used to check Terraform version?
+42) How do you upgrade Terraform to the latest version?
+43) Which file is created after running “terraform init”?
+44) What is the terraform block?
+45) What is the syntax of provider block?
+
+6. Terraform – Workflow (Init, Plan, Apply, Destroy, etc.)
+=======================================
+
+46) What is the use of terraform init?
+47) What is the use of terraform init -upgrade?
+48) What is the use of terraform plan?
+49) What is the use of terraform plan -out=<filename>?
+50) What is the use of terraform apply?
+51) What is the use of terraform apply <filename>?
+52) What is the use of terraform destroy?
+53) What is the use of terraform validate?
+54) What is the use of terraform fmt?
+55) What is the use of terraform show?
+56) What is the use of terraform output?
+57) What is the use of terraform taint?
+58) What is the use of terraform untaint?
+59) What is the use of terraform import?
+60) What is the use of terraform graph?
+61) What is the use of terraform state?
+62) What is the use of terraform workspace?
+
+7. Terraform – Variables, tfvars & Type Handling
+=====================================
+
+63) What is variable.tf and terraform.tfvars? Difference?
+64) What is difference between variable.tf and variables.tf?
+65) How to save sensitive data in state file?
+66) If you mark a variable as sensitive, how will you see it in terraform state?
+67) How do you provide default value to a variable?
+68) What are type constraints in Terraform?
+69) Difference between list and map?
+70) What are the data types in Terraform?
+71) If you don’t want to hardcode IP in main.tf, how will you handle that?
+72) How do you manage secrets or sensitive variables in Terraform?
+73) What are variable types in Terraform?
+74) What is the precedence of variable values?
+75) How to declare variables in Terraform?
+76) What is the default value in variable declaration?
+77) What is the difference between var.name and local.name?
+78) What does sensitive = true mean?
+79) How to define environment variables for Terraform?
+80) What are the different ways to assign values to variables?
+81) What is the difference between input variables and output values?
+82) How to pass variables from CLI?
+
+8. Terraform – State File & Backend
+===================================
+
+83) What is state file and where do we store it?
+84) When will the state file be created?
+85) After which command is the state file created?
+86) How do you encrypt the state file?
+87) What is statefile management?
+88) What is state locking in Terraform?
+89) What is a lock file and why is it created?
+90) What are the different backends you’ve used?
+91) 
+What happens if local tfstate is deleted accidentally?
+92) How do you recover a lost local state file?
+93) How do you manage multiple state files in team environments?
+94) What if 150 people use the same backend — how do you identify changes?
+
+9. Terraform – Provisioners & Lifecycle
+====================================
+
+95) What is a provisioner in Terraform?
+96) What is file provisioner?
+97) What is a null resource?
+98) What is a lifecycle block in Terraform?
+99) What arguments can be used in lifecycle block?
+100) Which provisioner is used to join a VM to a domain using PowerShell?
+101) What happens if you manually install MS Office and re-run terraform apply?
+102) What is a provisioner block — how is it used with VM deployment?
+103) What is the use of remote-exec?
+104) What is the use of local-exec?
+105) When to use provisioners?
+106) What are the drawbacks of using provisioners?
+107) What is a null resource and how is it used?
+108) How do you automate post-deployment configuration with provisioners?
+
+10. Terraform – Modules (Child, Root, Registry, Reuse) & Patterns
+======================================
+
+109) What is a module in Terraform?
+110) What is the difference between child module and root module?
+111) What is a pattern module?
+112) Difference between pattern module and root-child module?
+113) What is resource and pattern module?
+114) Can you explain your module structure?
+115) How did you upgrade your Terraform template recently?
+116) What kind of modular approach do you follow to provision resources?
+117) What is a root module?
+118) What are child modules?
+119) How to call a module?
+120) What is the use of module block?
+121) What arguments are required in a module block?
+122) How to pass variables from root to child module?
+123) Can a module call another module?
+124) What is module source in Terraform?
+125) How to use modules from Terraform Registry?
+126) How to organize modules in a Terraform project?
+127)How do you upgrade Terraform templates ?
+
+11. Terraform – Dependencies & Logic
+===================================
+
+128) What are implicit and explicit dependencies?
+129) Difference between depends_on and implicit dependency?
+130) What is the move block in Terraform? Does it affect infrastructure?
+131) What is count and for_each? Which one will you use for creating 10 storage accounts?
+132) Why is delete operation tricky when using count?
+133) What is lifecycle block and how does it handle dependencies?
+134) How do you manage inter-resource dependencies in a module?
+135) What is a provider in Terraform?
+136) How to configure a provider in Terraform?
+137) What is the use of version argument in provider block?
+138) How to restrict provider version?
+139) What is required_providers block?
+140) What is alias in provider block?
+141) How to use multiple providers in one configuration?
+142) What is provider inheritance?
+143) How to authenticate Terraform with cloud providers?
+144) What is AzureRM provider and how is it configured?
+
+12. Terraform – Basics & Core Concepts
+=======================================
+
+145) What is Terraform and why do we use it in infrastructure provisioning?
+146) What are Terraform’s main features?
+147) What is Infrastructure as Code (IaC)?
+148) What are the benefits of Terraform in DevOps?
+149) How does Terraform differ from Ansible, Puppet, or Chef?
+150) What is Terraform Core and what are Providers?
+151) What are .tf and .tfstate files?
+152) When does the state file get created (init/plan/apply)?
+153) What are the different stages in Terraform deployment?
+154) What is the lifecycle of a Terraform deployment?
+155) What is the Terraform workflow — init, plan, apply, destroy?
+156) What is terraform plan and apply command?
+157) What is terraform fmt and why is it important?
+158) What is terraform validate used for? 
+159) What is the advantage of running terraform plan before apply?
+
+13. Terraform – State Management & Backend
+====================================
+
+160) What is Terraform state file and why is it required?
+161) What is a backend in Terraform?
+162) What is the difference between local and remote backend?
+163) What are Terraform backends, and why are they important?
+164) How do you configure a remote backend in Azure?
+165) How do you store Terraform state securely?
+166) How do you manage Terraform state file locking?
+167) What is state locking and why is it important?
+168) How do you handle Terraform state file corruption?
+169) What happens if Terraform apply fails midway?
+170) How do you resolve state file lock issues?
+171) What happens if state file is deleted? How do you recover it?
+172) You have 1000 resource groups but lost state file — how will you rebuild infra?
+173) What is terraform refresh command and what does it do?
+174) How will you determine a zero drift condition?
+175) What is drift detection in Terraform?
+
+14. Infrastructure as Code (IaC) & Automation
+====================================
+
+176) What is Infrastructure as Code (IaC)?
+177) What is the difference between Terraform and ARM templates?
+178) What is Infrastructure Drift, and how do you manage it?
+179) How do you handle state management in IaC tools?
+180) How will you pass custom scripts to VMs during creation?
+181) What is the difference between local-exec and remote-exec provisioners?
+182) Explain modular approach in Terraform — how child and parent modules interact.
+183) What is the strategy to update IaC for a new feature without impacting production?
+
+15. Terraform Providers & Authentication
+====================================
+
+184) What are Terraform providers?
+185) How does Terraform provider authentication work?
+186) How do you use AzureRM provider?
+187) Can Terraform handle multiple providers?
+188) What are provider version constraints?
+189) What is the difference between provider and provisioner?
+190) How do you manage provider versioning?
+191) How do you authenticate Terraform with Azure?
+
+16. Terraform Variables, Locals & Outputs
+================================
+
+192) What are input variables and output variables?
+193) What is the difference between locals and variables?
+194) What are Terraform variable types (string, map, object, list)?
+195) What is the use of a variable group?
+196) How do you handle sensitive variables in Terraform?
+197) How do you secure sensitive outputs in Terraform?
+198) What is the use of terraform output block?
+199) Write the steps of output block in Terraform.
+200) How do you provide default values to variables?
+201) How do you pass variables from CLI or tfvars file?
+202) What are local values and how are they used?
+203) Difference between data source and local block?
+
+17. Terraform - Modules & Reusability
+=====================================
+
+204) What are modules in Terraform and why are they important?
+205) What is the difference between Terraform modules and resources?
+206) How do you create a reusable module?
+207) What is a child module and how do you call it?
+208) What are shared modules and how do you manage them?
+209) What are parent and child modules in a 3-tier app?
+210) What are Terraform best practices for module versioning?
+211) How do you manage Terraform modules in version control?
+
+18. Terraform - Lifecycle & Dependencies
+=================================
+
+212) What is a lifecycle block and why is it used?
+213) What are lifecycle arguments like create_before_destroy, prevent_destroy, ignore_changes?
+214) Where did you use lifecycle in Terraform?
+215) What is the use of depends_on?
+216) How do you handle resource dependencies in Terraform?
+217) If there are interdependent resources (VM, NSG, subnet), how will you serialize deployment?
+218) What happens when we rename a Terraform resource?
+219) What happens if a resource name changes in map?
+220) What if an item in input map is deleted — how will Terraform behave?
+
+19. Terraform - Count, for_each & Dynamic Blocks
+==================================
+
+221) What is the difference between count and for_each?
+222) When will you use count and when for_each?
+223) for_each ko directly list ke saath kyu nahi use kar sakte?
+224) for_each me map use karte waqt each.key aur each.value kya represent karte hain?
+225) toset() ka kya role hota hai jab list ko for_each me convert karte ho?
+226) Kya for_each ke andar duplicates allowed hain?
+227) Agar tum ek for_each ke resource ka index chahte ho to kya karoge?
+228) Kya tum for_each ke sath dynamic blocks use kar sakte ho? Agar haan, kaise?
+229) for_each resource ko dusre for_each resource se refer kaise karte ho?
+230) for_each me condition lagana chahte ho (e.g. kuch resources hi create ho) — kaise karoge?
+231) Ek for_each loop me tum locals ka use kaise kar sakte ho?
+232) Multi-level nesting (RG → VNet → Subnet) for_each kaise handle karoge using map of objects?
+233) What are dynamic blocks and how are they used?
+234) What is Terraform’s behavior when for_each resource renamed?
+
+20. Terraform - Provisioners & Null Resources
+================================
+
+235) What is a provisioner block?
+236) What is the difference between local-exec and remote-exec?
+237) What are use cases of provisioners?
+238) What is a null_resource in Terraform and when do you use it?
+239) What happens if you install software manually and rerun Terraform apply?
+
+21. Terraform - Data Sources
+================================
+
+240) What is a data source and how is it used?
+241) 
+What is the difference between data block and locals block?
+242) Do data sources become part of state file?
+243) 
+What is the purpose of terraform data lookup?
+244) How do you use Key Vault data source in Terraform?
+
+22. Terraform - Workspaces & Multi-Environment Management
+==================================
+
+245) What is Terraform workspace and why do we use it?
+246) How do you manage multiple environments (dev, uat, prod)?
+247) What is the difference between workspaces and folders?
+248) How do you handle multi-subscription deployments using Terraform?
+249) How do you manage environment isolation in pipeline?
+250) What is the purpose of terraform workspace command?
+
+23. Terraform - Integration with Azure DevOps
+=====================================
+
+251) How do you integrate Terraform with Azure DevOps pipeline?
+252) 
+How do you use Terraform code in CI/CD pipeline?
+253) What is the difference between classic and YAML pipeline for Terraform?
+254) How do you fetch secrets from Azure Key Vault into pipeline?
+255) How do you secure Terraform pipeline execution in Azure DevOps?
+256) How do you handle Terraform state in Azure Blob backend via pipeline?
+257) How do you handle multi-stage pipelines (init, plan, apply)?
+258) Which branching strategy do you follow for Terraform code?
+259) How to create ADO global variables in Terraform?
+260) How to reinitialize Terraform when backend config changes?
+261) What happens when plan shows 1 to add, 1 to delete — do you apply or not?
+262) How do you handle errors during pipeline execution?
+263) What happens if two people run the same pipeline simultaneously?
+264) If pipeline error occurs, what’s your troubleshooting process?
+
+24. Terraform - Security, RBAC & Compliance
+===================================
+
+265) What are Terraform best practices for security?
+266) How do you secure Terraform state file?
+267) How have you implemented RBAC in Terraform?
+268) How do you manage secrets securely in Terraform (Vault, Key Vault, Env vars)?
+269) How to restrict provider access using Service Principals?
+270) How to ensure compliance and drift monitoring using tools like Checkov/TFSec?
+
+25. Terraform - Advanced / Enterprise / Cloud
+====================================
+
+271) What is Terraform Cloud?
+272) What are the benefits of Terraform Cloud over CLI?
+273) What is Sentinel Policy in Terraform Cloud?
+274) How does Terraform handle concurrent operations in team environments?
+275) How do you recover state after accidental deletion in a team setup?
+276) How do you handle DR scenario using Terraform for primary & secondary environments?
+277) How do you implement cross-account provisioning?
+278) What happens when an S3 bucket is manually modified (policy drift)?
+279) How to handle infrastructure drift detection automatically?
+
+26. Terraform - Troubleshooting & Real-World Scenarios
+==================================
+
+280) What happens if apply fails midway?
+281) How do you rollback infrastructure changes?
+282) What is Terraform taint and when to use it?
+283) What’s the difference between terraform destroy and terraform apply -destroy?
+284) How do you handle resource drift due to manual changes?
+285) How do you debug Terraform apply errors?
+286) How do you troubleshoot VM configuration mismatch (A4 → A5)?
+287) How do you import existing resources (Azure, AWS VPC, etc.)?
+288) How to handle manual updates done outside Terraform?
+289) How to re-sync Terraform with Prod state after changes?
+
+27. Terraform – State Management
+=================================
+
+290) What is terraform.tfstate?
+291) What is terraform.tfstate.backup?
+292) What is the use of state file?
+293) What is the difference between local and remote state?
+294) What are the benefits of remote state?
+295) What is a backend in Terraform?
+296) What is the syntax of backend block?
+297) What are supported backends in Terraform?
+298) How to configure remote backend?
+299) What is state locking?
+300) What is state file encryption?
+301) How do you recover if local tfstate is deleted?
+302) How do you handle state file in a team setup?
+
+28. Terraform – Backend (Azure, S3, etc.)
+====================================
+
+303) What is the Azure backend in Terraform?
+304) What arguments are required for Azure backend?
+305) How to configure S3 backend in Terraform?
+306) What is the difference between S3 and Azure backend?
+307) What is the use of key argument in backend block?
+308) What is the role of access_key and secret_key in backend configuration?
+
+29. Terraform – Lifecycle, Dependencies & Meta-Arguments
+======================================
+
+309) What is lifecycle block in Terraform?
+310) What is create_before_destroy?
+311) What is prevent_destroy?
+312) What is ignore_changes?
+313) What is the purpose of depends_on?
+314) What is count and for_each?
+315) What is a dynamic block?
+316) What is a conditional expression?
+317) What is implicit vs explicit dependency?
+318) What is the move block and what does it do?
+
+30. Terraform – Functions & Expressions
+======================================
+
+319) What are functions in Terraform?
+320) What are built-in functions in Terraform?
+321) What is the use of lookup function?
+322) What is the use of join function?
+323) What is the use of split function?
+324) What is the use of length function?
+325) What is the use of element function?
+326) What is the use of contains function?
+327) What is the use of file function?
+328) What is the use of templatefile function?
+329) What is a conditional expression in Terraform?
+
+31. Terraform – Debugging, Logs & Error Handling
+=======================================
+
+330) How to enable debug logs in Terraform?
+331) What is TF_LOG?
+332) What is TF_LOG_PATH?
+333) How to troubleshoot Terraform issues?
+334) How do you handle validation or dependency errors?
+335) How do you perform dry-run debugging in CI/CD?
+
+32. Terraform – Cloud & Enterprise
+==================================
+
+336) What is Terraform Cloud?
+337) What is Terraform Enterprise?
+338) What are workspaces in Terraform Cloud?
+339) What is Sentinel policy in Terraform?
+340) What is the difference between Terraform Cloud and CLI?
+341) What is the use of VCS integration in Terraform Cloud?
+
+33. Terraform – Registry
+=============================
+
+342) What is Terraform Registry?
+343) How to publish a module to Registry?
+344) How to use modules from Terraform Registry?
+345) How do you version modules and maintain registry hygiene?
+
+34. Terraform – Security & Best Practices
+=====================================
+
+346) What are Terraform best practices?
+347) How to manage secrets securely in Terraform?
+348) What is Vault provider and when do you use it?
+349) How to use environment variables securely?
+350) How to manage Terraform state securely?
+351) What is least privilege principle in Terraform?
+352) How to enforce policies for secure IaC?
+
+35. Terraform – Azure
+==========================
+ 
+353) How to use Terraform with Azure?
+354) What is AzureRM provider?
+355) How to create Resource Group using Terraform?
+356) How to authenticate to Azure in Terraform?
+357) How to use service principal with Terraform?
+358) How to deploy VM using Terraform in Azure?
+359) How to connect on-prem to Azure via Terraform?
+360) How to use Key Vault integration with Terraform?
+
+
+36. Terraform – Miscellaneous / Advanced Topics
+=====================================
+
+361) What is the difference between Terraform and ARM template?
+362) What is drift in Terraform?
+363) What is Terraform refresh?
+364) What is import in Terraform?
+365) What is the difference between apply and plan?
+366) What is the use of target in terraform apply?
+367) How to write reusable Terraform code?
+368) What is Terraform linting?
+369) What are common Terraform errors you faced?
+370) How do you handle module version upgrades safely?
+
+37 . Scripting & Tools (Automation, Bash, PowerShell, Linters)
+===================================
+
+371) Have you worked on Bash or PowerShell scripting?
+372) How will you ensure password is removed from repo after it was exposed?
+373) What is TFLint?
+374) What is a linter in Terraform?
+375) What is Checkov and how do you integrate it?
+376) What is TruffleHog and where do you use it?
+377) How will you integrate SonarQube using scripting?
+378) How do you automate Terraform and security checks in pipeline?
+379) How will you integrate Azure Key Vault in pipeline via script?
+380) How do you use scripting to detect secret leaks?
+381) What is AWK command in Linux?
+382) What is &dollar;_ and &dollar;? in shell scripting?
+383) Write a bash script for sending alert mail if VM disk is 80% full.
+384) Write “Hello bash” script using loop function.
+385) What are loops in bash scripting?
+386) What is PowerShell and how is it used in automation?
+387) How do you automate patching using scripting?
+388) How do you run Terraform scripts in CI/CD pipeline automatically?
+389) Have you worked with Bash or PowerShell scripting?
+390) What is a shell script and how to create one?
+400) What is the difference between Bash and PowerShell?
+401) How do you automate Terraform commands using scripting?
+402) What is a null resource and how can scripting trigger it?
+403) What are environment variables and how to use them in scripts?
+404) How to pass dynamic values from script to pipeline?
+405) What is the AWK command in Linux?
+406) What is &dollar;_ and &dollar;? in shell scripting?
+407) Write a simple Bash script to print “Hello Bash”.
+408) Write a script with loop function example.
+409) Write a Bash script to send email alert when disk usage exceeds 80%.
+410) What are loops in Bash (for, while, until)?
+411) What is cron job and how to schedule it?
+412) How to remove sensitive passwords from scripts or repos?
+413) How to securely store API keys used in automation scripts?
+414) What are linters and how are they used (TFLint, Checkov, TruffleHog)?
+415) How do you integrate SonarQube using script?
+416) How to integrate Azure Key Vault in pipeline via script?
+417) How to fetch Key Vault secrets automatically when updated?
+418) How to use scripting for CI/CD automation and notifications?
+419) How to automate Terraform validation, plan, and apply steps?
+
+38. Infra & Architecture Scenarios
+===================================
+
+420) If you're an architect, how would you propose infra to a customer?
+421) How to create 10 storage accounts in 10 subscriptions using a single pipeline?
+422) If VM created with a custom image is updated, what happens on terraform apply?
+423) What if a user hardcoded values in Terraform — will it show in plan?
+424) How to get VM output in JSON format using Terraform?
+425) How to securely access resources in Azure?
+426) What is the network topology you worked with?
+427) How to connect on-prem apps to cloud?
+428) How do you deploy a 3-tier architecture app?
+429) Which type of modular approach do you follow in Terraform?
+430) How do you manage large scale subscriptions in Azure?
+431) How to set up DR (Disaster Recovery) in Azure?
+432) 
+What is your approach to cost optimization as an architect?
+
+39. General / Uncategorized
+=============================
+
+433) Introduce yourself.
+434) Tell me about your recent project.
+435) What all projects do you work on?
+436) What are the next rounds of interviews?
+437) Do we use scripting here?
+438) What is your role and responsibilities?
+439) What is VNet in Azure?
+440) What is NAT and Application Gateway?
+441) What is Load Balancer?
+442) How many types of load balancers exist?
+443) What is Public and Private IP?
+444) What is a Service Endpoint and Private Link?
+445) How do you securely access your Azure resources?
+446) What is Bastion and why is it used?
+447) What are NSG rules and priorities?
+448) How to restrict any service on a resource?
+449) How to identify who is using port 80 in the system?
+450) How to close any running process?
+451) What is the purpose of -9 command?
+452) What is the top command in Linux?
+453) What is a cron job?
+454) What is the sudo command and when do we use it?
+455) How to change directory permissions in Linux?
+456) What is middleware and how do you install it?
+457) What is NAT?
+458) What is DNS?
+459) What is Azure Front Door?
+460) What is bare metal?
+461) What is blue-green deployment rollback?
+462) What is a Helm chart?
+463) What is Replica?
+464) What is VPC?
+465) What is API and how is it used in pipeline?
+466) What is difference between App Service and VM Service?
+467) What is Azure Function?
+468) What is Azure Dashboard?
+469) What is Availability Set and Zone?
+470) What are replication types in Azure?
+471) What is Key Vault?
+472) What is Service Principal and Managed Identity?
+473) What is Least Privilege Access?
+474) What is ACR (Azure Container Registry)?
+475) What is Stateful vs Stateless?
+476) What is difference between Terraform Plan and Apply?
+477) What is the difference between public cloud and private cloud?
+478) What are key metrics to monitor production health?
+479) What is load testing vs stress testing?
+480) What is rollback and why is it important?
+481) What is Infrastructure Drift and how do you manage it?
+482)
+483)
+484)
+485)
+486)
+487)
+488)
+489)
+490)
+491)
+492)
+493)
+494)
+495)
+496)
+497)
+498)
+499)
+500)
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

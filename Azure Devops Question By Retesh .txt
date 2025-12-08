@@ -1,0 +1,276 @@
+1. Azure DevOps Fundamentals
+===============================
+
+01) What is Azure DevOps and what are its main components?
+02) What are Repos, Pipelines, Boards, Artifacts, and Test Plans in ADO?
+03) What services of the Azure DevOps portal have you used?
+04) Tell me about the complete CI/CD process followed in your company
+05) What are pipelines and how are they structured?
+06) Explain the difference between Classic and YAML pipelines
+07) What are the advantages of YAML pipelines?
+08) What is GitOps and how is it implemented in ADO?
+09) What is the difference between GitOps and DevOps?
+10) What is Trunk-Based Branching Strategy?
+
+2. Repos & Source Control
+===============================
+
+11) What are repositories in Azure DevOps?
+12) How do you checkout code from multiple repositories in one pipeline?
+13) You have multiple repositories A and B and need to fetch both in one deployment — how do you configure that?
+14) What is GitOps and how do you manage Git branches for automation?
+15) Explain the branch strategy followed in your project (feature/develop/release/hotfix).
+16) What is a hotfix in pipelines? How do you deploy hotfixes?
+17) How do you rollback or revert a commit if build fails?
+
+3. Variables, Secrets & Configuration
+======================================
+
+18) What are Variables in a pipeline?
+19) Difference between pipeline variables and environment variables.
+20) How do you create and manage variable groups in ADO?
+21) What is the sequence or order of variable precedence?
+22) How do you secure secrets in pipelines? (Library, Key Vault, Environment Variables)
+23) How do you link Azure Key Vault with ADO to pull secrets?
+24) How can you store configuration secrets to authorize pipelines?
+
+4. Agents, Pools & Runners
+============================
+
+25) What is an agent pool and how does it work?
+26) What is a self-hosted agent and when would you use it?
+27) What is the advantage of a self-hosted agent?
+28) 
+Which agents do you use — Microsoft-hosted or self-hosted?
+29) How many agents are configured in your organization?
+30) If 12 developers trigger pipelines at once and only 6 agents are available — how do you handle concurrency?
+31) How do you monitor and maintain self-hosted agents?
+32) What is a deployment group and how is it used?
+33) When will you use which type of agent? (Linux/Windows, self-hosted/cloud)
+34) What is the difference between run-once and multi-stage jobs?
+
+5. Service Connections & Integrations
+=======================================
+
+35) What is a service connection and how do you configure it?
+36) How do you authorize pipelines to access Azure subscriptions?
+37) If you see the error 'Pipeline doesn't have authorization to run,' what are possible causes?
+38) How do you integrate ADO pipelines with GitHub repositories?
+39) What is PAT (Personal Access Token) and where do you use it?
+40) How do you authenticate with Azure Container Registry (ACR) from pipelines?
+41) What is ACR and how do you push images from pipeline to ACR?
+42) How do you link external feeds or publish artifacts to external registries?
+43) What is required while creating a service connection?
+44) How do you create a service connection for GitHub in Azure DevOps?
+
+6. CI/CD Pipeline Structure & YAML
+====================================
+
+45) What are the stages in a typical CI/CD pipeline?
+46) How do you define triggers, agents, and service connections in YAML?
+47) What are pipeline templates and their benefits?
+48) How do you write a YAML pipeline for application deployment?
+49) Write a sample Azure pipeline YAML and explain each stage
+50) What is the difference between dependsOn and condition in YAML?
+51) What is the difference between deployment job and normal job?
+52) What is the use of environment variables in YAML?
+53) What is the purpose of environment approvals and gates in YAML pipelines?
+54) What is the use of templates for reusable pipelines?
+55) What is a pipeline in Azure DevOps? Explain YAML pipeline flow
+
+7. Pipeline Automation & Scheduling
+======================================
+
+56) How do you trigger pipelines automatically on Git commits?
+57) How do you schedule pipelines to run at specific times?
+58) How do you trigger pipelines conditionally (manual, scheduled, PR-based)?
+59) How do you handle multi-stage deployments (DEV → QA → UAT → PROD)?
+60) How do you deploy to multiple environments automatically?
+61) If we have one pipeline that must run for multiple environments — how do you parameterize it?
+
+8. Approvals, Gates & Validations
+=====================================
+
+62) How do you handle approvals and gates in pipelines?
+63) How do you configure manual validations?
+64) What is the difference between approvals in environments vs release pipeline?
+65) How do you integrate approval flow before production deployment?
+66) What is an environment in ADO and how do you manage access controls?
+67) How do you handle validation and rollback for failed releases?
+68) What are gates in Azure DevOps?
+69) What is a deployment gate in ADO?
+70) What is the purpose of approvals and gates?
+
+
+9. Quality, Testing & Security
+================================
+
+71) How do you integrate SonarQube for code quality analysis?
+72) 
+How do you handle unit and functional testing inside pipelines?
+73) How do you integrate Checkov, TFLint, and Terraform validation in your pipeline?
+74) TFLint and Checkov make the pipeline slow — how can you optimize it?
+75) How do you ensure secure code scanning and compliance checks in pipeline?
+76) How do you enable Splunk or monitoring integration for pipelines?
+77) What are security practices used to secure CI/CD pipeline?
+78) What are security best practices in pipelines?
+
+10. Terraform & Infrastructure Automation
+==================================
+
+79) How do you integrate Terraform execution in an ADO pipeline?
+80) How will you create one resource in multiple subscriptions under the same pipeline?
+81) How will you create a one-click pipeline that provisions full infrastructure?
+82) How do you run Terraform init/plan/apply securely in a pipeline?
+83) How do you handle Terraform state backend and secrets inside pipeline?
+84) How do you optimize long-running Terraform pipelines?
+85) How do you automate Terraform in CI/CD?
+86) How do you automate Terraform runs in CI/CD using Bash or PowerShell?
+
+
+11. Pipeline Failures & Debugging
+===================================
+
+87) What are the common issues faced during pipeline runs?
+88) If build fails though Dockerfile is correct — how do you troubleshoot?
+89) How do you handle pipeline failures and send notifications?
+90) How do you rollback failed deployments automatically?
+91) How do you implement retry logic in YAML pipelines?
+92) What steps do you take if the pipeline is running too long?
+93) 
+How do you debug authorization or permission-related issues?
+94) How do you manage concurrency and job parallelism to optimize execution time?
+95) How do you troubleshoot a multi-stage pipeline issue?
+96) What happens if count=0 in pipeline execution?
+97) How do you handle lock state if pipeline fails after apply?
+
+12. Releases, Artifacts & Environments
+=====================================
+
+98) What is the difference between build and release pipelines?
+99) How do you use artifacts between build and release pipelines?
+100) What is the difference between build artifacts and external feeds?
+101) How do you manage artifacts and publish them securely?
+102) Where do you deploy the artifacts (VMs, AKS, App Service)?
+103) How do you manage releases across DEV, UAT, and PROD?
+104) What are environment approvals and how are they configured?
+105) What is a release vs build vs artifact?
+106) What is an artifact repository?
+107) What is release pipeline in Azure DevOps?
+
+13. Boards & Agile
+=======================
+
+108) What is a work item?
+109) What is a sprint?
+110) What is a stakeholder in ADO?
+111) What is the difference between sprint and work item?
+112) What methodology do you follow in Azure Boards?
+113) How do you restrict an ADO user to only pipelines and repo access?
+114) Agile vs Kanban boards — which one have you used and why?
+
+
+14. Real-World Scenarios
+=============================
+
+115) You have two Azure subscriptions — how do you give access to new resources?
+116) How will you manage multi-environment pipelines with conditional triggers?
+117) How would you rollback a production deployment if a bug is found later?
+118) You are asked to add one resource in multiple subscriptions — how will you implement that?
+119) You added Checkov and TFLint — pipeline became slow. How do you speed it up?
+120) A developer ran a pipeline but authorization failed — what are the root causes?
+121) A deployment failed midway — how do you recover?
+122) What branching strategy did you use for hotfixes and releases
+123) If two teams have access to the same repo, how do you auto-raise a PR?
+124) How to manage 1500 subscriptions using ADO?
+125) What is parallelism in pipeline?
+
+15. CI/CD Concepts
+=========================
+
+126) What is CI/CD and why do we use it? 
+127) What is Continuous Delivery vs Continuous Deployment?
+128) What is blue-green deployment?
+129) What is canary deployment?
+130) What is rollback in CI/CD?
+131) What are microservices?
+132) What is DevSecOps?
+133) What are SRE principles?
+134) What are environment variables in a pipeline?
+135) How do you ensure pipeline security?
+136) What are the benefits of automation in DevOps?
+
+
+16. Terraform & Azure DevOps Integration
+=======================================
+
+137) Have you worked with Azure DevOps? Explain end-to-end flow for deploying Terraform in pipeline.
+138) What are the typical steps in a CI pipeline for Terraform deployment?
+139) What are deployment groups and task groups in Azure DevOps?
+140) What is a sprint and how does it differ from a work item in Azure Boards?
+141) What is the process for a Pull Request (PR)?
+142) What are security best practices in Azure DevOps pipelines?
+143) What are gates in Azure DevOps?
+144) Is macOS supported as an agent pool in Azure DevOps?
+145) 
+Explain service connections and what is needed to create them.
+146) How do you secure Azure DevOps?
+147) What is the difference between push and commit in Git?
+148) Explain the process of renaming a Git branch.
+149) How do you configure a local Git repo to remote repo?
+150) How do you commit a file and update commit message?
+151) What CI/CD tools have you used?
+152) How do you generate artifacts in CI pipelines?
+153) How do you pass Terraform output block values into Azure pipelines?
+154) Command to get VM result in JSON format after Terraform apply.
+155) How to integrate Azure Key Vault into pipeline using scripting?
+156) How to trigger a pipeline when dev branch passes 90 % of validation?
+157) What is parallelism in pipeline and how is it optimized?
+158) What happens when Terraform pipeline fails during apply with lock state?
+159) How to release Terraform plan automatically in multi-stage pipeline?
+
+17. Miscellaneous / General DevOps Concepts
+================================
+
+160) Introduce yourself.
+161) Tell me about your recent project.
+162) What are your roles and responsibilities?
+163) What are the tools you have worked on in DevOps?
+164) What is CI/CD and how does it help in automation?
+165) What is Continuous Delivery vs Continuous Deployment?
+166) What are microservices?
+167) What is blue-green deployment?
+168) What is canary deployment?
+169) What is rollback in CI/CD and why is it important?
+170) What are different branching strategies you have used?
+171) What is an artifact and how do you publish it?
+172) What are Service Endpoints and Private Links in Azure?
+173) What is a Load Balancer and how many types exist?
+174) What is DNS and why is it important?
+175) What is NAT?
+176) What is Middleware and how do you install it on Linux?
+177) What is Sudo command and when do we use it?
+178) What is top command in Linux?
+179) What is difference between App Service and Function App?
+180) What is VPC and how does it differ from VNet?
+181) What is the difference between Terraform and ARM template?
+182) What is the difference between Continuous Integration and Continuous Deployment?
+183) What is DevSecOps?
+184) What is Site Reliability Engineering (SRE)?
+185) What are key metrics you monitor for production health?
+186) How do you ensure security and compliance in CI/CD pipelines?
+187) What is Infrastructure Drift and how do you fix it?
+188) What are availability sets and availability zones?
+189) How do you migrate on-prem to Azure cloud?
+190) What is Helm vs Kustomize?
+191) What is Front Door in Azure?
+192) What is Recovery Services Vault and Backup Vault?
+193) What is difference between local and remote backend in Terraform?
+194) What is the difference between Feature, Hotfix, and Release branches?
+195) How do you optimize pipeline execution time?
+196) What is difference between Stateful and Stateless apps?
+197) What is “bare metal” in cloud context?
+198) What is a monolithic vs microservice application?
+199) How do you automate backups and retention?
+200) What are basic Linux commands used in DevOps daily?
+201) What are your steps for securing Terraform and Azure Pipelines?
