@@ -1,0 +1,399 @@
+Pipeline Code-02.txt
+=======================
+State lock-> terraform force-unlock < lock ID >
+portal-> stg account-->container --> blob--> click break lease
+
+Pipeline with steps
+===================
+azure-pipeline-01.yaml
+========================
+Note:- here no variable set, trigger none manually only by default one job create
+
+trigger: none
+pool: Default
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+- task: TerraformTask@5
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+    backendServiceArm: 'PrabhaSC-WIF'
+    backendAzureRmStorageAccountName: 'krishnastg567'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'dev.terraform.tfstate'
+- task: TerraformTask@5
+  displayName:  Terraform fmt
+  inputs:
+    provider: 'azurerm'
+    command: 'custom'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+    outputTo: 'console'
+    customCommand: 'fmt'
+    environmentServiceNameAzureRM: 'PrabhaSC-WIF'
+- task: TerraformTask@5
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+- task: TerraformTask@5
+  displayName: Terraform plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+    environmentServiceNameAzureRM: 'PrabhaSC-WIF'
+- task: TerraformTask@5
+  displayName: Terraform Apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+    commandOptions: '--auto-approve'
+    environmentServiceNameAzureRM: 'PrabhaSC-WIF'
+
+
+
+azure-pipeline-02.yaml
+========================
+Note:- Here pipeline with steps & variable set
+
+
+trigger: none
+pool: Default
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: $(work_dir)
+    backendServiceArm: $(service_conn)
+    backendAzureRmStorageAccountName: 'krishnastg567'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'dev.terraform.tfstate'
+
+- task: TerraformTask@5
+  displayName: Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: $(work_dir)
+    environmentServiceNameAzureRM: $(service_conn)
+
+- task: TerraformTask@5
+  displayName: Terraform Apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: $(work_dir)
+    commandOptions: '--auto-approve'
+    environmentServiceNameAzureRM: $(service_conn)
+
+azure-pipeline-02.yaml
+========================
+Note:- Here pipeline with steps & variable set & condition apply
+> branch policy:- click on require a minimum no of reviewer \& tick Allow requestor to approve their own changes
+
+trigger:
+  branches:
+   include:
+   - main
+   - feature/*
+ 
+pool: Default
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Install
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTask@5
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: $(work_dir)
+    backendServiceArm: $(service_conn)
+    backendAzureRmStorageAccountName: 'krishnastg567'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'dev.terraform.tfstate'
+
+- task: TerraformTask@5
+  displayName: Terraform fmt
+  inputs:
+    provider: 'azurerm'
+    command: 'custom'
+    workingDirectory: $(work_dir)
+    outputTo: 'console'
+    customCommand: 'fmt'
+    environmentServiceNameAzureRM: $(service_conn)
+
+- task: TerraformTask@5
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: $(work_dir)
+
+- task: TerraformTask@5
+  displayName: Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: $(work_dir)
+    environmentServiceNameAzureRM: $(service_conn)
+
+# - task: TerraformTask@5
+#   displayName: Terraform Apply
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+#   inputs:
+#     provider: 'azurerm'
+#     command: 'apply'
+#     workingDirectory: $(work_dir)
+#     commandOptions: '--auto-approve'
+#     environmentServiceNameAzureRM: $(service_conn)
+
+- task: TerraformTask@5
+  displayName: Terraform Destroy
+  inputs:
+    provider: 'azurerm'
+    command: 'destroy'
+    workingDirectory: '$(work_dir)'
+    commandOptions: '--auto-approve'
+    environmentServiceNameAzureRM: '$(service_conn)'
+
+
+
+Pipeline with jobs
+===================
+azure-pipeline-03.yaml
+========================
+Note: here apply different type of job added like scanning, linting, initplan, apply job etc.
+
+trigger:
+- main
+pool: Default
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+- job: terraformInitPlanJob
+  displayName: Terraform Init & Plan
+  steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(work_dir)
+      environmentServiceNameAzureRM: $(service_conn)
+ 
+- job: tfsecScanningJob
+  displayName: Scanning Job(tfsec)
+  steps:
+  - task: tfsec@1
+    inputs:
+      version: 'v1.26.0'
+      dir: $(work_dir)
+
+- job: tfLintingJob
+  displayName: tflinging Job
+  steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(System.DefaultWorkingDirectory)/environment/dev
+        tflint
+
+- job: chckovScanning
+  displayName: Checkov Scanning
+  steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(System.DefaultWorkingDirectory)/environment/dev
+        checkov  -d .
+
+- job: manualValidation
+  displayName: Manual Validation Job
+  dependsOn: terraformInitPlanJob
+  pool: server
+  steps:
+  - task: ManualValidation@1
+    inputs:
+      notifyUsers: 'prabhakarnayak993@gmail.com'
+      approvers: 'prabhakarnayak993@gmail.com'
+
+- job: terraformApplyJob
+  displayName: Terraform Apply
+  dependsOn: manualValidation
+  steps:
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Apply
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: $(work_dir)
+      environmentServiceNameAzureRM: $(service_conn)
+
+azure-pipeline-04.yaml
+========================
+Note: Here pipeline with jobs & condition apply
+=> Condition apply means add branch policy PR merge apply
+
+trigger:
+ branches:
+  include:
+  - main
+  - feature/*
+
+pool: Default
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+- job: securityAndComplianceJob
+  displayName: Security & Compliance Job
+  steps:
+  - task: tfsec@1
+    displayName: Tfsec Scanning Job
+    inputs:
+      version: 'v1.26.0'
+      dir: $(work_dir)
+  - task: PowerShell@2
+    displayName: Checkov Scanning job
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(System.DefaultWorkingDirectory)/environment/dev
+        checkov  -d .
+  - task: PowerShell@2
+    displayName: TfLinting Job
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(System.DefaultWorkingDirectory)/environment/dev
+        tflint
+
+- job: terraformInitPlanJob
+  displayName: Terraform Init & Plan Job
+  dependsOn: securityAndComplianceJob
+  steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(work_dir)
+      environmentServiceNameAzureRM: $(service_conn)
+
+- job: manualValidationJob
+  displayName: Manual Validation Job
+  dependsOn: terraformInitPlanJob
+  pool: server
+  steps:
+  - task: ManualValidation@1
+    displayName: Manual Validation
+    inputs:
+      notifyUsers: 'prabhakarnayak993@gmail.com'
+      approvers: 'prabhakarnayak993@gmail.com'
+
+- job: terraformApplyJob
+  displayName: Terraform Apply Job
+  dependsOn: manualValidationJob
+  steps:
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(work_dir)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Apply Job
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: $(work_dir)
+      commandOptions: '--auto-approve'
+      environmentServiceNameAzureRM: $(service_conn)
+  # - task: TerraformTask@5
+  #   displayName: Terraform Destroy
+  #   inputs:
+  #     provider: 'azurerm'
+  #     command: 'destroy'
+  #     workingDirectory: $(work_dir)
+  #     environmentServiceNameAzureRM: $(service_conn)
+
+ 
+ 
