@@ -16,8 +16,8 @@ azurerm-resource-group
 ---> main.tf
 ==================
 resource "azurerm_resource_group" "rg" {
-  name     = "prabha-rg"
-  location = "West US"
+  name     = "prabha-rg"
+  location = "West US"
 }
 
 =====================
@@ -25,15 +25,15 @@ azurerm-storage-account
 ---> main.tf
 ====================
 resource azurerm_storage_account "stg" {
-  name                     = "krishnastg567"
-  resource_group_name      = "prabha-rg"
-  location                 = "West US"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                     = "krishnastg567"
+  resource_group_name      = "prabha-rg"
+  location                 = "West US"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 
-  tags = {
-    environment = "staging"
-  }
+  tags = {
+    environment = "staging"
+  }
 =======================
 
 
@@ -41,21 +41,21 @@ parent-demo
 main.tf
 ==========
 module "resource_group" {
-  source = "../modules/azurerm_resource_group"
+  source = "../modules/azurerm_resource_group"
 }
 
 module "storage_account" {
-  depends_on = [ module.resource_group ]
-  source = "../modules/azurerm_storage_account"
+  depends_on = [ module.resource_group ]
+  source = "../modules/azurerm_storage_account"
 }
 
 Module New dard:
-------------------
+---
 1> Bar Bar same chizo ko copy paste karna pad raha hai...
 2. Hard codded hai storage account ka nam...badi  dikat hai..
 
-==> terraform module --> 1. child module 2. parent module 
-=> parent module me ek .tf fil hai ... & which call the child block 
+==> terraform module --> 1. child module 2. parent module
+=> parent module me ek .tf fil hai ... & which call the child block
 
 => dard ko recovery karne ke lia new concept terraform variable
 
@@ -69,12 +69,12 @@ Module New dard:
 
 => variable declare---> variable block banana hai..
 => variable use ---> var.rg-name, var.rg-location
-=> variable assign-> 
+=> variable assign->
 
 *) Value kaha kaha se assign kar sakta hai
-   ======================================
+   ======================================
 1. Child Module:
---------------
+---
 1. Hardcoded
 2. cli
 3. default value
@@ -85,33 +85,33 @@ Module New dard:
 
 => variable declare---> variable block banana hai..
 => variable use ---> var.rg-name, var.rg-location
-=> variable assign-> 
+=> variable assign->
 
 
 1. Child Module:
---------------
+---
 2. cli  --> Example
 
 variable.tf:
 ============
 variable "rg-name" {
-  description = "The name of the resource group"
-  # default     = "prabha-rg"
-  type        = string
+  description = "The name of the resource group"
+  # default     = "prabha-rg"
+  type        = string
 }
 
 variable "location" {
-  description = "The location for the resource group"
-  # default     = "West US"
-  type        = string
-  
+  description = "The location for the resource group"
+  # default     = "West US"
+  type        = string
+ 
 }
 
 main.tf:
 =========
 resource "azurerm_resource_group" "rg" {
-  name     = var.rg-name
-  location = var.location
+  name     = var.rg-name
+  location = var.location
 }
 
 
@@ -128,24 +128,24 @@ here rg name by default
 variable.tf:
 ===============
 variable "rg-name" {
-  description = "The name of the resource group"
-   default     = "prabha-rg"
-  type        = string
+  description = "The name of the resource group"
+   default     = "prabha-rg"
+  type        = string
 }
 
 variable "location" {
-  description = "The location for the resource group"
-  # default     = "West US"
-  type        = string
-  
+  description = "The location for the resource group"
+  # default     = "West US"
+  type        = string
+ 
 }
 
 
 main.tf:
 ========
 resource "azurerm_resource_group" "rg" {
-  name     = var.rg-name
-  location = var.location
+  name     = var.rg-name
+  location = var.location
 }
 
 4. terraform .tfvars: ---> Example
@@ -156,21 +156,21 @@ resource "azurerm_resource_group" "rg" {
 main.tf:
 ========
 resource "azurerm_resource_group" "rg" {
-  name     = var.rg-name
-  location = var.location
+  name     = var.rg-name
+  location = var.location
 }
 
 variable.tf
 ===========
 variable "rg-name" {
-  description = "The name of the resource group"
-  type        = string
+  description = "The name of the resource group"
+  type        = string
 }
 
 variable "rg-location" {
-  description = "The location for the resource group"
-  type        = string
-  
+  description = "The location for the resource group"
+  type        = string
+ 
 }
 
 terraform.tfvars
@@ -181,7 +181,7 @@ rg-location = "Central India"
 
 .auto.tfvars: ---> Example
 ============================
-==> .auto.tfvars  which replace the terraform.tfvars 
+==> .auto.tfvars  which replace the terraform.tfvars
 
 tunu.auto.tfvars
 =================
@@ -190,14 +190,14 @@ rg-location = "Central India"
 
 
 
-==> if terraform.tfvars is not present then  
-create 
+==> if terraform.tfvars is not present then
+create
 -> dev.terraform.tfvars
 -> qa.terraform.tfvars
 -> test.terraform.tfvars
 
 => new command -> terraform plan --help
-    -var-file=filename
+    -var-file=filename
 
 $ terraform plan -var-file=filename
 $ terraform plan -var-file="dev.terraform.tfvars"
@@ -210,18 +210,18 @@ main.tf
 ======
 
 variable "rg-name" {
-    type = string
-    validation {
-    condition     = contains(["kalu", "goru", "piru"], var.rg-name)
-    error_message = "Rg must be one of these : kalu, goru, piru "
-  }
+    type = string
+    validation {
+    condition     = contains(["kalu", "goru", "piru"], var.rg-name)
+    error_message = "Rg must be one of these : kalu, goru, piru "
+  }
 }
 
 # variable "rg-location" { }
 
 resource "azurerm_resource_group" "rg" {
-  name     = var.rg-name
-  location = "Central India"
+  name     = var.rg-name
+  location = "Central India"
 }
 
 
@@ -237,40 +237,40 @@ Child Module:-azurerm-resource-group
 main.tf
 ======
 resource "azurerm_resource_group" "rg" {
-  name     = var.rg-name
-  location = var.rg-location
+  name     = var.rg-name
+  location = var.rg-location
 }
 
 variable.tf:
 ==============
 variable "rg-name" {
-  description = "The name of the resource group"
-  type        = string
+  description = "The name of the resource group"
+  type        = string
 }
 
 variable "rg-location" {
-  description = "The location for the resource group"
-  type        = string 
+  description = "The location for the resource group"
+  type        = string
 }
 
 Parent Module: main.tf
 =======================
 module "resource_group" {
-  source = "../modules/azurerm_resource_group"
-  rg-name = var.rgname
-  rg-location = var.rglocation
+  source = "../modules/azurerm_resource_group"
+  rg-name = var.rgname
+  rg-location = var.rglocation
 }
 
 variable.tf
 =============
 variable "rgname" {
-  description = "The name of the resource group"
-  type        = string
+  description = "The name of the resource group"
+  type        = string
 }
 
 variable "rglocation" {
-  description = "The location for the resource group"
-  type        = string 
+  description = "The location for the resource group"
+  type        = string
 }
 
 terraform.tfvars:
@@ -290,59 +290,61 @@ Note:- 01
 main.tf:
 ========
 resource "azurerm_resource_group" "rg" {
-  count = 3
-  name     = "rg-prabha"
-  location = "Central India"
+  count = 3
+  name     = "rg-prabha"
+  location = "Central India"
 }
 
--> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) in portal rg create(eg-rg-prabha) 
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) in portal rg create(eg-rg-prabha)
 
 Note:-2
 =========
 resource "azurerm_resource_group" "rg" {
-  count = 3
-  name     = count.index
-  location = "Central India"
+  count = 3
+  name     = count.index
+  location = "Central India"
 }
 
--> here creating 3 rg in portal  name with . 0,1,3, but naming convention  not good 
+-> here creating 3 rg in portal  name with . 0,1,3, but naming convention  not good
 
 Note:-3
 =========
 resource "azurerm_resource_group" "rg" {
-  count = 3
-  name     = "rg-tiku-${count.index}"
-  location = "Central India"
+  count = 3
+  name     = "rg-tiku-${count.index}"
+  location = "Central India"
 }
 
-=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2, 
+=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2,
+
+=> isko string interpolation kahe ta hai. "rg-tiku-${count.index}"
 
 
 
 => count + List ---> Example
-----------------------------
+---
 => Without using variables:-Note-1
-------------------------------------
+---
 resource "azurerm_resource_group" "RG" {
-  count = length(["dev", "test", "prod"])
+  count = length(["dev", "test", "prod"])
 
-  name     = "rg-${["dev", "test", "prod"][count.index]}"
-  location = "West Europe"
+  name     = "rg-${["dev", "test", "prod"][count.index]}"
+  location = "West Europe"
 
 => with use of variable:- Note-2
-------------------------
+---
 variable "rg_names" {
-  type = list(string)
-  default = ["feature", "demo", "preprod"]
+  type = list(string)
+  default = ["feature", "demo", "preprod"]
 }
 
 resource "azurerm_resource_group" "RG" {
-  count =  3
-       Or
-  count =  length(var.rg_names)
+  count =  3
+       Or
+  count =  length(var.rg_names)
 
-  name     = var.rg_names[count.index]
-  location = "West Europe"
+  name     = var.rg_names[count.index]
+  location = "West Europe"
 }
 
 Note: if terraform.tfvars define (rg_names = ["dev", "test", "prod"]) then  tfvars replace the default value ..
@@ -355,19 +357,19 @@ Note-3
 main.tf:
 ===========
 resource "azurerm_resource_group" "resource_group" {
-  count    = length(var.rg_names)
-  
-  name     = var.rg_names[count.index]
-  location = var.rg_locations[count.index]
+  count    = length(var.rg_names)
+ 
+  name     = var.rg_names[count.index]
+  location = var.rg_locations[count.index]
 }
 variable.tf:
 =========
 variable "rg_names" {
-  type = list(string)
+  type = list(string)
 }
 
 variable "rg_locations" {
-  type = list(string)
+  type = list(string)
 }
 
 terraform.tfvars
@@ -384,18 +386,18 @@ rg_locations = ["East US", "West Europe", "Central India"]
 
 ForEach  + List :-
 ===========================
-=> for_each = SET OF STRINGS /MAP  ---> PASS 	
+=> for_each = SET OF STRINGS /MAP  ---> PASS
 
 => Set Of Strings:-
-------------------
+---
 
 List -> Collection of same type of Elements
- => can be duplicate value
- eg:  [ "chunu", "munu" , "tunu", "chunu" ]
+ => can be duplicate value
+ eg:  [ "chunu", "munu" , "tunu", "chunu" ]
 
 Set:- => Collection of same type of Elements
-      => Unique value / no duplicate
- eg:  [ "chunu", "munu" , "tunu" ]
+      => Unique value / no duplicate
+ eg:  [ "chunu", "munu" , "tunu" ]
 
 => Block --> Chain/curly Bracket {}
 => List/Set --> Square Bracket []
@@ -407,23 +409,23 @@ Set:- => Collection of same type of Elements
 => for_each  -> toset () function ( list to set convert )
 
 => to call the function:-
- syntax = Function_name(list) 
+ syntax = Function_name(list)
 
 eg:-
-   for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
+   for_each = toset(["rg-emu1","rg-emu2","rg-emu3"] )
 
 *) without using variable:- For_Each
 ===================================
 resource "azurerm_resource_group" "RG" {
-  for_each = toset(["feature", "demo", "preprod"])
+  for_each = toset(["feature", "demo", "preprod"])
 
-  name     = each.value
-  location = "West Europe"
+  name     = each.value
+  location = "West Europe"
 }
 
 
 *) by using variable create 3 rg using for_each
----------------------------------------------
+---
 terraform.tfvars:
 ===================
 rg_names = ["rg-emu2","rg-emu3","rg-emu4"]
@@ -431,36 +433,36 @@ rg_names = ["rg-emu2","rg-emu3","rg-emu4"]
 variable.tf:
 ==========
 variable "rg_names" {
-  type = list(string)
+  type = list(string)
 }
 
 main.tf
 ======
 resource "azurerm_resource_group" "rg" {
-  for_each = toset(var.rg_names)
-  
-  name = each.value
-  location = "West US"
+  for_each = toset(var.rg_names)
+ 
+  name = each.value
+  location = "West US"
 }
 
-***) Dard in for_each 
-=> Different location with different rg can't create 
+***) Dard in for_each
+=> Different location with different rg can't create
 Example:
 =====
 main.tf
-------------
+---
 variable "rg-names" { }
 variable "rg-location" { }
 
 resource "azurerm_resource_group" "rg" {
 
- for_each = toset(var.rg-names )
- name = each.value
- location = var.rg-location
+ for_each = toset(var.rg-names )
+ name = each.value
+ location = var.rg-location
 }
 
 terraform.tfvars:
-------------------
+---
 rg-names = ["rg-emu2","rg-emu3","rg-emu4"]
 rg-location = ["West us", "South India", "Central India"]
 
@@ -471,25 +473,27 @@ rg-location = ["West us", "South India", "Central India"]
 main.tf
 =========
 resource "azurerm_resource_group" "rg" {
-  for_each = {
-     "rg1" = "Central India"
-     "rg2"  = "West US"
-     "rg3"  = "South India"
-  }
+  for_each = {
+     "rg1" = "Central India"
+     "rg2"  = "West US"
+     "rg3"  = "South India"
+  }
 
-  name = each.key
-  location = each.value
+  name = each.key
+  location = each.value
 }
+
+> here 3 rg1, rg2, rg3 created in portal in 3 different location
 
 Example--02
 ============
 main.tf
 =====
 resource "azurerm_resource_group" "rg" {
-  for_each = var.rg_ki_details
-  
-  name = each.key
-  location = each.value
+  for_each = var.rg_ki_details
+ 
+  name = each.key
+  location = each.value
 }
 
 variable.tf:
@@ -500,12 +504,13 @@ variable "rg_ki_details" {
 terraform.tfvars
 ================
 rg_ki_details = {
-    "rg10" = "Central India"
-    "rg20" = "West US"
-    "rg30" = "South India"
-}
+    "rg10" = "Central India"
+    "rg20" = "West US"
+    "rg30" = "South India"
+}ye
 
-
+Day:-45
+=======
 => map:- problem
 => sirf name aur location ki change ho paa rahi hai aur kuch nahi kr paa hahe hai...
 
@@ -516,26 +521,26 @@ rg_ki_details = {
 Example:-1
 =========
 main.tf:
--------
+---
 resource "azurerm_resource_group" "resource-group" {
-   for_each = tomap({
-       "rg1" = {
-        name ="rg-kulu"
-        location = "South India"
-       }
-       "rg2" = {
-        name = "rg-mulu"
-           location = "West us"
-       }
-       "rg3" = {
-         name ="rg-tulu"
-        location = "Central India"
-       }
-    })
+   for_each = tomap({
+       "rg1" = {
+        name ="rg-kulu"
+        location = "South India"
+       }
+       "rg2" = {
+        name = "rg-mulu"
+           location = "West us"
+       }
+       "rg3" = {
+         name ="rg-tulu"
+        location = "Central India"
+       }
+    })
 
-  name = each.value.name
-  location = each.value.location
-  
+  name = each.value.name
+  location = each.value.location
+ 
 }
 
 
@@ -544,94 +549,94 @@ Example:-2
 => variable use kar ke
 
 variable.tf
--------------
+---
 variable "rgs" {
 type = map(any)
 }
 
 main.tf
--------
+---
 resource "azurerm_resource_group" "rg" {
-  for_each = var.rgs
-  name     = each.value.name
-  location = each.value.location
+  for_each = var.rgs
+  name     = each.value.name
+  location = each.value.location
 }
 
 terraform.tfvars
--------------------
+---
 
 rgs = {
-  "rg1" = {
-    name     = "rg-dhondhu"
-    location = "Central India"
-  }
-  "rg2" = {
-    name     = "rg-lulu"
-    location = "South India"
-  }
+  "rg1" = {
+    name     = "rg-dhondhu"
+    location = "Central India"
+  }
+  "rg2" = {
+    name     = "rg-lulu"
+    location = "South India"
+  }
 
-  "rg3" = {
-    name     = "rg-kulu"
-    location = "West us"
-  }
+  "rg3" = {
+    name     = "rg-kulu"
+    location = "West us"
+  }
 }
 
 
 =================================
 storage acc. creation
-------------------
+---
 
 variable.tf
------------
+---
 variable "storageaccount" {
-  type = map(any)
+  type = map(any)
 }
 
 main.tf
-------
+---
 resource "azurerm_storage_account" "stg-account" {
-  for_each = var.storageaccount
+  for_each = var.storageaccount
 
-  name                     = each.value.name
-  resource_group_name      = each.value.resource_group_name
-  location                 = each.value.location
-  account_tier             = each.value.account_tier
-  account_replication_type = each.value.account_replication_type
+  name                     = each.value.name
+  resource_group_name      = each.value.resource_group_name
+  location                 = each.value.location
+  account_tier             = each.value.account_tier
+  account_replication_type = each.value.account_replication_type
 
-  tags = {
-    environment = "staging"
-  }
+  tags = {
+    environment = "staging"
+  }
 }
 
 terraform.tfvars
 ==================
 
 storageaccount = {
-  "stg1" ={
-  name                     = "ramastg567"
-  resource_group_name      = "rg-dhondhu"
-  location                 = "Central India"
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+  "stg1" ={
+  name                     = "ramastg567"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
 
-  tags = {
-    environment = "staging"
-  }
+  tags = {
+    environment = "staging"
+  }
 
-  }
+  }
 
-  "stg2" ={
-  name                     = "harastg5677"
-  resource_group_name      = "rg-dhondhu"
-  location                 = "Central India"
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+  "stg2" ={
+  name                     = "harastg5677"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
 
-  tags = {
-    environment = "staging"
-  }
+  tags = {
+    environment = "staging"
+  }
 
-  }
+  }
 
 }
 
@@ -656,472 +661,473 @@ Example code:-- Revision  --to see the code
 1) azurerm_resource_group --> main.tf
 =====================================
 resource "azurerm_resource_group" "resource_group" {
-  name     = var.resource_group_name
-  location = var.location
+  name     = var.resource_group_name
+  location = var.location
 }
 
 variable.tf
 ===========
 variable "resource_group_name" {
-  description = "This is resource group name"
-  type = string
+  description = "This is resource group name"
+  type = string
 }
 variable "location" {
-  description = "This is rg location"
-  type = string
+  description = "This is rg location"
+  type = string
 }
 
 2) azurerm_virtual_network --> main.tf
 ======================================
 resource "azurerm_network_interface" "network_interface" {
-  name                = var.network_interface_name
-  location            = var.nic_location
-  resource_group_name = var.resource_group_name
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
-  }
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "virtual_machine" {
-  name                = var.virtual_machine_name
-  resource_group_name = var.resource_group_name
-  location            = var.vm_location
-  size                = var.vm_size
-  admin_username      = var.vm_admin_username
-  admin_password      = var.vm_admin_password
-  disable_password_authentication  = var.disable_password_authentication
-  network_interface_ids = [
-    azurerm_network_interface.network_interface.id,
-  ]
+  name                = var.virtual_machine_name
+  resource_group_name = var.resource_group_name
+  location            = var.vm_location
+  size                = var.vm_size
+  admin_username      = var.vm_admin_username
+  admin_password      = var.vm_admin_password
+  disable_password_authentication  = var.disable_password_authentication
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
 
-  # admin_ssh_key {
-  #   username   = "adminuser"
-  #   public_key = file("~/.ssh/id_rsa.pub")
-  # }
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
 
-  source_image_reference {
-    publisher =  var.image_publisher
-    offer     =  var.image_offer
-    sku       =  var.image_sku
-    version   =  var.image_version
-  }
+  source_image_reference {
+    publisher =  var.image_publisher
+    offer     =  var.image_offer
+    sku       =  var.image_sku
+    version   =  var.image_version
+  }
 }
 
 variable.tf
 ===========
 variable "network_interface_name"{
- description = "This is network interface name"
+ description = "This is network interface name"
 type = string
 }
 variable "nic_location" {
-  description = "This is nic location"
-  type = string
+  description = "This is nic location"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is rg name"
-  type = string
+  description = "This is rg name"
+  type = string
 }
 variable "subnet_id" {
-  description = "This is subnet id"
+  description = "This is subnet id"
 }
 variable "virtual_machine_name" {
-  description = "This is virtual machine name"
-  type = string
+  description = "This is virtual machine name"
+  type = string
 }
 variable "vm_location" {
-  description = "This is vm location"
-  type = string
+  description = "This is vm location"
+  type = string
 }
 variable "vm_size" {
-  description = "This is vm size"
-  type = string
+  description = "This is vm size"
+  type = string
 }
 variable "vm_admin_username" {
-  description = "This is vm admin username"
-  type =  string
+  description = "This is vm admin username"
+  type =  string
 }
 variable "vm_admin_password" {
-  description = "This is vm admin password"
-  type = string
+  description = "This is vm admin password"
+  type = string
 }
 variable "disable_password_authentication" {
-  description = "This is password authentication"
-  type = string
+  description = "This is password authentication"
+  type = string
 }
 variable "image_publisher" {
-  description = "This is vm image publisher"
-  type = string
+  description = "This is vm image publisher"
+  type = string
 }
 variable "image_offer" {
-  description = "This is vm image offer"
-  type = string
+  description = "This is vm image offer"
+  type = string
 }
 variable "image_sku" {
-  description = "Thisi is vm image sku"
-  type = string
+  description = "Thisi is vm image sku"
+  type = string
 }
 variable "image_version" {
-  
+ 
 }
 
 3) azurerm_subnet ----> main.tf
 =================================
 
 resource "azurerm_subnet" "subnet" {
-  name                 = var.subnet_name
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = var.virtual_network_name
-  address_prefixes     = var.address_prefixes
+  name                 = var.subnet_name
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = var.virtual_network_name
+  address_prefixes     = var.address_prefixes
 
 }
 
 variable.tf
 ===========
 variable "subnet_name" {
-  description = "This is subnat name"
-  type = string
+  description = "This is subnat name"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is rg name"
-  type = string
+  description = "This is rg name"
+  type = string
 }
 variable "virtual_network_name" {
-  description = "This is virtual network name"
-  type = string
+  description = "This is virtual network name"
+  type = string
 }
 variable "address_prefixes" {
-  description = "This is frontend subnet prifixes"
-  type = list(string)
+  description = "This is frontend subnet prifixes"
+  type = list(string)
 }
 
 4) azurerm_public_ip ---> main.tf
 ==================================
 
 resource "azurerm_public_ip" "public_ip" {
-  name                = var.public_ip_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  allocation_method   = var.allocation_method
+  name                = var.public_ip_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  allocation_method   = var.allocation_method
 
-  tags = {
-    environment = "Production"
-  }
+  tags = {
+    environment = "Production"
+  }
 }
 
 variable.tf
 ==============
 variable "public_ip_name" {
-  description = "This is public ip name"
-  type = string
+  description = "This is public ip name"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is  resource group name"
-  type = string
+  description = "This is  resource group name"
+  type = string
 }
 variable "location" {
-  description = "This is pip location"
-  type = string             
+  description = "This is pip location"
+  type = string
 }
 variable "allocation_method" {
-  description = "This is pip allocation method"
-  type = string
+  description = "This is pip allocation method"
+  type = string
 }
 
 5) azurerm_virtual_machine  ---> main.tf
 ========================================
 
 resource "azurerm_network_interface" "network_interface" {
-  name                = var.network_interface_name
-  location            = var.nic_location
-  resource_group_name = var.resource_group_name
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
-  }
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "virtual_machine" {
-  name                = var.virtual_machine_name
-  resource_group_name = var.resource_group_name
-  location            = var.vm_location
-  size                = var.vm_size
-  admin_username      = var.vm_admin_username
-  admin_password      = var.vm_admin_password
-  disable_password_authentication  = var.disable_password_authentication
-  network_interface_ids = [
-    azurerm_network_interface.network_interface.id,
-  ]
+  name                = var.virtual_machine_name
+  resource_group_name = var.resource_group_name
+  location            = var.vm_location
+  size                = var.vm_size
+  admin_username      = var.vm_admin_username
+  admin_password      = var.vm_admin_password
+  disable_password_authentication  = var.disable_password_authentication
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
 
-  # admin_ssh_key {
-  #   username   = "adminuser"
-  #   public_key = file("~/.ssh/id_rsa.pub")
-  # }
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
 
-  source_image_reference {
-    publisher =  var.image_publisher
-    offer     =  var.image_offer
-    sku       =  var.image_sku
-    version   =  var.image_version
-  }
+  source_image_reference {
+    publisher =  var.image_publisher
+    offer     =  var.image_offer
+    sku       =  var.image_sku
+    version   =  var.image_version
+  }
 }
 
 variable.tf
 =============
 
 variable "network_interface_name"{
- description = "This is network interface name"
+ description = "This is network interface name"
 type = string
 }
 variable "nic_location" {
-  description = "This is nic location"
-  type = string
+  description = "This is nic location"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is rg name"
-  type = string
+  description = "This is rg name"
+  type = string
 }
 variable "subnet_id" {
-  description = "This is subnet id"
+  description = "This is subnet id"
 }
 variable "virtual_machine_name" {
-  description = "This is virtual machine name"
-  type = string
+  description = "This is virtual machine name"
+  type = string
 }
 variable "vm_location" {
-  description = "This is vm location"
-  type = string
+  description = "This is vm location"
+  type = string
 }
 variable "vm_size" {
-  description = "This is vm size"
-  type = string
+  description = "This is vm size"
+  type = string
 }
 variable "vm_admin_username" {
-  description = "This is vm admin username"
-  type =  string
+  description = "This is vm admin username"
+  type =  string
 }
 variable "vm_admin_password" {
-  description = "This is vm admin password"
-  type = string
+  description = "This is vm admin password"
+  type = string
 }
 variable "disable_password_authentication" {
-  description = "This is password authentication"
-  type = string
+  description = "This is password authentication"
+  type = string
 }
 variable "image_publisher" {
-  description = "This is vm image publisher"
-  type = string
+  description = "This is vm image publisher"
+  type = string
 }
 variable "image_offer" {
-  description = "This is vm image offer"
-  type = string
+  description = "This is vm image offer"
+  type = string
 }
 variable "image_sku" {
-  description = "Thisi is vm image sku"
-  type = string
+  description = "Thisi is vm image sku"
+  type = string
 }
 variable "image_version" {
-  description = "This is image version"
-  type = string
+  description = "This is image version"
+  type = string
 }
 
 6) todoapp_infra  -----> main.tf, provider.tf
 ==============================================
 
 module "resource_group" {
- source = "../modules/azurerm_resource_group"
+ source = "../modules/azurerm_resource_group"
 
-  resource_group_name   = "rg-prabha"
-  location              = "Central India"
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
 }
 
 module "vertual_network" {
-  depends_on = [ module.resource_group ]
-  source = "../modules/azurerm_virtual_network"
+  depends_on = [ module.resource_group ]
+  source = "../modules/azurerm_virtual_network"
 
-  virtual_network_name = "prabha-vnet"
-  vnet_location        = "Central India"
-  resource_group_name  = "rg-prabha"
-  address_space        = ["10.0.0.0/16"]
+  virtual_network_name = "prabha-vnet"
+  vnet_location        = "Central India"
+  resource_group_name  = "rg-prabha"
+  address_space        = ["10.0.0.0/16"]
 }
 
 module "frontend_subnet" {
-  depends_on = [ module.vertual_network ]
-  source = "../modules/azurerm_subnet"
+  depends_on = [ module.vertual_network ]
+  source = "../modules/azurerm_subnet"
 
-  subnet_name          = "prabha-frontend-subnet"
-  resource_group_name  = "rg-prabha"
-  virtual_network_name =  "prabha-vnet"
-  address_prefixes     = ["10.0.1.0/24"]
+  subnet_name          = "prabha-frontend-subnet"
+  resource_group_name  = "rg-prabha"
+  virtual_network_name =  "prabha-vnet"
+  address_prefixes     = ["10.0.1.0/24"]
 }
 
 module "backend_subnet" {
-  depends_on = [ module.vertual_network ]
-  source = "../modules/azurerm_subnet"
+  depends_on = [ module.vertual_network ]
+  source = "../modules/azurerm_subnet"
 
-  subnet_name          = "prabha-backend-subnet"
-  resource_group_name  = "rg-prabha"
-  virtual_network_name =  "prabha-vnet"
-  address_prefixes     = ["10.0.2.0/24"]
+  subnet_name          = "prabha-backend-subnet"
+  resource_group_name  = "rg-prabha"
+  virtual_network_name =  "prabha-vnet"
+  address_prefixes     = ["10.0.2.0/24"]
 }
 
 module "frontend_pip" {
-  source = "../modules/azurerm_public_ip"
+  source = "../modules/azurerm_public_ip"
 
-  public_ip_name        = "prabha-frontend-pip"
-  resource_group_name   = "rg-prabha"
-  location              = "Central India"
-  allocation_method     = "Static"
+  public_ip_name        = "prabha-frontend-pip"
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
+  allocation_method     = "Static"
 }
 
 module "backend_pip" {
-  source = "../modules/azurerm_public_ip"
+  source = "../modules/azurerm_public_ip"
 
-  public_ip_name        = "prabha-backtend-pip"
-  resource_group_name   = "rg-prabha"
-  location              = "Central India"
-  allocation_method     = "Static"
+  public_ip_name        = "prabha-backtend-pip"
+  resource_group_name   = "rg-prabha"
+  location              = "Central India"
+  allocation_method     = "Static"
 }
 
 module "frontend-vm" {
-  depends_on = [ module.frontend_subnet ]
-  source = "../modules/azurerm_virtual_machine"
+  depends_on = [ module.frontend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
 
-  network_interface_name  = "nic-frontendVM"
-  nic_location            = "Central India"
-  resource_group_name     = "rg-prabha"
-  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-frontend-subnet"
-  virtual_machine_name    = "frontend-prabhaVM001"
-  vm_location             = "Central India"
-  vm_size                 = "Standard_F2"
-  vm_admin_username       = "azureuser"
-  vm_admin_password       = "prabha@123"
-  disable_password_authentication = "false"
-  image_publisher         = "Canonical"
-  image_offer             = "0001-com-ubuntu-server-jammy"
-  image_sku               = "22_04-lts"
-  image_version           = "latest"
-  
+  network_interface_name  = "nic-frontendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha"
+  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-frontend-subnet"
+  virtual_machine_name    = "frontend-prabhaVM001"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
+ 
 }
 
-module "backend-vm" {
-  depends_on = [ module.backend_subnet ]
-  source = "../modules/azurerm_virtual_machine"
 
-  network_interface_name  = "nic-backendVM"
-  nic_location            = "Central India"
-  resource_group_name     = "rg-prabha"
-  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-backend-subnet"
-  virtual_machine_name    = "backend-prabhaVM002"
-  vm_location             = "Central India"
-  vm_size                 = "Standard_F2"
-  vm_admin_username       = "azureuser"
-  vm_admin_password       = "prabha@123"
-  disable_password_authentication = "false"
-  image_publisher         = "Canonical"
-  image_offer             = "0001-com-ubuntu-server-jammy"
-  image_sku               = "22_04-lts"
-  image_version           = "latest"
+module "backend-vm" {
+  depends_on = [ module.backend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
+
+  network_interface_name  = "nic-backendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha"
+  subnet_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/virtualNetworks/prabha-vnet/subnets/prabha-backend-subnet"
+  virtual_machine_name    = "backend-prabhaVM002"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
 
 }
 
 module "sql_server" {
-  source = "../modules/azurerm_sql_server"
+  source = "../modules/azurerm_sql_server"
 
-  sql_server_name = "prabhaserver121"
-  resource_group_name = "rg-prabha"
-  location = "Central India"
-  administrator_login = "azureuser"
-  administrator_login_password = "Prabha@321"
+  sql_server_name = "prabhaserver121"
+  resource_group_name = "rg-prabha"
+  location = "Central India"
+  administrator_login = "azureuser"
+  administrator_login_password = "Prabha@321"
 }
 
 module "sql_database" {
-  depends_on = [ module.sql_server ]
-  source = "../modules/azurerm_sql_database"
+  depends_on = [ module.sql_server ]
+  source = "../modules/azurerm_sql_database"
 
-  sql_database_name = "prabhadb3212"
-  sql_server_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Sql/servers/prabhaserver121"
+  sql_database_name = "prabhadb3212"
+  sql_server_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Sql/servers/prabhaserver121"
 }
 
 
 ==============================================
-            SQL SERVER
+            SQL SERVER
 ============================================
 7) azurerm_sql_server   --> main.tf
 ================================
 
 resource "azurerm_mssql_server" "sql_server" {
-  name                         = var.sql_server_name
-  resource_group_name          = var.resource_group_name
-  location                     = var.location
-  version                      = "12.0"
-  administrator_login          = var.administrator_login
-  administrator_login_password = var.administrator_login_password
+  name                         = var.sql_server_name
+  resource_group_name          = var.resource_group_name
+  location                     = var.location
+  version                      = "12.0"
+  administrator_login          = var.administrator_login
+  administrator_login_password = var.administrator_login_password
 
-  tags = {
-    environment = "production"
-  }
+  tags = {
+    environment = "production"
+  }
 }
 
 variable.tf
 ===========
 variable "sql_server_name" {
-  description = "This is SQL server name"
-  type = string
+  description = "This is SQL server name"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is rg name"
-  type = string
+  description = "This is rg name"
+  type = string
 }
 variable "location" {
-  description = "This is location name"
-  type = string
+  description = "This is location name"
+  type = string
 }
 variable "administrator_login" {
-  description = "This is sql server login"
-  type = string
+  description = "This is sql server login"
+  type = string
 }
 variable "administrator_login_password" {
-  description = "This is sql server password"
-  type = string 
+  description = "This is sql server password"
+  type = string
 }
 
 8) azurerm_sql_database -----> main.tf
 ========================================
 
 resource "azurerm_mssql_database" "sql_database" {
-  name           =  var.sql_database_name
-  server_id      =  var.sql_server_id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
-  max_size_gb    = 2
-  sku_name       = "S0"
+  name           =  var.sql_database_name
+  server_id      =  var.sql_server_id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 2
+  sku_name       = "S0"
 
 }
 
 variable.tf
 ===============
 variable "sql_database_name" {
-  description = "This is sql database name"
-  type = string
+  description = "This is sql database name"
+  type = string
 }
 variable "sql_server_id" {
-  description = "This is sql server id "
-  type = string
+  description = "This is sql server id "
+  type = string
 }
 
 ===========  DARD ====Day --54  ============
@@ -1139,54 +1145,54 @@ dard:-5) sql server me admin'r/login & password ko secret ko rakhna ka sudhar --
 
 => connection:- vm ko nic ke sath--> implicit dependency nic.id
 ---> network_interface_ids = [
-    azurerm_network_interface.nic.id,
-  ]
+    azurerm_network_interface.nic.id,
+  ]
 
-==> vm ka nic & nic  ka saath public ip ka connection--> 
+==> vm ka nic & nic  ka saath public ip ka connection-->
 nic--> main.tf --re ip_confirutation re ek argument required --> public_ip_address_id =var.public_ip_address_id or var.pip id
-=> variable create  pip ka ip 
+=> variable create  pip ka ip
 => frontend vm pr subnet   ke necha dala pip_id =""
 
 => same as backend vm  ke lia ek public ip require so parent me another public ip ka module banana hai.. pip nama --pip-todoapp-backend & that backend pip id  add in backend ka vm me
 
 => vm ko access karne ke lia NSG ko add karke inbound port --22 karke ssh karna username@public ip  enter kara
 
-=> with out NSG vm ko access kar sakta hai yadi 
+=> with out NSG vm ko access kar sakta hai yadi
 see type -> basic & standard public ip in azure --in google
 
-       code:
+       code:
 =================
 => frontend public ip --connection  with frontend VM
 1) azurerm_network_interface  ...> main.tf, variable.tf
 =========================================
 
-  ip_configuration {
-    public_ip_address_id          = var.public_ip_address_id
-    name                          = "internal"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
-  }
+  ip_configuration {
+    public_ip_address_id          = var.public_ip_address_id
+    name                          = "internal"
+    subnet_id                     = var.subnet_id
+    private_ip_address_allocation = "Dynamic"
+  }
 
-==> argument -==> public_ip_address_id    
+==> argument -==> public_ip_address_id
 
 variable.tf
 ============
 variable "public_ip_address_id" {
-  description = "This is public ip which connect to nic"
-  type = string
+  description = "This is public ip which connect to nic"
+  type = string
 
-2) parent Madule--> main.tf--> frontend vm module 
+2) parent Madule--> main.tf--> frontend vm module
 =======================
 public_ip_address_id = "/subscriptions/3a734e32-021d-4243-89ff-c3495e6aa4da/resourceGroups/rg-prabha/providers/Microsoft.Network/publicIPAddresses/prabha-backtend-pip"
 
 
-==> Same as backend vm connection 
+==> Same as backend vm connection
 =========================================
-          Data Block
-        =============
+          Data Block
+        =============
 ==> SQL database >  me ==> Server id Requirement  --> so that ( sql_server_data ) search karke put karna hai...
 => type terraform azurerm mssql_server
-  ----------  Code ------------
+  ----------  Code ------------
 
 => azurerm_sql_database -->main.tf, data.tf ,variable.tf
 ========================
@@ -1196,152 +1202,152 @@ data.tf
 
 data "azurerm_mssql_server" "data_sql_server" {
 
-  name                = var.data_sql_server_name
-  resource_group_name = var.resource_group_name
+  name                = var.data_sql_server_name
+  resource_group_name = var.resource_group_name
 }
 
 main.tf
 =======
 
 resource "azurerm_mssql_database" "sql_database" {
-  name           =  var.sql_database_name
-  server_id      =  data.azurerm_mssql_server.data_sql_server.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
-  max_size_gb    = 2
-  sku_name       = "S0"
+  name           =  var.sql_database_name
+  server_id      =  data.azurerm_mssql_server.data_sql_server.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 2
+  sku_name       = "S0"
 
 }
 
 variable.tf
 ============
 variable "sql_database_name" {
-  description = "This is sql database name"
-  type = string
+  description = "This is sql database name"
+  type = string
 }
 variable "data_sql_server_name" {
-  description = "This is data sql server name"
-  type = string
+  description = "This is data sql server name"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is resource group name"
-  type = string
+  description = "This is resource group name"
+  type = string
 }
 
 
 2> parent Module --> main.tf
 ==========================
 module "sql_database" {
-  depends_on = [ module.sql_server ]
-  source = "../modules/azurerm_sql_database"
+  depends_on = [ module.sql_server ]
+  source = "../modules/azurerm_sql_database"
 
-  sql_database_name         = "prabhadb3212"
-  data_sql_server_name      = "prabhaserver121"
-  resource_group_name       = "rg-prabha"
+  sql_database_name         = "prabhadb3212"
+  data_sql_server_name      = "prabhaserver121"
+  resource_group_name       = "rg-prabha"
 }
-                
+ 
 ==========================
 => Network Interface me ip_configuration block me --> public_ip_address_id  & subnet_id ====> Requirement
 
 => so that --> public_ip data block & subnet data block require
 
 -----------  Code ---------------
-1) azurerm_virtual_machine --> main.tf, data.tf, variable.tf 
+1) azurerm_virtual_machine --> main.tf, data.tf, variable.tf
 ==============================
 main.tf
 =========
 resource "azurerm_network_interface" "network_interface" {
-  name                = var.network_interface_name
-  location            = var.nic_location
-  resource_group_name = var.resource_group_name
+  name                = var.network_interface_name
+  location            = var.nic_location
+  resource_group_name = var.resource_group_name
 
-  ip_configuration {
-    public_ip_address_id          = data.azurerm_public_ip.data_public_ip.id
-    name                          = "internal"
-    subnet_id                     = data.azurerm_subnet.data_subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
+  ip_configuration {
+    public_ip_address_id          = data.azurerm_public_ip.data_public_ip.id
+    name                          = "internal"
+    subnet_id                     = data.azurerm_subnet.data_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
 }
 
 data.tf
 ======
 data "azurerm_subnet" "data_subnet" {
-  name                 = var.data_subnet_name
-  virtual_network_name = var.virtual_network_name
-  resource_group_name  = var.resource_group_name
+  name                 = var.data_subnet_name
+  virtual_network_name = var.virtual_network_name
+  resource_group_name  = var.resource_group_name
 }
 
 data "azurerm_public_ip" "data_public_ip" {
-  name                = var.data_public_ip_name
-  resource_group_name = var.resource_group_name
+  name                = var.data_public_ip_name
+  resource_group_name = var.resource_group_name
 }
 
 
 variable.tf
 ==========
 variable "network_interface_name"{
- description = "This is network interface name"
+ description = "This is network interface name"
 type = string
 }
 variable "nic_location" {
-  description = "This is nic location"
-  type = string
+  description = "This is nic location"
+  type = string
 }
 variable "resource_group_name" {
-  description = "This is rg name"
-  type = string
+  description = "This is rg name"
+  type = string
 }
 variable "virtual_machine_name" {
-  description = "This is virtual machine name"
-  type = string
+  description = "This is virtual machine name"
+  type = string
 }
 variable "vm_location" {
-  description = "This is vm location"
-  type = string
+  description = "This is vm location"
+  type = string
 }
 variable "vm_size" {
-  description = "This is vm size"
-  type = string
+  description = "This is vm size"
+  type = string
 }
 variable "vm_admin_username" {
-  description = "This is vm admin username"
-  type =  string
+  description = "This is vm admin username"
+  type =  string
 }
 variable "vm_admin_password" {
-  description = "This is vm admin password"
-  type = string
+  description = "This is vm admin password"
+  type = string
 }
 variable "disable_password_authentication" {
-  description = "This is password authentication"
-  type = string
+  description = "This is password authentication"
+  type = string
 }
 variable "image_publisher" {
-  description = "This is vm image publisher"
-  type = string
+  description = "This is vm image publisher"
+  type = string
 }
 variable "image_offer" {
-  description = "This is vm image offer"
-  type = string
+  description = "This is vm image offer"
+  type = string
 }
 variable "image_sku" {
-  description = "Thisi is vm image sku"
-  type = string
+  description = "Thisi is vm image sku"
+  type = string
 }
 variable "image_version" {
-  description = "This is image version"
-  type = string
+  description = "This is image version"
+  type = string
 }
 variable "data_subnet_name" {
-  description = "This is data subnet name"
-  type = string
+  description = "This is data subnet name"
+  type = string
 }
 variable "virtual_network_name" {
-  description = "This is virtual network name"
-  type = string
+  description = "This is virtual network name"
+  type = string
 }
 variable "data_public_ip_name" {
-  description = "This id  data public ip name"
-  type = string
+  description = "This id  data public ip name"
+  type = string
 }
 
 
@@ -1349,38 +1355,38 @@ variable "data_public_ip_name" {
 ============================
 
 module "frontend-vm" {
-  depends_on = [ module.frontend_subnet ]
-  source = "../modules/azurerm_virtual_machine"
+  depends_on = [ module.frontend_subnet ]
+  source = "../modules/azurerm_virtual_machine"
 
-  network_interface_name  = "nic-frontendVM"
-  nic_location            = "Central India"
-  resource_group_name     = "rg-prabha" 
-  virtual_machine_name    = "frontend-prabhaVM001"
-  vm_location             = "Central India"
-  vm_size                 = "Standard_F2"
-  vm_admin_username       = "azureuser"
-  vm_admin_password       = "prabha@123"
-  disable_password_authentication = "false"
-  image_publisher         = "Canonical"
-  image_offer             = "0001-com-ubuntu-server-jammy"
-  image_sku               = "22_04-lts"
-  image_version           = "latest"
-  data_subnet_name        = "prabha-frontend-subnet"
-  virtual_network_name    = "prabha-vnet"
-  data_public_ip_name     = "prabha-frontend-pip"
+  network_interface_name  = "nic-frontendVM"
+  nic_location            = "Central India"
+  resource_group_name     = "rg-prabha"
+  virtual_machine_name    = "frontend-prabhaVM001"
+  vm_location             = "Central India"
+  vm_size                 = "Standard_F2"
+  vm_admin_username       = "azureuser"
+  vm_admin_password       = "prabha@123"
+  disable_password_authentication = "false"
+  image_publisher         = "Canonical"
+  image_offer             = "0001-com-ubuntu-server-jammy"
+  image_sku               = "22_04-lts"
+  image_version           = "latest"
+  data_subnet_name        = "prabha-frontend-subnet"
+  virtual_network_name    = "prabha-vnet"
+  data_public_ip_name     = "prabha-frontend-pip"
 
 }
 
 **) AZURE KEY VAULT:-      Day--55
 ======================    ==========
-1)  What is Key Vault ? 
+1)  What is Key Vault ?
 
 Ans) Key Vault ek aisa storage ki jagha hai jo bahut secure hai aur usme hum secret, certificate aur keys rakh sakte hai...
 
 2) How to create Key Vault ?
 Ans) manual  & Automation
 
-3)  How to create secrets in key Vault manual & automation ? 
+3)  How to create secrets in key Vault manual & automation ?
 
 4) Hot to give access to Key Vault ? Number of Ways.
 
@@ -1391,54 +1397,1262 @@ Ans) manual  & Automation
 7) How to retrive the secrets from key vault & use for VM Password ?
 
 >>      --Data Block--
-        =============
- data block --> key Vault fetch
- data block --> vm-username
- data block --> vm-password
+        =============
+ data block --> key Vault fetch
+ data block --> vm-username
+ data block --> vm-password
 
 azurerm_virtual_machine:-child module
 data.tf
 =======
 
 data "azurerm_key_vault" "kv" {
-  name                = "kvprabha01"
-  resource_group_name = "prabha-rg"
+  name                = "kvprabha01"
+  resource_group_name = "prabha-rg"
 }
 
 data "azurerm_key_vault_secret" "kv_secret_uname" {
-  name         = "frontendvm-username"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "frontendvm-username"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_key_vault_secret" "kv_secret_pwd" {
-  name         = "frontendvm-password"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "frontendvm-password"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 main.tf
 =======
 size                = var.size
-  admin_username      = data.azurerm_key_vault_secret.kv_secret_uname.value
-  admin_password      = data.azurerm_key_vault_secret.kv_secret_pwd.value
-  disable_password_authentication = var.disable_password_authentication 
-  network_interface_ids = [
-    azurerm_network_interface.network_interface.id,
-  ]
+  admin_username      = data.azurerm_key_vault_secret.kv_secret_uname.value
+  admin_password      = data.azurerm_key_vault_secret.kv_secret_pwd.value
+  disable_password_authentication = var.disable_password_authentication
+  network_interface_ids = [
+    azurerm_network_interface.network_interface.id,
+  ]
 
 parent-module:main.tf
---------------------
-  # admin_username       = "azureuser"
-  # admin_password       = "prabha@123"
+---
+  # admin_username       = "azureuser"
+  # admin_password       = "prabha@123"
+
+Day-69
+======
+=> A to Z pipeline Code
+
+*) pipeline with steps & trigger: none
+=======================================
+
+trigger: none
+pool: Default
+steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTask@5
+    displayName: Terraform  Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+      backendServiceArm: 'PrabhaSC-WIF'
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+      environmentServiceNameAzureRM: 'PrabhaSC-WIF'
+
+*) Pipeline With variables assign :-
+=====================================
+trigger: none
+pool: Default
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTask@5
+    displayName: Terraform  Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(config_path)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: $(config_path)
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(config_path)
+      environmentServiceNameAzureRM: $(service_conn)
 
 
-Day=82 
+*) pipeline with condition when pr raise push main
+=============================================
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTask@5
+    displayName: Terraform  Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(config_path)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: $(config_path)
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(config_path)
+      environmentServiceNameAzureRM: $(service_conn)
+  - task: TerraformTask@5
+    displayName: Terraform apply
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(config_path)'
+      commandOptions: '--auto-approve'
+      environmentServiceNameAzureRM: '$(service_conn)'
+
+=> pipeline with steps me manual Validation nahi ho pyega
+
+Day-72
+======
+*) pipeline with Job: & Manual Validation:-
+=======================================
+
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+  - job: terraformInitPlanJob
+    displayName: Terraform Init & plan
+    steps:
+    - task: TerraformInstaller@1
+      displayName:  Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(config_path)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: $(config_path)
+    - task: TerraformTask@5
+
+      displayName: Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(config_path)
+        environmentServiceNameAzureRM: $(service_conn)
+
+  - job: tfsecScanningJob
+    displayName: tfsec Scan
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(config_path)
+
+  - job: manualValidationJob
+    displayName: Manual Validation
+    dependsOn: terraformInitPlanJob
+    pool: server
+    steps:
+    - task: ManualValidation@1
+      inputs:
+         notifyUsers: 'prabhakarnayak993@gmail.com'
+         approvers: 'prabhakarnayak993@gmail.com'
+         instructions: 'please check plan'
+
+  - job: terraformApplyJob
+    displayName: Terraform Apply
+    dependsOn: manualValidationJob
+    pool: Default
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(config_path)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main' ))
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: $(config_path)
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: $(service_conn)
+
+Day-73
+======
+=========================================
+complete code of manual Validation & parameter set
+=========================================
+trigger: none
+pool: Default
+
+parameters:
+  - name: planRequired
+    displayName: Plan Required
+    type: string
+    default: False
+    values:
+      - True
+      - False
+
+  - name: applyRequired
+    displayName: Apply Required
+    type: string
+    default: False
+    values:
+      - True
+      - False
+
+  - name: scanRequired
+    displayName: Scan Required
+    type: string
+    default: False
+    values:
+      - True
+      - False
+
+  - name: manualValidation
+    displayName: MV Required
+    type: string
+    default: False
+    values:
+      - True
+      - False
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+  - job: initPlanJob
+    displayName: Terraform Init & Plan
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Plan
+      condition: eq('${{ parameters.planRequired }}', 'True')
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(work_dir)
+        environmentServiceNameAzureRM: $(service_conn)
+
+  - job: scanJob
+    displayName: tfsec Scanning
+    dependsOn: initPlanJob
+    condition: eq('${{ parameters.scanRequired }}', 'True')
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(work_dir)
+
+  - job: manualValidationJob
+    displayName: Manual Validation
+    dependsOn: scanJob
+    condition: eq('${{parameters.manualValidation}}', 'True')
+    pool: server
+    steps:
+    - task: ManualValidation@1
+      inputs:
+        notifyUsers: 'prabhakarnayak993@gmail.com'
+        approvers: 'prabhakarnayak993@gmail.com'
+        instructions: 'please  check plan'
+
+  - job: applyJob
+    displayName: Terraform Apply Job
+    dependsOn:  manualValidationJob
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(work_dir)'
+        backendServiceArm: '$(service_conn)'
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      condition: eq('${{ parameters.applyRequired }}', 'True')
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(work_dir)'
+        environmentServiceNameAzureRM: '$(service_conn)'
+Day-73
+======
+====================================
+pipeline With stage & parameter & MV
+====================================
+trigger: none
+pool: Default
+
+parameters:
+  - name: scanRequired
+    displayName: Scan Required
+    type: string
+    values:
+      - true
+      - false
+
+  - name: mvRequired
+    displayName: MV Required
+    type: string
+    values:
+      - true
+      - false
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+stages:
+  - stage: buildStage
+    displayName: Build Stage
+    jobs:
+    - job: terraformInitValidateJob
+      displayName: Terraform Init & Validate Job
+      steps:
+      - task: TerraformInstaller@1
+        displayName: Terraform Install
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(work_dir)'
+ 
+    - job: terraformInitPlanJob
+      displayName: Terraform Init & Plan
+      steps:
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        displayName: Terraform Plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: $(work_dir)
+          environmentServiceNameAzureRM: $(service_conn)
+ 
+  - stage: manualValidationStage
+    displayName: Manual Validation
+    dependsOn: buildStage
+    pool: server
+    jobs:
+    - job: manualValidationJob
+      displayName: MV Job
+      condition: eq('${{parameters.mvRequired}}', 'true' )
+      steps:
+      - task: ManualValidation@1
+        displayName: Manual Validation
+        inputs:
+          notifyUsers: 'prabhakarnayak993@gmail.com'
+          approvers: 'prabhakarnayak993@gmail.com'
+          instructions: 'please check plan'
+
+  - stage: scanningStage
+    displayName: Scanning Stage
+    jobs:
+    - job: tfsecScanJob
+      displayName: tfsec Scan Job
+      condition: eq('${{parameters.scanRequired}}', 'true' )
+      steps:
+      - task: tfsec@1
+        displayName: Tfsec Scan
+        inputs:
+          version: 'v1.26.0'
+          dir: $(work_dir)
+
+  - stage: deployStage
+    displayName: Deploy Stage
+    dependsOn:  manualValidationStage
+    jobs:
+    - job: terraformInitApplyJob
+      displayName: Terraform Init & Apply
+      steps:
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        displayName: Terraform Apply
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: $(work_dir)
+          commandOptions: '--auto-approve'
+          environmentServiceNameAzureRM: $(service_conn)
+
+
+====================================
+pipeline With stage PR based Deploy:
+👉 Best practice:
+> Feature branch → Plan only
+> Main branch → Plan + Apply
+===================================
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+
+pool: Default
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+# -------- VALIDATE + PLAN -(feature ) -------
+stages:
+- stage: buildStage
+  displayName: Build Stage
+  jobs:
+  - job: terraforValidatPlanJob
+    displayName:  Validate & Plan Job
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: terraform Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: $(work_dir)
+    - task: TerraformTask@5
+      displayName: Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(work_dir)
+        environmentServiceNameAzureRM: $(service_conn)
+
+# ------- TFSEC SCAN -----(feature) ---------
+- stage: scanningStage
+  displayName: Scanning Stage
+  dependsOn: buildStage
+  jobs:
+  - job: tfSecScanJob
+    displayName: TfSec Scan Job
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(work_dir)
+ 
+# ------- MANUAL APPROVAL (ONLY MAIN) -------
+- stage: manualValidationStage
+  displayName: Manual Validation Stage
+  dependsOn: scanningStage
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  pool: server
+  jobs:
+  - job: manualValidationJob
+    displayName: Manual Validation Job
+    steps:
+    - task: ManualValidation@1
+      displayName: Manual validation
+      inputs:
+        notifyUsers: 'prabhakarnayak993@gmail.com'
+        approvers: 'prabhakarnayak993@gmail.com'
+        instructions: 'please check Validation'
+
+# --------- APPLY (ONLY MAIN) ------------
+- stage: deployStage
+  displayName: Deploy Stage
+  dependsOn: manualValidationStage
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - job: terraformInitApplyJob
+    displayName: Terraform Init & Apply Job
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: $(work_dir)
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: $(service_conn)
+ 
+=====================================
+       END PIPELINE CODE
+=====================================
+pipeline recap-01 ( 02.Dec.2025 )
+=====================================
+Jobs:job -> banaya hai...
+
+> - job: terraformValidate
+> - job: terraformFmt
+> - job: tfSec
+> - job: tfLint
+> - job: infracost   
+> - job: terraformPlan
+> - job: manualApproval
+> - job: terraformApply       
+ 
+ChatGpt:- Give me Powershell command to download tfLint
+
+powershell Open> check winget hai or not
+
+$ winget
+$ winget search tflint
+$ y
+
+powershell command> download tfLint
+===============
+$ winget install --id TerraformLinters.tflint -e
+             OR,
+winget install  TerraformLinters.tflint
+
+ tfLint Job:  in Powershell
+===========   =================
+- job: tfLintingJob
+    displayName: TfLint Job
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          winget install  TerraformLinters.tflint
+          ls
+          tflint  --force
+          dir
+        workingDirectory: '$(work_dir)'
+
+Google:- infracost github--> release--> download zip file
+> Extract \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& past in tool folder infracost.exe file
+=> In vsCode cli se
+> infracost --help
+> infracost auth
+> infracost auth login
+> authention hone ke bad
+> infracost breakdown --path=.
+
+Infracost Job
+===============
+- job: tfLintingJob
+    displayName: TfLint Job
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: infracost breakdown --path=.
+        workingDirectory: '$(work_dir)'
+
+================================
+Jobs:job -> banaya hai...
+
+> - job: terraformValidate
+> - job: terraformFmt
+> - job: tfSec
+> - job: tfLint
+> - job: infracost   
+> - job: terraformPlan
+> - job: manualApproval
+> - job: terraformApply  
+
+=> uske bad Stages: stage
+=====================
+stages:
+> - statge: precommit
+    displayName: Pre-commit
+    jobs:
+    - job: terraformValidate
+    - job: terraformFmt
+    - job: tfSec
+    - job: tfLint
+ 
+  - stage: costStage
+     displayName: Cost & Impact Assessment Stage
+     jobs:
+     - job: infracost
+
+   - statge: plan
+    displayName: plan & review stage
+    jobs:
+    - job: terraformPlan
+ 
+   - statge: approval
+    displayName: Approval & Governance Stage
+    jobs:
+    - job: manualApproval
+
+   - statge: apply
+    displayName: Deploy & Apply Stage
+    jobs:
+    - job: terraformApply
+
+
+=====================================
+pipeline recap-02 ( 04.Dec.2025 ):-
+=====================================
+=>Type:- Azure Architecture
+
+Variable:
+  WORK_DIR : ........
+  SERVICE_CONNECTION : ------------
+ 
+=> Variable name Capital Latter --> Standard
+=> Variable group --> Set
+> library--> variable group name = Dhondu, -> name = work\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\_dir(key) , value = system.defaultWorking direct--> save
+
+=> In pipeline :-
+variables:-
+- group: dhondhu
+-name: storage_account_name
+value: 'devopsinsider
+
+=> variable Group:- VG is a collection of variable that you can store centrally in azure pipeline  library  & share across multiple pipelie
+=> It helps in avoiding hardcoded value in YAML & keep secrets secure
+=> What is variable in azure pipeline ?
+Ans) Variable in azure Devops are key - value pairs used to store & pass value across pipelie , tasks, & stages
+
+=> Types of Variable ?
+Ans) pipeline Variable, user Defined variables, Runtime Variable, Variable Group, predefined Variable....
+
+=> parameters are runtime or compile time
+Ans)parameter in azure pipeline are compile time --they are evaluated when the pipeline yaml is passed before execution
+
+=> yes variable in azure devops are runtime meaning their values are resolved and can changes while the pipeline in meaning
+
+=====================================
+pipeline recap-03 ( 09.Dec.2025 ) :-
+=====================================
+=> uses of parameter:-
+
+=> How to deploy on two environments:-
+   1. Single pipeline
+   2. Multiple pipeline
+
+=> create new pipeline
+fist renme :dev-pipeline
+
+=> Multi-environment pipeline  pura diagram ke sath bataya hai...
+
+=> multi-environment pipeline:-
+       Environments:-
+      ================
+1.dev                 prod
+=====                ======
+main.tf             main.tf
+variable.tf         variable.tf
+provider.tf         provider.tf
+terraform.tfvars    terraform.tfvars
+Dev-pipeline.yaml   Prod-pipeline.yaml
+
+Dev-pipeline.yaml
+---
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+paths:
+  include:
+  - environment/dev
+
+
+
+
+Prod-pipeline.yaml
+---
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+paths:
+  include:
+  - environment/prod
+
+
+
+
+=====================================
+pipeline recap-04 ( 10.Dec.2025 )
+=====================================
+
+=> Add new RB chor-rg in Dev Environment & prod env. location is West US
+
+=> git clone
+=> create a feature/Task-11-chor-rg
+
+
+multi-env.yaml
+---
+trigger: none
+pool: Default
+
+parameters:
+- name: env
+  displayName: Environment
+  type: string
+  values:
+  - dev
+  - prod
+
+variables:
+group: dhondhu
+name: STORAGE_ACCOUNT_NAME
+value: 'devopsinsidersstate' name: WORK_DIR
+value: '$(System.DefaultWorkingDirectory)/environment/${{ parameters.env }}'
+name: BACKEND_KEY
+value: '${{ parameters.env }}.tfstate'
+
+Next Tuesday, 16th Dec se pehle karna hai..
+====================
+HLD Monolithic
+HLD - Branching Strategy
+Infra Implement using Terraform
+CICD implementation using DevSecOps Nahi toh
+
+=====================================
+pipeline recap-05 ( 11.Dec.2025 )
+=====================================
+ TerraTest
+==============
+Kaise hum log terratest ko azure devops pipeline me integrate kare?
+
+=> Terratest kya hai?
+=> Open Source testing framework jo ki go lang me likha jata hai.
+=> iska use IAC ko automated tarike se test karne ke lie kia jata hai.
+=> jaise jo bhi cloud ke infra hum banate hai, terraform ke through
+=> Vo sare infra ko test karne ke lie terratest ko use karte hai...
+=> kisi bhi IAC script ko asli cloud pr deploy karke unka sahi galat test karta hai aur test pura ho jane pr infra ko destroy kar deta hai..
+=> Test Case likhne ke Pehle terratest setup karte hai...
+=> Terratest file go lang me...likha hai..
+=> terratest.go
+=> isme modult likhenge..
+
+Terratest:-azurerm_resource_group:-
+---
+main.tf
+=======
+resource "azurerm_resource_group" "this" {
+  name     = "rg-chintu"
+  location = "West Europe"
+}
+
+=> Testing:-
+ 1.  manual:
+ 2.   Automated:--> Terratest(Go)
+
+=> rg-test.go
+  cd resource_group->terraforminit/apply--> check--> terraform destroy
+
+=> type terratest
+
+rg-test.go
+---
+package test
+
+import (
+ 	"testing"
+
+ 	"github.com/gruntwork-io/terratest/modules/terraform"
+ 	"github.com/stretchr/testify/assert"
+)
+
+func TestTerraformHelloWorldExample(t *testing.T) {
+ 	// retryable errors in terraform testing.
+ 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+ 		TerraformDir: ".",
+ 	})
+
+ 	defer terraform.Destroy(t, terraformOptions)
+
+ 	terraform.InitAndApply(t, terraformOptions)
+
+ 	output := terraform.Output(t, terraformOptions, "hello_world")
+ 	assert.Equal(t, "Hello, World!", output)
+}
+
+
+=> Download & install go lang
+$ go test rg-test.go
+
+
+
+
+
+
+==========================
+   Start
+====================
+Pipeline By Vikram:-
+02-Vik pipe ( 27 -09-25 )
+====================
+=> How open vs-code in cmd:- type code . & press enter
+
+=> Multi-Env-Deployment:-
+    > 1. dev
+    > 2. prod
+=> type: azure pipeline cashing
+
+$ git remote -v  (remote repo kuch add/not check
+
+$ git remote rm origin  (remove remote repo)
+
+$ git remote add origin < paste git clone repo >
+
+$ git remote -v ( for check which repo add remote )
+
+=========================
+03-Vik pipe ( 30 -09-25 )
+=========================
+MultiEnv pipeline:
+---
+trigger: none
+pool: Default
+parameters:
+- name: environment
+  displayName: PARAMETERS
+  default: dev
+  type: string
+  values:
+  - dev
+  - prod
+
+# varibale for service connection variables:
+- name: dev_SVC
+  value: svc-todo-dev
+- name: prod_svc
+  value: svc-todo-prod
+- name: select_svc
+  ${{ if eq(parameters.enviroment, 'prod') }}:
+  value: svc-todo-prod
+  ${{ else }}:
+  value: svc-todo-dev
+
+# variable for storage AC
+- name: dev_backend
+  value: azurepipeline123
+- name: prod_backend
+  value: prodstgb17
+- name: select_backend
+  ${{ if eq(parameters.enviroment, 'prod') }}:
+  value: prodstgb17
+  ${{ else }}:
+  value: azurepipeline123
+
+# variable for container
+- name: dev_cont
+  value: azure
+- name: prod_cont
+  value: prod-cont
+- name: select_cont
+  ${{ if eq(parameters.enviroment, 'prod') }}:
+  value: prod-cont
+  ${{ else }}:
+  value: azure
+
+stages:
+- stage: terraformInit
+  displayName: Terraform Init
+  jobs:
+  - job: terraformInitJob
+    displayName: Terraform Init Job
+    steps:
+    - task: TerraformTask@5 inputs:
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: '$(select_svc)'
+      backendAzureRmStorageAccountName: '$(select_backend)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}'
+      backendAzureRmContainerName: '$(select_cont)'
+      backendAzureRmKey: '${{ parameters.enviroment }}.terraform.tfstate'
+
+stages:
+- stage: terraformPlan
+  displayName: Terraform Plan
+  jobs:
+  - job: terraformPlanJob
+    steps:
+     - task: TerraformTask@5 inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}'
+      commandOptions: -out-tfplan.binary'
+      backendAzureRmContainerName: '$(select_cont)'
+      environment ServiceNameAzureRM: '$(selec‡_svc)'
+
+    - publish: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}/tfplan.binary'
+      artifact: terraformplan
+
+stages:
+- stage: terraformApply
+  displayName: Terraform Apply
+  jobs:
+  - job: terraformApplyJob
+    steps:
+    - download: current
+      artifact: terraformplan
+ 
+    - task: TerraformTask@5 inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}'
+
+
+=> kyu plan ka output save karna important hai..
+=> Benefits:
+  1. Time reduce of pipeline
+  2. Consistency
+  3. Audit plan
+
+
+task: TerraformTask@5 inputs:
+provider: 'azurerm'
+command: 'plan'
+workingDirectory: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}'
+commandOptions:
+-out-tfplan.binary'
+environment ServiceNameAzureRM: '$(selec‡_svc)'
+publish: '$(System.DefaultWorkingDirectory)/env/${{ parameters.enviroment }}/tfplan.binary' artifact: terraformplan
+
+
+
+=========================
+04-Vik pipe ( 07 -10-25 )
+=========================
+
+=> AWS pipeline tflint class
+
+=========================
+05-Vik pipe ( 08 -10-25 )
+=========================
+todo-dev-sec-repo/azure-pipeline.yaml
+----------   tfLint ----------------
+
+trigger: none
+pool: test-pool
+jobs:
+- job: tflint
+  displayName: terraform tf lint
+  steps:
+  Settings
+  - task: Bash@3
+    inputs:
+    targetType: 'inline'
+    script: |
+      cd $(System.DefaultWorkingDirectory)/terraform
+      tflint --init
+      tflint --recursive
+
+- job: terraforminit
+displayName: terraform init
+steps:
+- task: TerraformTask@5 inputs:
+  provider: 'azurerm'
+  command: 'init'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+  backendServiceArm: 'todo-sec-svc'
+  backendAzureRmStorageAccountName: 'sandisk11'
+  backendAzureRmContainerName: 'friday11'
+  backendAzureRmKey: 'prod.terraform.tfstate'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+  targetPath: '$(System.DefaultWorkingDirectory)/terraform"
+  artifact: 'tf-config'
+  publishLocation: 'pipeline'
+
+- job: terraformplan
+  dependsOn: terraforminit displayName:
+  steps:
+  Settings
+- task: Download PipelineArtifact@2
+  inputs:
+  buildType: 'current'
+  artifactName: 'tf-config'
+  targetPath: '$(Pipeline.Workspace)'
+ 
+- task: Bash@3
+  inputs:
+  targetType: 'inline'
+  script: cd $(Pipeline.Workspace)
+  chmod -R a+rx .terraform/providers
+
+- task: TerraformTask@5
+  inputs:
+  provider: 'azurerm'
+  workingDirectory: '$(Pipeline.Workspace)
+  command: 'plan'
+  environmentServiceNameAzureRM: 'todo-sec-svc
+
+
+=> Library/todo-project
+variable group name - todo-project
+add> name= svc
+     value = todo-sec-sve
+ name = backend_space
+ value = sandisk123
+=========================
+
+ 
+variables:
+- group: todo-project
+
+pr:
+ branches:
+  include:
+  - main
+trigger: none
+pool: test-pool
+
+
+
+=========================
+06-Vik pipe ( 09 -10-25 )
+=========================
+-------- tfsec  ---------
+
+=========================
+07-Vik pipe ( 13 -10-25 )
+=========================
+
+variables:
+- group: todo-project
+
+pr:
+ branches:
+  include:
+  - main
+
+
+trigger: none
+pool: test-pool
+jobs:
+- job: tflint
+  displayName: terraform tf lint
+  steps:
+  Settings
+  - task: Bash@3
+    inputs:
+    targetType: 'inline'
+    script: |
+      cd $(System.DefaultWorkingDirectory)/terraform
+      tflint --init
+      tflint --recursive
+
+- job: terraforminit
+displayName: terraform init
+steps:
+- task: TerraformTask@5 inputs:
+  provider: 'azurerm'
+  command: 'init'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+  backendServiceArm: 'todo-sec-svc'
+  backendAzureRmStorageAccountName: 'sandisk11'
+  backendAzureRmContainerName: 'friday11'
+  backendAzureRmKey: 'prod.terraform.tfstate'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+  targetPath: '$(System.DefaultWorkingDirectory)/terraform"
+  artifact: 'tf-config'
+  publishLocation: 'pipeline'
+
+-  job: tfScan
+   displanName: Tfsec Scan
+   dependsOn: terraforminit
+   steps:
+ 
+
+- job: terraformplan
+  dependsOn: terraforminit
+  displayName: Terraform Init
+  steps:
+  - task: Download PipelineArtifact@2
+  inputs:
+  buildType: 'current'
+  artifactName: 'tf-config'
+  targetPath: '$(Pipeline.Workspace)'
+
+  Settings
+- task: Download PipelineArtifact@2
+  inputs:
+  buildType: 'current'
+  artifactName: 'tf-config'
+  targetPath: '$(Pipeline.Workspace)'
+ 
+- task: Bash@3
+  inputs:
+  targetType: 'inline'
+  script: cd $(Pipeline.Workspace)
+  chmod -R a+rx .terraform/providers
+
+- task: TerraformTask@5
+  inputs:
+  provider: 'azurerm'
+  workingDirectory: '$(Pipeline.Workspace)
+  command: 'plan'
+  environmentServiceNameAzureRM: 'todo-sec-svc
+
+
+===========================================
+          END
+=========================================
+
+
+
+
+
+
+
+
+
+
+Day=82
 ======   Output Block
-        --------------
+        --------------
 1. Use Case1:-(Output Block in Child Module)  Ek Module se bahar kuch nikal na   &  dusure modul me kuch pass karna hai..
 
 
 module(azurerm_storage_account): main.tf
---------------------------------------- 
+---
 variable "stg_name" {
 }
 variable "rg_name" {
@@ -1451,21 +2665,21 @@ variable "account_replication_type" {
 }
 
 resource "azurerm_storage_account" "stg" {
-  name                     = var.stg_name
-  resource_group_name      = var.rg_name
-  location                 = var.location
-  account_tier             = var.account_tier
-  account_replication_type = var.account_replication_type
+  name                     = var.stg_name
+  resource_group_name      = var.rg_name
+  location                 = var.location
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
 
 }
 
 output "stg_id" {
-  value = azurerm_storage_account.stg.id
-  
+  value = azurerm_storage_account.stg.id
+ 
 }
 
 => module(azurerm_blob_storage_account):main.tf
------------------------------------------
+---
 
 variable "blob_container_name" {
 }
@@ -1475,68 +2689,527 @@ variable "container_access_type" {
 }
 
 resource "azurerm_storage_container" "blob_container" {
-  name                  = var.blob_container_name
-  storage_account_id    = var.storage_account_id
-  container_access_type = var.container_access_type
+  name                  = var.blob_container_name
+  storage_account_id    = var.storage_account_id
+  container_access_type = var.container_access_type
 }
 
 preprod(main.tf) :-
 ==================
 module "resource_group" {
-  source   = "../../modules/azurerm_resource_group"
-  rg_name  = "prabha-rg"
-  location = "Central India"
+  source   = "../../modules/azurerm_resource_group"
+  rg_name  = "prabha-rg"
+  location = "Central India"
 }
 
 module "rama_storage_account" {
-  source     = "../../modules/azuererm_storage_account"
-  depends_on = [module.resource_group]
+  source     = "../../modules/azuererm_storage_account"
+  depends_on = [module.resource_group]
 
-  stg_name                 = "ramastg3939"
-  rg_name                  = "prabha-rg"
-  location                 = "Central India"
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  stg_name                 = "ramastg3939"
+  rg_name                  = "prabha-rg"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 }
 
 module "blob_container" {
-  source = "../../modules/blob_storage_container"
+  source = "../../modules/blob_storage_container"
 
-  blob_container_name   = "tfstate"
-  storage_account_id    = module.rama_storage_account.stg_id
-  container_access_type = "private"
+  blob_container_name   = "tfstate"
+  storage_account_id    = module.rama_storage_account.stg_id
+  container_access_type = "private"
 }
 
 
-2. Use Case2:- (Output Block in Parent Module) How to print something after terraform  apply 
+2. Use Case2:- (Output Block in Parent Module) How to print something after terraform  apply
 
 preprod(main.tf) :-
 ==================
 
 output "Dhundu" {
-  value = "Hello, I am dhundu "
+  value = "Hello, I am dhundu "
 }
 output "Storage_Account_Name" {
-  value = "ramastg3939"
+  value = "ramastg3939"
 }
 output "blob_container_name" {
-  value = "tfstate"
+  value = "tfstate"
 }
 
 *) Output print in CLI:-
-------------------------
- + Dhundu  = "Hello, I am dhundu "
- + Storage_Account_Name = "ramastg3939"
- + blob_container_name  = "tfstate"
+---
+ + Dhundu  = "Hello, I am dhundu "
+ + Storage_Account_Name = "ramastg3939"
+ + blob_container_name  = "tfstate"
 
 usecase:-2 (print vm pip)
--------------
+---
 source "azurerm_linux_virtual_machine.vm{
 }
 
 output "vm_pip" {
-value =azurerm_linux_virtual_machine.vm.public_ip_address 
+value =azurerm_linux_virtual_machine.vm.public_ip_address
+}
+
+Day:-83
+===========
+Dynamic Block:
+=============
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================
+Complete Generic Reusable module code
+=======================================
+1. Resource Group:-
+Module:-
+========
+azurerm_resource_group:
+--> main.tf
+--> variable.tf
+--> output.tf
+--> terraform.tfvars
+
+Note-1(Simple for_each code):-01
+---
+main.tf
+---
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = each.value.managed_by
+  tags       = each.value.tags
+}
+
+variable.tf
+---
+variable "rgs" {
+  description = "This is rg variable"
+  type = map(object({
+    name       = string
+    location   = string
+    managed_by = optional(string)
+    tags       = optional(map(string))
+  }))
+}
+
+output.tf
+---
+ output "rgs_id" {
+   value = {for key, rg in azurerm_resource_group.rg : key => rg.id }
+ }
+
+terraform.tfvars
+---
+rgs = {
+  "rg1" = {
+    name       = "rg-prabha"
+    location   = "Central India"
+    managed_by = "terraform"
+    tags = {
+      environment = "dev"
+      owner       = "team-azure"
+      project     = "demo"
+    }
+  }
+
+  "rg2" = {
+    name       = "rg-prabha10"
+    location   = "South India"
+    managed_by = "terraform"
+    tags = {
+      environment = "dev"
+      owner       = "team-azure"
+      project     = "demo"
+    }
+  }
+
+}
+============================
+
+Using try() function:Code:-02
+---
+main.tf
+---
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = try(each.value.managed_by, null )
+  tags       = try(each.value.tags, {} )
+}
+
+terraform.tfvars
+==================
+rgs = {
+  "rg1" = {
+    name       = "rg-prabha"
+    location   = "Central India"
+    managed_by = "terraform"
+    # tags = {
+    #   environment = "dev"
+    #   owner       = "team-azure"
+    #   project     = "demo"
+    # }
+  }
+
+  "rg2" = {
+    name       = "rg-prabha10"
+    location   = "South India"
+    managed_by = "terraform"
+    tags = {
+      environment = "dev"
+      owner       = "team-azure"
+      project     = "demo"
+    }
+  }
+
+}
+==================================
+
+# lookup() function use:-03
+============================
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = lookup(each.value, "managed_by", null)
+  tags       = lookup(each.value, "tags", {} )
 }
 
 
 
+for_each = coalesce(each.value.ip_address_pool, [])
+
+
+========================================
+ Simple Virtual Network Generic module: TYPE:-01
+======================================
+main.tf
+=======
+resource "azurerm_virtual_network" "vnet" {
+  for_each = var.virtual_networks
+
+  name                           = each.value.name
+  location                       = each.value.location
+  resource_group_name            = each.value.resource_group_name
+  address_space                  = each.value.address_space
+  dns_servers                    = each.value.dns_servers
+  bgp_community                  = each.value.bgp_community
+  edge_zone                      = each.value.edge_zone
+  flow_timeout_in_minutes        = each.value.flow_timeout_in_minutes
+  private_endpoint_vnet_policies = each.value.private_endpoint_vnet_policies
+  tags                           = each.value.tags
+
+  dynamic "ddos_protection_plan" {
+    for_each = each.value.ddos_protection_plan == null ? [] : [each.value.ddos_protection_plan]
+    content {
+      id     = ddos_protection_plan.value.id
+      enable = ddos_protection_plan.value.enable
+    }
+  }
+  dynamic "encryption" {
+    for_each = each.value.encryption == null ? [] : [each.value.encryption]
+    content {
+      enforcement = encryption.value.enforcement
+    }
+  }
+  dynamic "ip_address_pool" {
+    for_each = each.value.ip_address_pool != null ? each.value.ip_address_pool : []
+    content {
+      id                     = ip_address_pool.value.id
+      number_of_ip_addresses = ip_address_pool.value.number_of_ip_addresses
+    }
+  }
+
+  dynamic "subnet" {
+    for_each = each.value.subnets != null ? each.value.subnets : {}
+    content {
+      name                                          = subnet.value.name
+      address_prefixes                              = subnet.value.address_prefixes
+      default_outbound_access_enabled               = subnet.value.default_outbound_access_enabled
+      private_endpoint_network_policies             = subnet.value.private_endpoint_network_policies
+      private_link_service_network_policies_enabled = subnet.value.private_link_service_network_policies_enabled
+    }
+
+  }
+
+}
+
+variable.tf:
+==========
+variable "virtual_networks" {
+  description = "Complete configuration map for the Virtual Network"
+  type = map(object({
+    name                = string
+    location            = string
+    resource_group_name = string
+
+    address_space                  = optional(list(string))
+    bgp_community                  = optional(string)
+    dns_servers                    = optional(list(string))
+    edge_zone                      = optional(string)
+    flow_timeout_in_minutes        = optional(number)
+    private_endpoint_vnet_policies = optional(string)
+    tags                           = optional(map(string))
+
+    ddos_protection_plan = optional(object({
+      id     = string
+      enable = bool
+    }))
+    encryption = optional(object({
+      enforcement = string
+    }))
+    ip_address_pool = optional(list(object({
+      id                     = string
+      number_of_ip_addresses = string
+    })))
+
+    subnets = optional(map(object({
+      name                                          = string
+      address_prefixes                              = list(string)
+   #   security_group                                = optional(string)
+      default_outbound_access_enabled               = optional(bool, true)
+      private_endpoint_network_policies             = optional(string, "disabled")
+      private_link_service_network_policies_enabled = optional(bool, true)
+    #  route_table_id                                = optional(string)
+    #  service_endpoints                             = optional(list(string))
+    #  service_endpoint_policy_ids                   = optional(list(string))
+      # delegation = optional(list(object({
+      #   name = string
+      #   service_delegation = object({
+      #     name    = string
+      #     actions = optional(list(string))
+      #   })
+      # })))
+    })))
+
+   }))
+}
+
+terraform.tfvars
+=================
+virtual_networks = {
+  "vnet1" = {
+    name                = "vnet-prabha"
+    location            = "Central India"
+    resource_group_name = "rg-prabha"
+
+    address_space                  = ["10.0.0.0/16"]
+    bgp_community                  = null
+    dns_servers                    = ["10.0.0.4", "10.0.0.5"]
+    edge_zone                      = null
+    flow_timeout_in_minutes        = null
+    private_endpoint_vnet_policies = "Disabled"
+
+    tags = {
+      environment = "dev"
+      owner       = "team-azure"
+      project     = "demo"
+    }
+    ddos_protection_plan = null
+    encryption = {
+      enforcement = "AllowUnencrypted"
+    }
+    # ip_address_pool = [{
+    #   id                     = "pool-01"
+    #   number_of_ip_addresses = "256"
+    # }]
+
+    subnets = {
+      "subnet1" = {
+        name                                          = "frontend-subnet"
+        address_prefixes                              = ["10.0.1.0/24"]
+        private_endpoint_network_policies             = "Disabled" # Required
+        private_link_service_network_policies_enabled = false      # Default false
+      }
+      "subnet2" = {
+        name                                          = "backend-subnet"
+        address_prefixes                              = ["10.0.2.0/24"]
+        private_endpoint_network_policies             = "Disabled" # Required
+        private_link_service_network_policies_enabled = false      # Default false
+      }
+    }
+  }
+
+  "vnet2" = {
+    name                = "vnet-prabha10"
+    location            = "Central India"
+    resource_group_name = "rg-prabha10"
+
+    address_space                  = ["10.0.0.0/16"]
+    bgp_community                  = null
+    dns_servers                    = ["10.0.0.4", "10.0.0.5"]
+    edge_zone                      = null
+    flow_timeout_in_minutes        = null
+    private_endpoint_vnet_policies = "Disabled"
+
+    tags = {
+      environment = "dev"
+      owner       = "team-azure"
+      project     = "demo"
+    }
+    ddos_protection_plan = null
+    encryption = {
+      enforcement = "AllowUnencrypted"
+    }
+    # ip_address_pool = [{
+    #   id                     = "pool-01"
+    #   number_of_ip_addresses = "256"
+    # }]
+
+    subnets = {
+      "subnet1" = {
+        name                                          = "frontend-subnet"
+        address_prefixes                              = ["10.0.1.0/24"]
+        private_endpoint_network_policies             = "Disabled" # Required
+        private_link_service_network_policies_enabled = false      # Default false
+      }
+      "subnet2" = {
+        name                                          = "backend-subnet"
+        address_prefixes                              = ["10.0.2.0/24"]
+        private_endpoint_network_policies             = "Disabled" # Required
+        private_link_service_network_policies_enabled = false      # Default false
+      }
+    }
+  }
+
+}
+
+=================================
+USES OF LOOKUP( ) FUNCTION CODE:- TYPE:-02
+=================================
+main.tf
+===========
+resource "azurerm_virtual_network" "vnet" {
+  for_each = var.virtual_networks
+
+  name                           = each.value.name
+  location                       = each.value.location
+  resource_group_name            = each.value.resource_group_name
+  address_space                  = each.value.address_space
+  dns_servers                    = lookup(each.value, "dns_servers", null)
+  bgp_community                  = lookup(each.value, "bgp_community", null)
+  edge_zone                      = lookup(each.value, "edge_zone", null)
+  flow_timeout_in_minutes        = lookup(each.value, "flow_timeout_in_minutes", null)
+  private_endpoint_vnet_policies = lookup(each.value, "private_endpoint_network_policies", "Disabled" )
+  tags                           = lookup(each.value, "tags", {} )
+
+  dynamic "ddos_protection_plan" {
+    for_each = lookup(each.value, "ddos_protection_plan", null ) != null ? [lookup(each.value, "ddos_protection_plan", null )] : []
+    content {
+      id     = ddos_protection_plan.value.id
+      enable = ddos_protection_plan.value.enable
+    }
+  }
+  dynamic "encryption" {
+    for_each = lookup(each.value, "encryption", null ) != null ? [each.value.encryption] : []
+    content {
+      enforcement = encryption.value.enforcement
+    }
+  }
+  dynamic "ip_address_pool" {
+    for_each = lookup(each.value, "ip_address_pool", null) != null ? each.value.ip_address_pool : []
+    content {
+      id                     = ip_address_pool.value.id
+      number_of_ip_addresses = ip_address_pool.value.number_of_ip_addresses
+    }
+  }
+
+  dynamic "subnet" {
+    for_each = lookup(each.value, "subnets", {} ) != null ? lookup(each.value, "subnets", {} ) : {}
+    content {
+      name                                          = subnet.value.name
+      address_prefixes                              = subnet.value.address_prefixes
+      default_outbound_access_enabled               = subnet.value.default_outbound_access_enabled
+      private_endpoint_network_policies             = subnet.value.private_endpoint_network_policies
+      private_link_service_network_policies_enabled = subnet.value.private_link_service_network_policies_enabled
+    }
+
+  }
+
+}
+
+=================================
+USES OF TRY( ) FUNCTION CODE:- TYPE:-03
+=================================
+
+
+resource "azurerm_virtual_network" "vnet" {
+  for_each = var.virtual_networks
+
+  name                           = each.value.name
+  location                       = each.value.location
+  resource_group_name            = each.value.resource_group_name
+  address_space                  = each.value.address_space
+  dns_servers                    = try(each.value.dns_servers, null )
+  bgp_community                  = try(each.value.bgp_community, null)
+  edge_zone                      = try(each.value.edge_zone, null )
+  flow_timeout_in_minutes        = try(each.value.flow_timeout_in_minutes, null)
+  private_endpoint_vnet_policies = try(each.value.private_endpoint_network_policies, "Disabled" )
+  tags                           = lookup(each.value, "tags", {} )
+
+  dynamic "ddos_protection_plan" {
+    for_each = try(each.value.ddos_protection_plan, null) != null ? [each.value.ddos_protection_plan] : []
+    content {
+      id     = ddos_protection_plan.value.id
+      enable = ddos_protection_plan.value.enable
+    }
+  }
+  dynamic "encryption" {
+    for_each = try(each.value.encryption, null ) != null ? [each.value.encryption] : []
+    content {
+      enforcement = encryption.value.enforcement
+    }
+  }
+  dynamic "ip_address_pool" {
+    for_each = lookup(each.value, "ip_address_pool", null) != null ? each.value.ip_address_pool : []
+    content {
+      id                     = ip_address_pool.value.id
+      number_of_ip_addresses = ip_address_pool.value.number_of_ip_addresses
+    }
+  }
+
+  dynamic "subnet" {
+    for_each = lookup(each.value, "subnets", {} ) != null ? lookup(each.value, "subnets", {} ) : {}
+    content {
+      name                                          = subnet.value.name
+      address_prefixes                              = subnet.value.address_prefixes
+      default_outbound_access_enabled               = subnet.value.default_outbound_access_enabled
+      private_endpoint_network_policies             = subnet.value.private_endpoint_network_policies
+      private_link_service_network_policies_enabled = subnet.value.private_link_service_network_policies_enabled
+    }
+
+  }
+
+}

@@ -1,0 +1,626 @@
+Docker Recap -01 [ 13-Jan-26 ] 
+=================================
+=> 3-tire Monolithic Application:-
+----------------------------------
+  -> Frontend --> 2-Vm--> Application Gateway domine-ssl-waf
+  -> Backend --> Internal Load Balancer 
+  -> Database --> paas Service
+
+=> mouse juggler(buy amazon) -> for mouse point auto moving 
+
+=> 3-tire Microservice. Application:-
+----------------------------------
+
+===============================
+Docker Recap -02 [ 14-Jan-26 ] 
+===============================
+Custom Image:- how to making CI
+ -> OS
+ -> nginx              
+ -> Code
+
+=> Base Image--> OS --> VM(nginx + Code)temporary Vm-->Image(Az vm image create) -->  Custom Image(Os, nginx, code) 
+
+=> Packer -> Custom image banana ka tool 
+
+=> jis tara terraform me terraform {} block hota hai usi tara CI banana ke lia  packer{} block hota hai
+
+=> google(type) --> custom image azure packer -> Create Linux Azure VM image with packer 
+
+Packer ka document:-
+==================
+=> type-> packer --> click packer hashicorp developer--> documentation -->template --> hcl template--> blocks--> packer 
+
+=> first app registration banana hai usi ko contributor right dena hai uska client ID, Client secret, tenant ID and all fill in source block 
+
+=> packer init
+$ packer init ubuntu.pkr.hcl
+
+=> packer build
+$ packer build ubuntu.pkr.hcl
+
+
+=> ubuntu.pkr.hcl -> packer build. -> Azure image -> VM
+=> Dockerfile -> docker build -> docker image -> docker 
+
+===========================
+Docker Recap-03 [ 16-Jan-26 ] 
+===========================
+Requirement:-
+=> marketplace(base Image)Ubuntu OS---> Temporary Vm --> Custom Image
+
+=> manual Custom image banana tarika 
+chatGPT-> can you give manual step to create a custom image form frontend app with nginx installed on azure 
+
+=>
+ 1. Docker Install
+ 2. nginx ka container chalaenge
+ 3. Docker Hub kya hai ? 
+ 4. Docker Hub, ACR, ECR-Container Registries 
+
+ 5. Docker Hub se nginx ka image pull 
+ 6. Run in container 
+
+> Create VM in azure
+> Install Docker engine
+(cat /etc/os-release)
+** type:-install docker in ubuntu --> 
+
+1. Install using the apt repository
+----------------------------------
+# Add Docker's official GPG key:
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+
+2. Install the Docker packages:-
+---------------------------------
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+3. status:-
+------------
+sudo systemctl start docker
+
+
+4. pull the nginx image in Docker Hub
+
+ $ sudo docker pull nginx
+ $ sudo docker images
+ $ sudo docker run nginx
+
+summery:-
+1. Docker Install
+2. Find Image in Docker Hub
+3. Pull Image in Local
+4. Run Image in Container 
+
+
+============================
+Docker Recap-04 [ 20-Jan-26 ] 
+============================
+1. Light Weight Image:- alpine
+   ex:- nginx:alpine-latest
+
+=> Ubuntu(base image)  
+=============================
+Docker Recap-05 [ 21-Jan-26 ] 
+==============================
+=> Ubuntu(base image) se Custom image create Karna 
+
+>> Create VM in azure
+
+1. Install using the apt repository
+
+2. Install the Docker packages
+
+3. status:-
+sudo systemctl start docker
+
+4. pull the ubuntu image in Docker Hub
+$ sudo docker pull ubuntu:latest
+
+ChatGPT:-bhai har bar sudo lagana padta hai iska solution dena 
+
+$ sudo groupadd docker
+$ dudo usermod -aG docker $USER
+
+$ then reboot the VM 
+
+> Image se Container banana hai
+$ docker run ubuntu:latest
+
+> See Running images
+$ docker ps 
+
+> See All the images
+$ docker ps -a 
+
+$ docker run -d < image Name > 
+
+> Go inside in container
+$ docker exec -it < container ID > bash
+
+  Docker:- command 
+==========
+1. Create
+2. start
+3. stop-
+4. delete
+5. restart
+6. ssh
+--> docker exec -it <container id> bash
+
+============================
+Docker Recap-06 [ 23-Jan-26 ] 
+============================
+============================
+Docker Recap-07 [ 27-Jan-26 ] 
+============================
+1. Base image analysis of nginx from docker Hub:- nginx:latest
+
+2. Jis computer pr docker hai, docker images
+
+3. Docker pull nginx:latest  
+
+4. Docker Images => It will show nginx:latest
+
+5. docker run nginx:latest
+
+6. Docker exec > Login into Container
+
+7. Index.html
+
+8. Port Forwarding 
+
+9. Site ko chala kar dekhnge 
+
+10. Index.html ko remove karke streamflix ka application dal denge
+
+ 
+>> Create VM in azure
+
+1. Install using the apt repository
+
+2. Install the Docker packages
+
+3. status:-
+sudo systemctl start docker
+
+4. pull the nginx image in Docker Hub
+$ sudo docker pull nginx:latest
+
+5. create container 
+ $ docker run -d nginx:latest
+
+6. Port-Forwarding 
+ $ docker run -d -p <Host-port:Container-port> <image name:v1> 
+ $ docker run -d -p 8989:80 nginx:latest
+
+ $ docker run --name galu-container -d -p 8989:80 nginx:latest
+
+7. Access in browser
+ <ip-address>:<host-port>
+ 192.168.39.19:8989-----> Here See nginx web page < Welcome to nginx > 
+
+8. go inside the container
+$ docker exec -it <container id> bash
+
+$ cd /user/share/nginx/html
+
+9. Streamflix repository Vm ka home  per clone karna hai
+
+10. cd StreamFlix kya jo StreamFlix folder me hai wo sab copy karke ngnix ka path--> /usr/share/nginx/html path per paste karna hai 
+
+GPt:-Computer ke is path se /home/ubuntu/StreamFlix/* me file & folder hai  isko container ke ander /usr/share/nginx/html idhr pahuchana hai ..
+
+$ docker cp /home/ubuntu/StreamFlix/. <container_name or id>:/usr/share/nginx/html
+
+11. Access in browser(check)
+$ 192.168.39.19:8989
+
+
+GPT:- humko na 100 container banana hai nginx ka .. script bana ke do c1,c2,c3 & port maping 8001, 8002,8003 etc...
+
+Note:- Is class me note me script.sh ka ek base file hai.. 
+
+============================
+Docker Recap-08 [ 28-Jan-26 ] 
+============================
+Automate in packer
+-----------------
+> packer process
+> Create a VM
+> Image to VM
+> Temporary VM( install tool ) 
+> VM to image
+> create a Custom Image 
+
+
+>> StreamFlix repo ko local per clone kara hai.. & open in vs code 
+
+>> docker pull alpine-slim
+>> docker run --name simple-container -d -p 8900:80 nginx:alpine-slim
+
+>> in vs code create a docker file 
+ 
+# Dockerfile:-
+1. Create Docker Container 
+>  Image to Container 
+>  Install tool 
+>  Docker 
+>  Container to Image 
+>  Docker Custom Image 
+
+* Dockerfile of streamflix repo 
+------------------------------
+
+FROM nginx:alpine-slim
+RUN rm -rf /usr/share/nginx/html/*
+COPY . /usr/share/nginx/html/
+EXPOSE 80
+
+
+> conversion of  Docker file into docker container 
+$ docker build -t mera_pehlanginx:latest .
+
+> docker exec -it <container_id> sh
+  cd /usr/share/nginx/html/
+  ls 
+
+==============================
+Docker Recap-09 [ 03-FEB-26 ] 
+==============================
+vm case:
+======
+> Base Image(/var, /etc /home)  --> Temporary VM(Sab kuch setup kar deta hai --> Custom Image 
+
+Docker Case:-
+==========
+> Base Image (Docker Hub) 
+ -- docker run
+> Temporary Container(sab kuch setup kar deta hai(in exec command) 
+--- docker commit
+> Custom Image 
+
+Example: Target mereko Streamflix ki custom image banana hai ..
+
+> Base Image- nginx
+-- docker run -name temp_container -d -p 8808:80 nginx 
+
+> Temporary container(Streamflix code copy kare) 
+-- docker commit 
+> Custom Image (banjaega) 
+> custom image ko Golden image keheta hai..
+
+Note:-
+=====
+$ docker run -name temp_container -d -p 8808:80 nginx 
+
+> clone repo of streamflix in host path /home 
+git clone < repo URL > 
+
+> copy host file system to temporary file system 
+$ docker cp /home/ubuntu/StreamFlix/. < container_id>:/usr/share/nginx/html
+
+To see the file system : docker exec < container id > ls-l /usr/share/nginx/html
+
+> Container to image --> docker commit
+$ docker commit <contain_id> streamflix:v1
+here streamflix:ve image bangaya is ko docker run command se container ban paega 
+
+
+*) Image to Container --> docker run 
+*) Container to image --> cocker commit
+
+Note:- Custom image/Golden Image/Docker Image banana ke process ko automate karne ke lia kya aaya ? ---> Dockerfile 
+
+Note1:- manually process
+1. Base Image se temporary container(docker run) 
+2. copy karwana (docker ce se)
+3. container ke under command chalana  exec karke 
+4. docker commit se golden image/custom image banana 
+5. docker rm temporary container 
+
+
+docker file case:-
+=================
+
+> Docker file for React JS Application 
+----------------------------------------
+
+
+=============================
+Docker Recap-10 [ 04-Feb-26 ] 
+=============================
+03 & 04 date same video 
+
+
+
+
+
+======  Docker Batch-17  ============
+       -----------------
+Docker Day-01 [ 14-Feb-26 ] 
+============================
+
+Diagrammatically  understand 
+--------------------------
+1. 1-Tier Application
+2. 3-Tier Application( Monolithic ) 
+
+3. 3-Tier Application( Microservice ) 
+
+
+============================
+Docker Day-02 [ 15-Feb-26 ] 
+============================
+
+1. Application Monolithic Nature
+2. Developer ne toda, dard aaya Deployment ma. VM  pr deploy karnae se numbers of VM bad gaya.
+3. GB ka barbadi
+4. Restart problem of VM
+5. Autoscaling/descale me time taking problem 
+
+Note: understanding virtualization & containerization 
+
+> how to install docker install in
+
+Note:- Operation Automator's ka Roadmap:-
+=======================================
+
+===========================
+Docker Day-03 [ 21-Mar-26 ] 
+===========================
+
+ChatGPT- Kya operating system bhari hota hai..& gaust or bhari kuon hota hai..
+
+=> Docker Desktop Installation process
+
+=> Remote VM open in VScode ..
+=> Extension --> remote ssh 
+
+=> LinkedIn post:-
+
+ChatGPT:- mujhe mloops ki architecture do 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

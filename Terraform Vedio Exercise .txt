@@ -1006,7 +1006,7 @@ resource "azurerm_resource_group" "rg" {
   location = "Central India"
 }
 
--> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) 
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) in portal rg create(eg-rg-prabha) 
 
 Note:-2
 =========
@@ -1227,6 +1227,7 @@ rg-names = ["rg-emu2","rg-emu3","rg-emu4"]
 
 ***) Dard in for_each 
 => Different location with different rg can't create 
+ 
 
 main.tf
 ------------
@@ -2840,7 +2841,7 @@ steps:
 => search doc.. filter me type- parameter
 
 
-Day-70
+Day-70 
 ======
 > same trigger, pool , variable steps me terraform install, init, fmt, validate, apply
 
@@ -3856,6 +3857,20 @@ Day-78
 > Multisite Hosting Capability
 > Web Application Firewall- WAF
 
+3. Traffic Manager:-
+=====================
+> Global Service
+> L7 Load Balancer
+> DNS Based routing
+
+4. Front Door:-
+================
+> Global Service
+> L7 Load Balancer
+> DNS Based routing
+> CDN available
+
+
 => type: DNS checker check the ip address
 
 => application Gateway understand using proper diagram   
@@ -4087,6 +4102,7 @@ Create private Endpoint
 
 Day-82  
 ======
+
 > Hub & Spoke Landing Zone:-
 ---------------------------
 1. On Boarding Solution:-
@@ -4159,7 +4175,2811 @@ Day-82
 11. Count Loop usage
 12. Lifecycle Block
 13. Terraform with Excel 
-14. Terr
+
+
+*) Output Block:- scenario-01
+=============================
+(module) Resource Group: main.tf
+================================
+variable "rg_name" {  
+}
+variable "location" {  
+}
+resource "azurerm_resource_group" "rg" {
+  name     = var.rg_name
+  location = var.location
+}
+
+output "prabha_rg_name" {
+  value = azurerm_resource_group.rg.name
+}
+
+output "prabh_rg_location" {
+  value = azurerm_resource_group.rg.location
+  
+(module)storage account: main.tf
+----------------------------
+variable "stg_name" {
+}
+variable "rg_name" { }
+variable "location" { }
+variable "account_tier" { }
+variable "account_replication_type" { }
+
+resource "azurerm_storage_account" "stg" {
+  name                     = var.stg_name
+  resource_group_name      = var.rg_name
+  location                 = var.location
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
+}
+
+output "stg_id" {
+  value = azurerm_storage_account.stg.id
+  
+}
+
+storage_container: main.tf
+=========================
+variable "blob_container_name" {
+}
+variable "storage_account_id" {
+}
+variable "container_access_type" {
+}
+
+resource "azurerm_storage_container" "blob_container" {
+  name                  = var.blob_container_name
+  storage_account_id    = var.storage_account_id
+  container_access_type = var.container_access_type
+}
+
+dev  main.tf:
+================
+module "resource_group" {
+  source   = "../../modules/azurerm_resource_group"
+  rg_name  = "prabha-rg"
+  location = "Central India"
+}
+
+module "rama_storage_account" {
+  source     = "../../modules/azuererm_storage_account"
+  
+
+  stg_name                 = "ramastg3939"
+  rg_name                  = module.resource_group.prabh_rg_name                
+ location = module.resource_group.prabh_rg_location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+module "blob_container" {
+  source = "../../modules/blob_storage_container"
+
+  blob_container_name   = "tfstate"
+  storage_account_id    = module.rama_storage_account.stg_id
+  container_access_type = "private"
+}
+
+2. Use Case2:- (Output Block in Parent Module) How to print something after terraform  apply  
+============================================
+
+output "Dhundu" {
+  value = "Hello, I am dhundu "
+}
+output "Storage_Account_Name" {
+  value = "ramastg3939"
+}
+output "blob_container_name" {
+  value = "tfstate"
+}
+
+
+Day-83  
+======
+*) Output Block:-Important 
+===================
+1. Use Case1:-(Output Block in Child Module)  Ek Module se bahar kuch nikal na   &  dusure modul me kuch pass karna hai..
+
+2. Use Case2:- (Output Block in Parent Module) How to print something after terraform  apply  
+
+=> Implicit Dependency  >  Explicit Dependency 
+
+=> resource azurerm_linux_virtual_machine "vm" {
+
+}
+
+parent block: main.tf ke niche:
+---------------------------
+=> output "vm_pip" {
+value = azurerm_linux_virtual_machine.vm.public_ip_address
+}
+
+output "dhundu"{
+value = "Hello , I am Dhundu ! " 
+}
+
+
+*) Dynamic Block:-  Imp.
+===========================
+=> Dynamic Block-- Kya hai in azure me.. ? aur kaha pr lagega ? 
+
+Ans) Dynamic Block:- Terraform me ek aisa block jo loop se multiple nested blocks banata hai
+            or,
+> Dynamic Block is a block in terraform which makes multiple nested blocks by using loop..
+
+=> Kaha use hota hai ?
+Ans) Azure ke Terraform code me, jaise NSG rules, IPs, disks
+
+=> Aaya hi kyu ? 
+=> Agar aapko repeat hone wale block nanage hai, example subnet block, nsg rule, to aap dynamin block laga sakte ho...
+
+=> kaha lagana hai..-> load balancer me frontend ip configuration, network interface me ip_configuration,  
+storage account me network_rules, 
+
+> Resource Group: main.tf
+-----------------------
+resource "azurerm_resource_group" "rg" {
+  for_each = {
+     "rg1" = "Central India"
+     "rg2"  = "West US"
+     "rg3"  = "South India"
+  }
+
+  name = each.key
+  location = each.value
+}
+subnet:main.tf
+------------
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-rama"
+  location = "West Us"
+}
+resource "azurerm_virtual_network" "vnet" {
+  name                = "prabha-vnet"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  subnet {
+    name             = "subnet1"
+    address_prefixes = ["10.0.1.0/24"]
+  }
+  subnet {
+    name             = "subnet2"
+    address_prefixes = ["10.0.2.0/24"]
+  }
+subnet {
+    name             = "subnet3"
+    address_prefixes = ["10.0.3.0/24"]
+  }
+  subnet {
+    name             = "subnet4"
+    address_prefixes = ["10.0.4.0/24"]
+  }
+  subnet {
+    name             = "subnet5"
+    address_prefixes = ["10.0.5.0/24"]
+  }
+  tags = {
+    environment = "Production"
+  }
+}
+Note: Without using Dynamic block 5-subnet create(by using copy/paste subnet block)
+
+=================
+Note:-By using Dynamic Block create 5 subnet
+--------------------------------------
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "example-network"
+  location            = azurerm_resource_group.vnet.location
+  resource_group_name = azurerm_resource_group.vnet.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  subnet {
+    for_each = {
+        subnet1= ["10.0.1.0/24"]
+        subnet2= ["10.0.2.0/24"]
+        subnet3= ["10.0.3.0/24"]
+        subnet4= ["10.0.4.0/24"]
+    }
+    name             = each.key
+    address_prefixes = each.value 
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+
+Note: for_each ek meta argument wo only resource block ke under ja sakta hei. islia vnet ke under subnet ka for_each me error aya hei...
+
+Note: here subnet block is also called nested block/sub-block
+
+Note:-By using Dynamic Block create 5 subnet(using variable)
+=====================================
+azurerm_virtual_network: main.tf
+==================================
+resource "azurerm_resource_group" "rg" {
+
+  name     = "rg-rama"
+  location = "West Us"
+}
+variable "subnets" {
+  
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "prabha-vnet"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  dynamic "subnet" {
+    for_each = var.subnets
+    content {
+      name             = subnet.key
+      address_prefixes = subnet.value
+    }
+  }
+  tags = {
+    environment = "Production"
+  }
+}
+terraform.tfvars:
+===================
+subnets = {
+        subnet1= ["10.0.1.0/24"]
+        subnet2= ["10.0.2.0/24"] 
+        subnet3= ["10.0.3.0/24"] 
+        subnet4= ["10.0.4.0/24"]
+    }
+
+*) Dynamic Block code of Storage Account:
+=========================================
+
+azurerm_starage_account: main.tf
+---------------------------------
+
+resource "azurerm_storage_account" "stg-account" {
+  for_each = var.storageaccount
+
+  name                     = each.value.name
+  resource_group_name      = each.value.resource_group_name
+  location                 = each.value.location
+  account_tier             = each.value.account_tier
+  account_replication_type = each.value.account_replication_type
+
+  tags = {
+    environment = "staging"
+  }
+}
+
+terraform.tfvars
+==================
+
+storageaccount = {
+  "stg1" ={
+  name                     = "ramastg567"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+  "stg2" ={
+  name                     = "harastg5677"
+  resource_group_name      = "rg-dhondhu"
+  location                 = "Central India"
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+  }
+
+}
+
+Note: dynamic "subnet"{
+for_each ={}
+content {}
+}
+
+=> Dynamic block me hamesa 2-chige jaiga for_each & content, here for_each ek map & content ek block & content ke under subnet resource ka argument reference jati hai..
+
+=> Vnet: main.tf : Exercise:-1
+-------------------
+resource "azurerm_resource_group" "rg" {
+  name     = "rama-rg"
+  location = "West Europe"
+}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "example-network"
+  location            = azurerm_resource_group.vnet.location
+  resource_group_name = azurerm_resource_group.vnet.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  dynamic "subnet" {
+    for_each = {
+        subnet1= ["10.0.1.0/24"]
+        subnet2= ["10.0.2.0/24"] 
+        subnet3= ["10.0.3.0/24"] 
+        subnet4= ["10.0.4.0/24"]
+    }
+    content {
+      name             = subnet.key
+      address_prefixes = subnet.value 
+    }
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+Exercise:-2
+=============
+resource "azurerm_resource_group" "rg" {
+  name     = "rama-rg"
+  location = "West Europe"
+}
+
+variable "subnets" {}
+
+resource "azurerm_virtual_network" "vnet" {
+  name                = "example-network"
+  location            = azurerm_resource_group.vnet.location
+  resource_group_name = azurerm_resource_group.vnet.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  dynamic "subnet" {
+    for_each = var.subnets
+    content {
+      name             = subnet.key
+      address_prefixes = subnet.value 
+    }
+  }
+
+  tags = {
+    environment = "Production"
+  }
+}
+
+terraform.tfvars:
+================
+subnets = {
+        subnet1= ["10.0.1.0/24"]
+        subnet2= ["10.0.2.0/24"] 
+        subnet3= ["10.0.3.0/24"] 
+        subnet4= ["10.0.4.0/24"]
+    }
+
+=> Baar Baar subnet block epeat ho raha hei...
+=> Solution :- Loop- Count/ ForEach
+
+=> DB: ye terraform ko batata hai ke subnet block dynamic hai..
+=> jitney bhikey value pair ai utne blocks banenge
+=> Har subnet block jo Banega uska actual details isme se uthega...
+
+
+
+
+
+Day-84  
+====== 
+=> Requirements:- Aisa module banana hai. jo generic ho aur storage account me kalko kaisa bhi custom requirement aae toh child moudue ka verion ya tag me kuch change na karna pade...
+
+*) common  StorageAccount(Chile Module)
+    =================88==============          
+Use:1. netflix-app
+    2. jio-hotstar
+    3. amazon-prime
+
+
+example:1
+=========
+1. subnets(map) = {
+  subnet1(key) = ["10.0.1.0/24"] (value1) 
+  subnet2(key) = ["10.0.2.0/24"] (value2) 
+}  
+Here, 
+> keys = String
+  value = list(string)
+  map(list(string)) 
+
+2. rgs(map) = {
+  rg1(key) = "Central India" (value1) 
+  rg2(key) = "South India" (value2) 
+}  
+=> keys = String
+  value = list(string)
+  map(string) 
+
+3. rgs(map) = {
+  tm1(key) = 451 (value1) 
+  tm2(key) = 556 (value2) 
+}  
+=> keys = String
+  value = number
+  map(number) 
+
+4. rgs(map) = {
+  tm1(key) = true (value1) 
+  tm2(key) = false (value2) 
+}  
+=> keys = String
+  value = bool
+  map(bool)
+
+Note:- Key always String  
+
+5.  "netflix_stg2"(map) = {
+  name                     = "pintustg33"
+  resource_group_name      = "prabha-rg"
+  location                 = "West Europe"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  public_network_access_enabled = false
+  minimum _tls_version         = 1.2
+    } (all value) 
+  }
+
+=> Here,
+  key = string 
+  value = object
+  type = map(object) 
+
+=> google type > terraform types --> map/object see
+
+variable "storage_accounts" {
+  type = map(object(
+    {
+  name                     = string
+  resource_group_name      = string
+  location                 = string
+  account_tier             = string
+  account_replication_type = string
+  public_network_access_enabled = bool
+  is_hns_enabledn               = bool
+  nfsv3_enabled                 = bool
+  shared_access_key_enabled     = bool
+  }))
+}
+
+=> google type > optional attribute in terraform 
+&  see left side optional object type attribute
+
+=> local block add kara type-1
+Ans) In locals block  
+> input value - instead of terraform.tfvars use locals block
+> for_each me instead of var use local
+eg: for_each = local.storage_accounts
+> here variable declare can't work
+
+locals {
+  storage_accounts = {
+  "netflix-stg1" = {
+    name                          = "netflixstg345"
+    resource_group_name           = "prabha-rg"
+    location                      = "West Europe"
+    account_tier                  = "Standard"
+    account_replication_type      = "GRS"
+}
+
+  "hotstar-stg2" = {
+    name                          = "hotstarstg345"
+    resource_group_name           = "prabha-rg"
+    location                      = "West Europe"
+    account_tier                  = "Standard"
+    account_replication_type      = "GRS"
+}
+}
+}
+
+resource "azurerm_storage_account" "stg" {
+  for_each = local.storage_accounts
+
+  name                          = each.value.name
+  resource_group_name           = each.value.resource_group_name
+  location                      = each.value.location
+  account_tier                  = each.value.account_tier
+  account_replication_type      = each.value.account_replication_type
+}
+
+
+=> Tags: ka use in local block
+============================
+main.tf:
+------------
+
+variable "cost_center" { }
+variable "owner" { }
+variable "team_name" { }
+
+locals {
+  common_tags = {
+    cost_center = var.cost_center
+    owner = var.owner
+    team_name = var.team_name 
+  }
+}
+
+resource "azurerm_storage_account" "storage_account" {
+  for_each = var.storage_accounts
+
+  name                     = each.value.name
+  resource_group_name      = each.value.resource_group_name
+  location                 = each.value.location
+  account_tier             = each.value.account_tier
+  account_replication_type = each.value.account_replication_type
+  public_network_access_enabled = each.value.public_network_access_enabled
+  is_hns_enabled                = each.value.is_hns_enabled
+  nfsv3_enabled                 = each.value.nfsv3_enabled
+  shared_access_key_enabled     = each.value.shared_access_key_enabled
+  tags                          = local.common_tags
+
+}
+
+terraform.tfvars
+===================
+cost_center = "prime001"
+owner       = "chintu Bhatia"
+team_name   = "prime team"
+
+
+=> type google :- lifecycle block terraform  see lifecycle 
+
+=> Life Cycle Block:-
+=====================
+Default= resource group first destroy & new create 
+  > destroy & then create replacement
+
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+} 
+
+=> Here create first & then destroy
+   > create replacement & then destroy 
+
+ lifecycle {
+    prevent_destroy = true
+  }
+
+=> here : terraform destroy marne per rg destroy nahi hoga..or terraform apply karne per destroy karne ke lia mana kar raha hai..
+
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg"
+  location = "West Europe"
+
+  lifecycle {
+   ignore_changes = [name]
+  }
+
+} 
+
+=> here rg ka name changes nahi hoga 
+===============================
+
+resource "azurerm_resource_group" "rg" {
+  name     = "prabha-rg5"
+  location = "West Europe"
+
+  lifecycle {
+     replace_triggered_by = [azurerm_storage_account.stg]
+  }
+} 
+
+resource "azurerm_storage_account" "stg" {
+  name                     = "ramastg678"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+> here yadi storage account me kuch change kara to error aya hai..
+> yadi is resource group ko use karke other resource(like vnet, subnet, other storage account ) banayage to nahi ban payega because of lifecycle ( replace_triggered_by = [azurerm_storage_account.stg] ) kebal this resource group fixed for this stroge account 
+> prabha-rg5 (resource group) is fixed for this storage account(ramastg678) only....
+
+
+PreCondition & PostCondition:-
+==============================
+
+> Terraform 1.2+ se precondition aur postcondition introduce hue the — inka use resource create/update hone se pehle aur baad me validation karne ke liye hota hai.
+
+PreCondition Example:-
+---------------------
+resource_group Main.tf:
+----------------------
+variable "location" { }
+variable "name" { }
+
+resource "azurerm_resource_group" "rg" { 
+  name     = var.name
+  location = var.location
+
+  # Lifecycle rules
+  lifecycle {
+    precondition {
+      condition     = contains(["East US", "West Europe", "Central India"], var.location)
+      error_message = "❌ Invalid location! Only East US, West Europe, or Central India are allowed."
+    }
+  }
+}
+Terraform.tfvars:
+=================
+name = "prabha-rg"
+location = "Central India"
+
+PostCondition Example:-
+======================
+
+  # Lifecycle rules
+  lifecycle {
+        postcondition {
+      condition     = length(self.name) > 8 && length(self.name) < 40
+      error_message = "❌ Resource Group name must be between 8 and 40 characters."
+    }
+
+    postcondition {
+      condition     = can(regex("^prabha-", self.name))
+      error_message = "❌ Resource Group name must start with 'prabha-'."
+    }
+  }
+
+🔍 self kya hai?
+=================
+
+Terraform me jab tu kisi resource ke andar (jaise lifecycle ke precondition ya postcondition block me) likhta hai —
+to self ka matlab hota hai “ye resource khud” (its own values).
+
+Matlab:
+self == current resource instance
+aur
+self.<attribute> == us resource ka koi specific property
+
+
+🔍 1️⃣ regex() kya karta hai?
+============================
+> Terraform ka regex(pattern, string) function ek regular expression match karta hai.
+
+> Agar pattern match hota hai → value return karta hai (list of matches).
+
+> Agar match nahi hota → Terraform error throw karta hai ❌
+
+Example:
+=======
+regex("^example-", "example-rg")   # ✅ match karta hai
+regex("^example-", "test-rg")      # ❌ ye error dega (match nahi mila)
+
+
+
+
+
+Day-85  
+======
+IAAS:-
+======
+Management Group, resource Group, Subscription, Vnet, Subne, Peering, 
+VPN Gateway, VM, VMSS
+
+PAAS:-
+======
+Web App, Azure Function, Logic App,
+AKS, ACR, Key Vault, Bastion, Storage Account, ADF, Private Endpoint, NIC
+
+SAAS:-
+======
+Entra ID, Azure DevOps
+
+
+Terraform:-
+--------------
+=> Sab kuch block hai..
+> Child block
+> Parent Block
+
+=> Loop:
+-------
+> Count
+>ForEach
+
+=> Argument Reference: jo Block ke ander jaega..
+ 
+1. Required  2. Optional
+
+=> Attributes Reference:- jo Bahar output banke aaega..
+
+=> Job bhi public Ip jyada dikhta hai. matlab kuch na kahi kuch galat hai.. aur kuch optimize karne ka scope hai..
+
+=> jab bhi code me duplication hota hai..dimag me ghanta bajni chahiye, Kuch galat hai.Optimize kanaa pdega
+
+=> Agar code me duplicacy ho rahi hai. 
+1. Module    2. Loop
+
+> Here module means Function
+=> Loop:-
+--------
+1. Count   2. For_Each
+
+=> Meta Argument: Aisa argument jo har resource block me ja sakta hai..
+
+=> For_Each + Map:
+---------------------
+resource "azurerm_resource_group" "rg" {
+  for_each = {
+    "rg1" = {
+      name     = "rg-dhondhu"
+      location = "Central India"
+      managed_by = "terraform"
+      tags = {
+        business_unit = "dummy"
+        cost_center = "prime"
+      }
+      
+    }
+    "rg2" = {
+      name     = "rg-lulu"
+      location = "South India"
+       managed_by = "chintu"
+       tags = {
+        business_unit = "pummy"
+        cost_center = "prime_plus"
+      }
+    }
+  }
+  name     = each.value.name
+  location = each.value.location
+  managed_by = each.value.managed_by
+  tags = each.value.tags
+}
+
+ => Optimization For_Each + Map:-
+----------------------------------
+resource_group main.tf
+----------------
+variable "rgs" {
+  type = map(object(
+    {
+      name       = string
+      location   = string
+      managed_by = string
+      tags       = map(string)
+    }
+  ))
+}
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name     = each.value.name
+  location = each.value.location
+  managed_by = each.value.managed_by
+  tags = each.value.tags
+}
+
+terraform.tfvars  
+--------------
+rgs = {
+    "rg1" = {
+      name     = "rg-dhondhu"
+      location = "Central India"
+      managed_by = "terraform"
+      tags = {
+        business_unit = "dummy"
+        cost_center = "prime"
+      }
+      
+    }
+    "rg2" = {
+      name     = "rg-lulu"
+      location = "South India"
+       managed_by = "chintu"
+       tags = {
+        business_unit = "pummy"
+        cost_center = "prime_plus"
+      }
+    }
+ }
+
+ => Optimization For_Each + Map:-2
+resource_group main.tf:
+------------------------
+variable "rgs" {
+  type = map(object(
+    {
+      name       = string                # Name of the resource Group
+      location   = string                # Location of the Resource Group
+      managed_by = optional(string)      # Who will mamage this ? 
+      tags       = optional(map(string)) # Required tags
+    }
+  ))
+}
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = each.value.managed_by
+  tags       = each.value.tags
+}
+
+terraform.tfvars:
+-------------------
+rgs = {
+    "rg1" = {
+      name     = "rg-dhondhu"
+      location = "Central India"
+      managed_by = "terraform"
+      tags = {
+        business_unit = "dummy"
+        cost_center = "prime"
+      }
+      
+    }
+    "rg2" = {
+      name     = "rg-lulu"
+      location = "South India"
+    #    managed_by = "chintu"
+    #    tags = {
+    #     business_unit = "pummy"
+    #     cost_center = "prime_plus"
+    #   }
+    }
+ }
+
+chtGpt:- can you fix output block ( & paste the resource group block & out put block) 
+
+Optional: Output as a List:-
+---------------------------
+variable "rgs" {
+  type = map(object(
+    {
+      name       = string                # Name of the resource Group
+      location   = string                # Location of the Resource Group
+      managed_by = optional(string)      # Who will mamage this ? 
+      tags       = optional(map(string)) # Required tags
+    } 
+  ))
+}
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = each.value.managed_by
+  tags       = each.value.tags
+}
+
+output "rgs_id" {
+  value = {
+    for key, rg in azurerm_resource_group.rg :
+    key => rg.id
+  }
+}
+
+Note: Resource group (terraform apply) banne ke bad do(2) rg ka id cli me dikhaye ga
+
+ 
+Day-86  
+======
+=> Storage account ka for_each laga ke generalize karke output block laga ke id ko cli me nikal na hai..
+
+chatGPT:- bhai azure ka storage account me jitne bhi argument reference ha block ko chhod ke sab ko list banake do
+
+ variable "storage_accounts" ke andar define karo as a map(object) structure, jisme for_each loop ke through har storage account create ho.
+
+=> Argument: 2-types
+1.Required:
+2. Optional:
+   1. Single Line(String, bool, number)
+   2. Blocks
+
+Code Folder New  Journey 
+*) Storage Account ka block argument:-
+main.tf 
+Example:01 (Dynamic Block not good method) 
+----------------------------------------
+ dynamic "network_rules" {
+    for_each = {
+      "rule1" = {
+        default_action = "Deny"
+        bypass         = ["AzureServices"]
+        ip_rules       = ["182.38.133.121"]
+      }
+    }
+    content {
+      default_action =network_rules.value.default_action
+      bypass         = network_rules.value.bypass
+      ip_rules       = network_rules.value.ip_rules
+    }
+ }
+
+
+variable.tf
+-----------
+network_rules = optional(object(
+        {
+          default_action = string
+          bypass         = optional(list(string))
+          ip_rules       = optional(list(string))
+      }))
+
+
+
+terraform.tfvars
+----------------
+ network_rules = {
+      default_action = "Deny"
+      bypass         = ["AzureServices"]
+      ip_rules       = ["182.38.133.121"]
+    }
+=> Note:- in terraform apply network rule add in 3-different storage but require only only one Stg. 
+
+
+Example:01 (Dynamic Block not good method) 
+======================================      
+main.tf
+--------
+  # Block
+  dynamic "network_rules" {
+    for_each = each.value.network_rules
+    
+    content {
+      default_action =network_rules.value.default_action
+      bypass         = network_rules.value.bypass
+      ip_rules       = network_rules.value.ip_rules
+    }
+ }
+
+variable.tf
+-----------
+network_rules = optional(map(object(
+        {
+          default_action = string
+          bypass         = optional(list(string))
+          ip_rules       = optional(list(string))
+      }
+      )))
+
+
+terraform.tfvars
+===============
+ network_rules = {
+      "rule1" = {
+        default_action = "Deny"
+        bypass         = ["AzureServices"]
+        ip_rules       = ["182.38.133.121"]
+    }
+     
+
+===============================================
+Terraform Recap:-01 (14-Oct-25 )
+==============================
+
+=> Value Ghusane ka tarika 4
+> 1. hard coded  2. String, Number, Bool
+  3. List        4. Map
+
+main.tf
+=======
+resource "azurerm_resource_group" "resource_group" {
+  # iske under 2 chiz jaega
+  # Argument  & Meta Argument
+#   for_each   = {} # Meta-Argument
+  name       = var.rg_name
+  location   = var.location
+  managed_by = var.managed_by
+  tags       = var.tags
+
+}
+
+variable.tf
+===========
+variable "rg_name" {
+  # iske under bhi Argument jaega
+}
+variable "location" {}
+variable "managed_by" {}
+variable "tags" {}
+output.tf
+=========
+output "resource_group_id" {
+  value = azurerm_resource_group.resource_group.id
+}
+terraform.tfvars
+================
+rg_name    = "prabha-rg"
+location   = "Central India"
+managed_by = "terraform"
+tags = {
+  env   = "prod"
+  owner = "prabha"
+}
+
+Terraform Recap:-02 (15-Oct-25 )
+===================================
+*) Four(4) scenario:-
+--------------------
+1) Add new Resource Group
+2) Delete Resource Group
+3) Resource Group ko update karna hai.
+4) Portal se koi Choudhury ne rg delete kardia toh kya hoga ? 
+
+1> Agar foreach nahi lagae toh, hame resource block ko firse copy karna hoga ek naya rg banana ke lia. copy karke variable ka alg naam dena pdega. us variable ko declare karna hoga, declare karke variable.tf me dalna hoga..dalne ke baad uska value tfvars se paas karna hoga..
+
+=> is Vidhi se agar rg banae to 10 rg ke lie 10 baar resource black ko copy karna pdega, 10 variable banegne 10 input banengne. ye jhand solution hai..
+
+2> Code se block uda do , rg bhi delete ho jaega ..
+
+3> Code me change kardo , rg update ho jaega..
+
+4> Terraform plan ke phele terraform refresh chlta hai..
+> Terraform refresh portal aur state file ko equilibrium  point pr lata hai..
+
+*) Scenario:- first create rg-prabha (terraform apply) then in portal this rg delete & vs code check terraform state list (this rg present in state file ) then terraform refresh became equilibrium  the state file & portal ( state file me rg-prabha hat jaega) terraform plan --1 to add the resource
+
+=> Loop:- Count & For-Each
+----------------------------
+1.) Count:- 0 se chalu karke us number tak jaega jo aapne bola hai aur har number pr jake ek block ki copy banaega..
+
+1. Count:-
+============
+Note:- 01
+===========
+main.tf:
+========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-prabha"
+  location = "Central India"
+}
+
+-> here plan creating  3 rg but in portal only one rg create ( count index start with zero ) in portal rg create(eg-rg-prabha) 
+
+Note:-2
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = count.index
+  location = "Central India"
+}
+
+-> here creating 3 rg in portal  name with . 0,1,3, but naming convention  not good 
+
+Note:-3
+=========
+resource "azurerm_resource_group" "rg" {
+  count = 3
+  name     = "rg-tiku-${count.index}"
+  location = "Central India"
+}
+
+=> here creating 3 rg name with rg-tiku0, rg-tiku1, rg-tiku2 indexing 0, 1, 2, 
+
+=> isko string interpolation kahe ta hai. "rg-tiku-${count.index}"
+
+=> count + list:-
+
+=> ForEach  + List :-
+
+
+=> ForEach  + map
+
+Terraform Recap:-03(16-Oct-25 )
+===================================
+=> ForEach  + List :-
+
+*) without using variable:- For_Each
+===================================
+resource "azurerm_resource_group" "RG" {
+  for_each = toset(["feature", "demo", "preprod"])
+
+  name     = each.value
+  location = "West Europe"
+}
+
+*) Using variable:-
+========================
+main.tf:
+------------
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name     = each.value.name
+  location = each.value.location
+  managed_by = each.value.managed_by
+  tags = each.value.tags
+}
+
+variable.tf
+-----------
+variable "rgs" {
+  type = map(object(
+    {
+      name       = string
+      location   = string
+      managed_by = optional(string)
+      tags       = optional(map(string))
+    }
+  ))
+}
+
+terraform.tfvars
+===================
+rgs = {
+  "rg1" = {
+    name     = "rg-dhondhu"
+    location = "Central India"
+  }
+  "rg2" = {
+    name     = "rg-lulu"
+    location = "South India"
+  }
+
+  "rg3" = {
+    name     = "rg-kulu"
+    location = "West us"
+  }
+}
+
+output.tf
+==========
+> output yadi list/map me hoto yesa do
+
+output "resource_group_ids" {
+  value = { for key, rg in azurerm_resource_group.rg : key => rg.id }
+}
+
+====================================
+
+
+Day-87  
+======
+ChatGPT:- beta ye azure function kya hota hai bs..isko badia se batao hindi englih mila ke batao...
+
+=> Azure Function App Creation:-(serverless app) portal and terraform 
+
+ChatGPT: Dekh bhai main azurerm_servce_plan bana raha hu usme ittne argument hai
+mene code lekha hai
+(past Service plan main.tf, service.tf)
+ isko generic banake do na jisme sab arbument ho
+
+azurerm_logic_app
+azurerm_kbernetes_cluster_service
+azurerm_terraform_data_factoy
+azurerm_terraform_data_bricks
+azurerm_terraform_private_endpoint
+azurerm_terraform_policy
+azurerm_terraform_key_vault
+azurerm_terraform_Container_registry
+azurerm_terraform_kubernetes_cluster
+
+
+landing Zone: 
+=============
+ChatGPT:- bhai hamare paas 3 tire architecture microservice hai sab juch azure pr bana na hai uske lia landing zone me kya kya chize banana pdege batao yaar best practice ke saath
+
+> bhai har topic har point ka baare me chahie details
+ 
+ChatGPT-> bhai main na monolithic architect hi aur main hu shniya(0) pehele simple wala architecture btao azure me .. jisme backup dr, governance production ready badia pho vot ke saath batao ..
+
+> bhai main shunya hu (0) azure me monolithc application kao architecture design  karna hai..
+
+
+azurerm_res  ource_group:-main.tf
+=============================== 
+
+Day-88  
+======
+
+=> Maksad:-Mololithic Application kdo deploy karna 
+ 
+Resource Group:-
+1. Vnet
+2. Subnet
+3. Database Server & DB
+4. Application Gateway
+5. Internal Load Balancer
+6. NSG, ASG
+7. Firewall
+8. Azur Policy
+9. Sentinal, Defender etc.
+10. Key Vault
+11. Bastion
+12. Private Endpoint/Service endpoint
+13. VM 
+ 
+
+> Todo_Monolithic_Infra: code folder
+
+=> Dynamic Block:-
+=================
+1. Aisa DB jo multiple baar jaa sakta hai...
+eg: subnet block in vnet
+
+2. Aisa DB jo sirf ek baar jaa sakta hai...
+eg: encryption block in vnet
+
+=> bhai main terraform me map of object ka type likhna sikh raha hu. mereko bade & chote khatarnak map dena ...
+
+
+Example:-Code Dynamic Block of Vnet
+=================================
+main.tf
+--------
+resource "azurerm_virtual_network" "vnet" {
+  for_each = var.networks
+
+  name                = each.value.name
+  location            = each.value.location
+  resource_group_name = each.value.resource_group_name
+  address_space       = each.value.address_space
+  dns_servers         = each.value.dns_servers
+
+    dynamic "subnet" {
+      for_each = each.value.subnets
+      
+      content {
+        name             = subnet.value.name
+        address_prefixes = subnet.value.address_prefixes
+      }
+    }
+
+}
+
+
+variable.tf
+---------
+variable "networks" {
+  type = map(object({
+    name                = string
+    location            = string
+    resource_group_name = string
+    address_space       = optional(list(string))
+    dns_servers         = optional(list(string))
+
+    subnets = optional(map(object(
+      {
+        name             = string
+        address_prefixes = list(string)
+      }
+    )))
+
+  }))
+}
+
+
+
+terraform.tfvars
+------------------
+networks = {
+  "vnet1" = {
+    name                = "vnet-prabha"
+    location            = "Central India"
+    resource_group_name = "prabha-rg"
+    address_space       = ["10.0.0.0/"]
+    dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+    subnets = {
+      "subnet1" = {
+        name             = "frontend-subnet"
+        address_prefixes = ["10.0.1.0/24"]
+      }
+      "subnet2" = {
+        name             = "backend-subnet"
+        address_prefixes = ["10.0.2.0/24"]
+      }
+    }
+  }
+}
+
+====================================
+
+=> Ternary Operator:-
+======================
+
+=> if each.value.subnets is null then {} otherwise each.value.subnets
+
+Syntax: Condition ? value is true : value is false
+
+=> Condition:-ek aisi line hoti hai..jisko jab evaluate  kia jaega toh true/false aaega..
+
+=> name =true ? "dhoondu" : "Tondu"
+
+Type:- azurerm terraform expression
+
+=> Terraform Operators:- 
+------------------
+
+Conditional operator Code:-
+========================
+=> if each.value.subnet is null then {} otherwise each.value.subnets
+
+Syntax: Condition ? value is true : value is false
+
+=> each.value.subnet != null ? each.value.subnet : {}
+
+example code:1
+==============
+main.tf
+===========
+resource "azurerm_virtual_network" "vnet" {
+  depends_on = [ azurerm_resource_group.rg ]
+  for_each = var.networks
+
+  name                = each.value.name
+  location            = each.value.location
+  resource_group_name = each.value.resource_group_name
+  address_space       = each.value.address_space
+  dns_servers         = each.value.dns_servers
+
+  dynamic "subnet" {
+    for_each = each.value.subnets != null ? each.value.subnets : {}
+
+    content {
+      name             = subnet.value.name
+      address_prefixes = subnet.value.address_prefixes
+
+    }
+  }
+
+}
+
+terraform.tfvars
+=================
+networks = {
+  "vnet1" = {
+    name                = "vnet-prabha"
+    location            = "Central India"
+    resource_group_name = "prabha-rg"
+    address_space       = ["10.0.0.0/16"]
+    dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+    subnets = {
+      "subnet1" = {
+        name             = "frontend-subnet"
+        address_prefixes = ["10.0.1.0/24"]
+      }
+      "subnet2" = {
+        name             = "backend-subnet"
+        address_prefixes = ["10.0.2.0/24"]
+      }
+    }
+  }
+}
+
+===========================
+ChatGPT:- Create Vnet & subnet generic module with all arguments dynamic block
+
+
+Day-89  
+======
+
+
+type: terraform expression
+1. Types & Value (boonean, string, number  )
+2. string & templates
+   String Interpolation
+
+eg: Sting Interpolation:-
+main.tf
+============
+variable "business_unit" { }
+variable "environment" { }
+
+resource "azurerm_resource_group" "rg" {
+    name = "rg-${var.business_unit}-${var.environment}"
+    location = "Central India"
+  
+}
+# rg-business_unit-environment--> print karna hai--> rg-dhundu ki vasti-preprod
+
+abc.tfvars
+==============
+business_unit = "dhundu ki vasti"
+environment   = "preprod"
+
+3. Reference to Value:
+ > Implicitly dependency (var.location ) eg
+4. Operator
+  I. Arithmetic operator
+
+*) Logical Operator:-
+-----------------------
+=> AND Gate( &&) :-Agar dono input true hoga to output true aaega
+  --> true - true  => output = true
+  --> false - false => output = false
+
+=> OR Gate( || ) :- Agar koi bhi ek true ho gaya toh output true ho jaega
+  -> true - false ==> output = true 
+
+&&-operator:
+
+variable "business_unit" { }
+variable "environment" { }
+
+resource "azurerm_resource_group" "rg" {
+    name = true && false 
+    location = "Central India"
+  
+}
+ || - operaton
+=============
+variable "business_unit" { }
+variable "environment" { }
+
+resource "azurerm_resource_group" "rg" {
+    name = 5>7 || 9>10 
+    location = "Central India"
+  
+}
+
+
+5. Function Calls:-
+--------------------
+Syntax:-< FUNCTION NAME > (<ARGUMENT-1>, ARGUMENT-2 > )
+
+=> INPUT --> MACHINE --> PUTPUT
+
+=> Input-1, Input-2 ----> Function --> output
+
+=> function_name(input1,input2)
+
+
+type:- Terraform expression > function call> Available Function > Left side type function see all function list
+
+1. Numeric Function:-
+-----------------
+abs function reference:-
+----------------------------
+resource "azurerm_resource_group" "rg" {
+    name = abs(-40)
+    location = "Central India"
+  
+} output = 40 
+
+log- function:
+------------
+resource "azurerm_resource_group" "rg" {
+    name = log(7393, 10)
+    location = "Central India"
+  
+}
+
+collection function:
+-----------------
+lookup function:-
+syntax: lookup(map, key, default)
+eg:- lookup(each.value, "managed_by", "terraform")
+
+-> lookup(each.value, "tags", { } )
+
+variable.tf
+==============
+variable "rgs" {
+  # type = map(object(
+  #   {
+  #     name       = string                # Name of the resource Group
+  #     location   = string                # Location of the Resource Group
+  #     managed_by = optional(string)      # Who will mamage this ? 
+  #     tags       = optional(map(string)) # Required tags
+  #   } 
+  # ))
+}
+main.tf
+=======
+resource "azurerm_resource_group" "rg" {
+  for_each = var.rgs
+
+  name       = each.value.name
+  location   = each.value.location
+  managed_by = lookup(each.value, "managed_by", "terraform")
+  tags = lookup(each.value, "tags", {
+    business_unit = "pummy"
+    cost_center   = "prime_plus"
+  })
+}
+
+terraform.tfvars
+=============
+
+rgs = {
+    "rg1" = {
+      name     = "prabha-rg"
+      location = "Central India"
+      managed_by = "terraform"
+      tags = {
+        business_unit = "dummy"
+        cost_center = "prime"
+      }
+      
+    }
+    "rg2" = {
+      name     = "prabha-rg1"
+      location = "Central India"
+    #    managed_by = "chintu"
+    #    tags = {
+    #     business_unit = "pummy"
+    #     cost_center = "prime_plus"
+    #   }
+    }
+
+  }
+
+========================
+
+
+coalesce Function:-
+=================
+main.tf ( input value default) 
+=============================
+variable "rg_name1" {
+    default = ""
+ }
+variable "rg_name2" { 
+    default = null
+}
+variable "rg_name3" {
+    default = "chintu"
+ }
+ variable "rg_name4" {
+    default = "pintu"
+ }
+
+resource "azurerm_resource_group" "rg1" {
+
+    name = coalesce(var.rg_name1,var.rg_name2, var.rg_name3, var.rg_name4)
+    location = "Central India"
+  
+}
+
+
+=> Generic module Virtual Machine creation:-
+=============================================
+
+=> nic vm me attach hogo, nic ke upar public IP attach hoga , public ip se traffic hit hogo nic ke through  communicate hoke VM pr jaega Vm me disk hoga operating system pe middle ware dala hoga uske upar application chala hoga 
+
+=> public ip ko Generic kare:-
+ChatGpt:- bhai meeriko public IP ek dum dhasu module bane ke do, yadi block he to dynamic block banado,sab argument,sab laga ke ,lookup try jo tereko aata hai sab lag daal manager hii jana chaiya code dekhke 
+-> and paste the public ip code 
+
+
+Day-90  
+======
+=> Create 3-tire application:
+-> Frontend:-todoUIMonolithic -> nginx Webserver
+-> backend:todoBackendMonolithic--> python server
+-> Database -> SQL Server
+
+Req:- 1rg, 1Vnet, 2subnet 2VM, 1sql Server, 1Sql DB
+-> module: Resource Group module
+-> Virtual network + subnet
+-> Compute
+
+=> Virtual Network ka generic module 
+-----------------------------------
+=>Terraform me koi bhi chiz aga multiple dalni hai to ya toh list lagna pdga ya map of objet lagana padega...
+
+=> lookup(3-chige) 
+> lookup(konsi map me lena hai, "kya serach karna hai", default daldo) 
+-> lookup(each.value, "subnets", {}) 
+main.tf:example:-1(input value Map) 
+==========
+ dynamic "subnet" {
+    for_each = lookup(each.value, "subnets", {} )
+    content {
+      name             = subnet.value.name
+      address_prefixes = subnet.value.address_prefixes
+
+    }
+terraform.tfvars
+====================
+-> ye map me jata hai
+ subnets = {
+      "subnet1" = {
+        name             = "frontend-subnet"
+        address_prefixes = ["10.0.1.0/24"]
+      }
+      "subnet2" = {
+        name             = "backend-subnet"
+        address_prefixes = ["10.0.2.0/24"]
+      }
+    }
+
+
+main.tf:example:-2(input value List) 
+==========
+ dynamic "subnet" {
+    for_each = each.value.subnets == null ? [] : each.valu.sunbets
+    content {
+      name             = subnet.value.name
+      address_prefixes = subnet.value.address_prefixes
+
+    }
+terraform.tfvars
+====================
+-> ye list me jata hai
+
+ subnets = [
+      {
+        name             = "frontend-subnet"
+        address_prefixes = ["10.0.1.0/24"]
+      },
+      {
+        name             = "backend-subnet"
+        address_prefixes = ["10.0.2.0/24"]
+      },
+      {
+        name             = "backend-subnet2"
+        address_prefixes = ["10.0.3.0/24"]
+      }
+
+    ]
+
+
+Day-91  
+======
+Requirement:- 2-machine,1-frontend subnet me & 1-backend subnet me same terraform module se banan hai.
+
+=> VM Generic Module = NIC + VM
+
+azurerm_compute:-
+main.tf
+======
+# Get Existing Subnet
+data "azurerm_subnet" "subnet" {
+  for_each = var.vms
+
+  name                 = each.value.subnet_name
+  virtual_network_name = each.value.vnet_name
+  resource_group_name  = each.value.rg_name
+}
+
+# Get Existing public IP
+
+data "azurerm_public_ip" "pip" {
+  for_each = var.vms
+
+  name                = each.value.pip_name
+  resource_group_name = each.value.rg_name
+
+}
+
+resource "azurerm_network_interface" "nic" {
+  for_each = var.vms
+
+  name                = each.value.nic_name
+  location            = each.value.location
+  resource_group_name = each.value.rg_name
+
+  ip_configuration {
+      name                          = "internal"
+      subnet_id                     = data.azurerm_subnet.subnet[each.key].id
+      private_ip_address_allocation = "Dynamic"
+      public_ip_address_id          = data.azurerm_public_ip.pip[each.key].id
+  }
+}
+data.tf
+variable.tf
+terraform.tfvars
+===============
+vms = {
+  "vm1" = {
+    pip_name    = "frontend-pip"
+    rg_name     = "rg-dev-prabhaapp"
+    nic_name    = "nic-frontend-vm-01"
+    location    = "Central India"
+    vnet_name   = "vnet-dev-prabha"
+    subnet_name = "frontend-subnet"
+  }
+
+}
+
+
+
+Day-92  
+======
+ChatGpt:-
+
+=> yadi sab ka alag alag variable set and code
+
+azurerm_compute:
+main.tf & variable.tf & data.tf
+================================
+variable "vms1" { }
+variable "vms2" { }
+variable "vms3" { }
+
+# Get Existing Subnet
+data "azurerm_subnet" "subnet" {
+  for_each = var.vms3
+
+  name                 = each.value.subnet_name
+  virtual_network_name = each.value.vnet_name
+  resource_group_name  = each.value.rg_name
+}
+
+# Get Existing public IP
+
+data "azurerm_public_ip" "pip" {
+  for_each = var.vms2
+
+  name                = each.value.pip_name
+  resource_group_name = each.value.rg_name
+
+}
+
+resource "azurerm_network_interface" "nic" {
+  for_each = var.vms1
+
+  name                = each.value.nic_name
+  location            = each.value.location
+  resource_group_name = each.value.rg_name
+
+  ip_configuration {
+      name                          = "internal"
+      subnet_id                     = data.azurerm_subnet.subnet[each.value.subnet_identifier].id
+      private_ip_address_allocation = "Dynamic"
+      public_ip_address_id          = data.azurerm_public_ip.pip[each.value.pip_identifier].id
+  }
+}
+
+# resource "azurerm_linux_virtual_machine" "vm" {
+#   name                = "example-machine"
+#   resource_group_name = azurerm_resource_group.example.name
+#   location            = azurerm_resource_group.example.location
+#   size                = "Standard_F2"
+#   admin_username      = "adminuser"
+#   network_interface_ids = [
+#     azurerm_network_interface.example.id,
+#   ]
+
+#   admin_ssh_key {
+#     username   = "adminuser"
+#     public_key = file("~/.ssh/id_rsa.pub")
+#   }
+
+#   os_disk {
+#     caching              = "ReadWrite"
+#     storage_account_type = "Standard_LRS"
+#   }
+
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "0001-com-ubuntu-server-jammy"
+#     sku       = "22_04-lts"
+#     version   = "latest"
+#   }
+# }
+
+terraform .tfvars
+=================
+vms3 = {
+  "vm1_subnet1" = {
+
+    subnet_name = "frontend-subnet"
+    vnet_name   = "vnet-dev-prabha"
+    rg_name     = "rg-dev-prabhaapp"
+  }
+}
+
+vms2 = {
+  "vm1_pip1" = {
+
+    pip_name = "frontend-pip"
+    rg_name  = "rg-dev-prabhaapp"
+
+  }
+}
+
+vms1 = {
+  "vm1_nic1" = {
+
+    nic_name    = "nic-frontend-vm-01"
+    location    = "Central India"
+    rg_name     = "rg-dev-prabhaapp"
+    subnet_name = "frontend-subnet"
+    pip_name    = "frontend-pip"
+
+    subnet_identifier = "vm1_subnet1"
+    pip_identifier    = "vm1_pip1"
+  }
+}
+
+
+=========================================
+=> complete code of Virtual machine using keyvault for vm uname & pword
+
+vm-usernae = adminuser
+password = admin@123
+
+=> Aman sir git hub account repo--azur_todo_app_terraform 
+
+Day-93 
+======
+=> Azure --> Terraform --> Pipeline
+
+=> Jo bhi Pay as you go bana rahe ho vo MFA enable karke rakhna... Bina
+OTP ke koi login na kar pae..
+
+=> Agar bill aata hai toh azure pr support ticket raise kardo aur bol sakte hai
+ki main padai kar raha hu toh azure will waive off...
+
+=> RG, Vnet, public_ip, VM, key_vault, sql_server, Sql_database ----- modules
+
+1. Sara terraform code samjhenge..
+2. New project in ADO, Antim Sangram
+3. Create new repo in ADO and set policy (No push in main)
+4. Git repo clone, create feature branch, code rakhke push..
+5. Pipeline run from feature branch to run till plan
+6. PR raise karenge, feature to main and set reviewer.
+7. Automatic Pipeline from main till plan, manual validation, and then apply
+
+=> Set policy-> branches--> click 3-dot--> branch policy--> turn on require a minimum no of reviewers --> allow requestors to approve their own changes
+
+=> Run the pipeline --> terraform plan
+
+
+
+Day-94 
+======
+=> Create  App Registration / Service Principles
+=> create a pipeline / run /apply 
+=> provisioning se nginx pre-install ho paega but yahan rsource to ban jaega magar state file se entry nahi hoga 
+
+main.tf(azurerm_compte)
+============
+custom_data = base64endoded(file("${each.value.script_name}"))
+
+variable.tf
+=========
+script_name - optional(string) 
+
+nginx.sh
+========
+apt update -y 
+apt install nginx -y
+
+
+terraform.tfvars
+================
+script_name = "nginx.sh"
+
+Ankit Gupta Interview
+=====================
+
+
+Day-95 
+======
+=> 3- tire application  conversation (English by Aman & ashish sir) 
+
+=> chatGpt-> Give secret scanning for terraform code.. 10 tool ka nam do jo pipeline me dal sake
+
+1. Sandbox Infra (Balu Box) banke ready hai.. 
+
+2. Is Infra pr todo application ko sulaenge..
+ 
+3. Todo Application Monolithic 3 tier architecture pr banaya hai
+
+=> Purpose of Application
+=> Workload and Performance
+=> Concurrent Users--> 500 users 
+=> Peak traffic--> On Sundays,3000 Users
+=> Response Time--> Less than 100ms 
+=> Development Options  
+=> Azure Cloud as we have 20% discount
+=> Region - centralindia(active)/southindia(passive)
+=> Scalability Options
+=> For now - Manual and Vertical
+Scaling
+=> Future - Plan for Horizontal
+Scaling
+=> Availability and Reliability
+=> Application should be in 2
+regions, centralindia and southindia
+=> Availability and Reliability(DR) ->  Application should be in 2 regions,centralindia and southindia 
+=> RTO(Recovery time objective) RPO(p-point)  need to be discussed.. Infra can be done within 5 hours
+=> Security-> No Authentication 
+=> Data encryption in database at rest
+=> if needed we can plan AD, SSO, KeyClock
+=> No Compliance needed , If needed HIPPA, GDPR can be taken 
+=> Network Isolation, VNet, Waf, inbound, outbound secured farewell , configure routes
+=> Monitoring & logging--> Azure monitor & Prometheus & Grafana 
+=> Budget -> 1000$ per month(infra budget)
+=> Future Road Plan--> 1 lakh in next 1 yr.
+=> Dependency-> Kafka, SinginGoogle, SignInKeyclock 
+=> Backup-> Everyday 12AM backup 1 old backup
+
+=> Sare hai baikati master(Very High Patience, Management Capabilities, Resource Grooming Capalibiltity, Customer handling Capability)
+=> TPM Role/ Enterprise Architect Role
+=> PreSales Role
+=> Sales/BRM Role
+=> TPRM - Techincal Project Resource Management
+=> TM - Transition Manager
+
+=> Upar wale ki bakaitiko complete karega
+=> DevSecOps Engineer - Infra engineer
+=> DevSecOps Engineer - App Deployment
+=========================================
+
+=> AaJ ka Mudda Frontend ka build karke VM pr deploy karna hai...
+
+
+Day-96 
+======
+
+=> Generic Talk About Application
+=> Developer-> ne sunder Code likh dia..
+
+FRONTEND ---> BACKEND ---> DATABASE --> ETL JOb
+ Reactjs -----> pythen -----> SQL Server
+
+=> Developer ek Dependency file banata hai, Is file me developer un sare packages ke bare me batata hai jis package ko use karke application
+development aasan kia hai..
+
+Developer:-
+----------
+Terraform->ReactJS->Java-> Dotnet-> GoLang->Python
+.tf    ->   .js  ->.java-> .cs -> .go ->   .py
+=> Dependency:
+-----------
+provider.tf->package.json->pom.xml    ->.csproj/.sin
+             npn install    mvn instll  dotnet restore
+             yarn install
+             node_module     .m2
+
+=> Kabhi bhi dependencies google se nahi uthate hai,
+arifactory se uthate hai...like azure artifcat, jfrog,
+nexus
+```
+==> Frontend App deploy -> using README
+=> npm install--> npm run build
+
+=> Step -1 - Create Folder TodoApp in Computer
+
+Step2- Clone TodoUI Repo using
+git clone 
+https://github.com/devopsinsiders/ReactTodoUIMonolith.git
+
+Step3 - Install node and npm on Windows
+
+Step4 - cd karke folder me jaenge
+
+Step5 - npm install - jaise hi ye command chalaenge bhaga bhaga package.json dhhondhega... package.json me jo bhi packages hai jo bhi source define hai, unko utha ke laega, lake apne windows computer me node_modules folder me patak dega..
+ 
+Step5 - Iske baad build command chalanenge npm run build toh vo dependencies dhhondhega aur code jo mila ke build artifacts bana dega..
+=> Possible errors while building applications:
+
+Build karte time version issues ke karan build error aata hai jo
+developer ke sath milke fix kr dete hai
+
+Step6 - Humko bs build folder ke andar ke content se matlab hai baki
+sab kachara hai.. sabji ka chilka hai...
+
+
+Day-97 
+======
+=> Frontend Complete...
+=> Database bhi ban gyis..
+=> backend ka vm bhi bn gyis..
+=> backend ke middleware chahiye, vo computer pr hai ya nahi hai?
+=> Python ko build karke makkhan(artifacts) kaise nikalenge?
+=> Python ko build karke artifacts nikalenge aur deploy karenge target
+machine pr
+=> Database ko backend se jodenge..
+=> Backend ka input postman se dalenge and validate karenge sara
+scenario chl raha hai ki nahi
+=> Frontend aur backend ko jod denge..
+
+Code -> Install Dependencies -> Build ->   Artifact -> Server
+.cs  -> dotnet restore   -> dotnet build -> .dll    -> IIS Server 
+.jsx -> npm install -->   npm run build  -> html/css -> nginx
+.java-> mvn install ->  mvn package      -> jar/war  -> tomcat
+
+   Interpreted Bahasa
+=====================
+Code  -> Install Dependencies  -> Code ko execute karne kacommand
+app.py -> pip install         -> python app.py
+
+=> Backend app deploy
+=> login backend VM & instal python & pip
+=> sudo apt update
+=> sudo install python3-pip
+=> git clone 
+=> update connection string
+Connection string( url + username + password )  
+
+Day-98 
+======
+=> Frontend & backend & Database pura application deploy 
+
+=> Rest API--> 
+----------
+1. ENDDPOINTS:-
+eg:- 45.45.78.44:8000/api/tasks
+
+2. HTTP METHOD:-
+eg:- GET, POST, DELETE, UPDATE, PUT
+
+3. HTTP RESPONSE CODE:-
+ eg:-
+=> 
+
+Day-99
+======
+GPT:- Azure cloud me Infra as a service kya  hai uska details dedo jaldi 
+
+> chalo ab paas ervicece batao 
+
+> Next 2 Days:- HLD & LLD for monolithic Application using Draw.io
+ 
+> Uske baad terraform ke through  & azure repo ke through pura infra structure implement   karna hai
+
+> Then Application Deployment + Backup + DR + monitoring + Security 
+
+> Type:- Azure baseline for virtual machine
+
+> Todo Application:-
+> kaha kaha deploy kar sakte hai..
+1. vm
+2. vmss
+3. Web App
+4. Container instances
+5. Azure Kubernetes
+6. Azure Functions
+
+ChatGPT: bhi isme AWS & GCP me kya kya hoga batao
+
+=> To-do Application Deploy:-
+
+> Azure pipeline se todo App End to End deploy karna hai..
+
+> Frontend React JS
+> Backend Python
+
+GPT:- Give az cli command to delete all rgs   
+
+> I want to run this in a pipeline that should run every day at 1 AM
+
+>GPT:- az cli command to upload storage account Give singe line command
+ 
+> bhai mere computer p ek file hai mere ko usko azure storage account me pahuchana hai az cli installed hai..
+
+>GPT:- ~ -matlab kya hota hai in path
+
+> Read: Azure Backup pr pad ke aana hai..
+> Azure devops Automatically git clone kardeta hai..
+> Frontend React JS: pipeline
+ReactTodoMonolithic/azure-pipelines.yaml
+============================
+
+trigger: none
+pool: Default
+
+steps:
+- task: NodeTool@e
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '16.x'
+
+- task: PowerShel1@2
+  displayName: Npm Install inputs:
+  targetType: 'inline' 
+  script: npm install'
+
+- task: PowerShel1@2
+  displayName: Npm Run Build
+    inputs:
+      targetType: 'inline' 
+      script: 'npm run build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/build/'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)/build.zip'
+    replaceExistingArchive: true
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'antim-sangram-corp-prod-01'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az storage blob upload --account-name todoartifacts --container-name artifacts --name b
+
+=> pipeline banake Artifact ko Storage Account me rakha ....
+
+Day-100
+=======
+=> Git Flow branching strategy for Application pipeline
+
+=> We have terraform repository where we have a single main branch for the terraform repository we use trunk based Strategy in that repository we are maintaining different different environment code of terraform in different different folder but in a single main branch whenever there is any change in we will create feature branch from the main branch then we will merge back to main branch & then as we have separate folder so according to the change in folder that specific pipeline of that environment will run &  
+it will deploy the infrastructure on the azure cloud ...this is the total workflow of trunk based strategy follow in our company for the infrastructure repository i.e terraform repository 
+
+ 
+> But for the codding repository for the repository that is having code that is boosting our code either it is python , java, ya dotnet, what we are doing is  we have we are following git flow branching strategy in that GFBS we have a develop branch that is linked to the dev environment in the develop branch whenever merge to any code they have to raise to a PR there will be create a feature branch it will be reviewed & merge to develop branch 
+  once the code is merge in develop branch that code will go via dev-pipeline with proper scanning then it will deploy to the dev environment inside to the dev Virtual machine that will be the tested by developer 
+ 
+ & then the developer & management team 
+ feels the code is stable  we can create a new release then from develop branch create a new branch  release/1.0, 1.1, 1.2 we are using semantic versioning that branch will go will be deployed qa environment via qa pipeline that will be tested thoroughly by tested team once the testing team give approval  that release number branch  will be deploy production environment then once the code is deploy to the  prod environment then what will do we will merge that release/1.0 branch so that we always have stable code copy in the main branch  
+
+
+=> Baar baar pipeline chalange toh ye artifact ka versioning kaise hoga?
+Isme SonarQube, Ya koi aur tool kaun dalega? pappa?
+
+=> Ye jo branching strategy hai, usko ghot ke pina hai, feel karke
+
+=> Artifact ka scan kaise karenge? 
+
+=> Artifacts ko artifacts storage se download karwa ke dev vm me kaise
+dalenge?
+
+
+Day-101
+=======
+
+=> For provisioning the infrastructure we have a central repository where we are putting all the child  & parent module we have child module starting from management group, subscription its association intra Id setup RG, Vnet, subnet, Vnet peering, Vpn Gateway, VM, VMss, wabApp, function App, Logic App, k8s cluster, ACR, private endpoint,  Storage account all there module we have created with for-each map of object , Dynamic Block optional attribute integrated with all require & optional attribute present on terraform registry for each of the resources that level of generalization we did for-each on every module .  suppose in future we need to deliver more then 100 then we not need to just go & create 
+
+Day-102
+=======
+Git Flow Branching Strategy:-
+
+=> Develop Branch:- dev-pipline
+
+=> Continuous Integration:-
+
+> Develop Branch--> npm install--> npm run build --> Artifact(generate)
+
+=> Artifact storage: storage account(versioning not support), Azure Artifact, Jfrog, nexous repository
+
+=> Continuous Deployment:-
+
+> Artifact(generated)----->(reach)-->VM tak
+
+
+dev-pipeline:-( Basic CI )
+===============
+trigger: 
+- develop
+pool: Default
+
+steps:
+- task: NodeTool@e
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '16.x'
+
+- task: PowerShel1@2
+  displayName: Npm Install inputs:
+  targetType: 'inline' 
+  script: npm install'
+
+- task: PowerShel1@2
+  displayName: Npm Run Build
+    inputs:
+      targetType: 'inline' 
+      script: 'npm run build'
+
+# Artifact stored in Azure artifact
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/build'
+    artifact: 'todo-ui'
+    publishLocation: 'pipeline'
+
+
+> Continuous Integration:- Build  --> Lint --> Scan (security) --> Unit Testing
+
+1.  Build + Artifact Upload
+
+2. Lint-> Code me jo bhi unwanted chize, ye kuch gadbad, uska pata lagana
+
+> Unwanted chize lint ka pata lgaya aur usko hate dia..
+
+Js->jslint ,python-> pylint, .yml->yaml linter etc
+
+type:- super linter
+
+commit ke lia type: commit convention 
+
+GPT:- Linting me majorly kya kya categories ko scan kia jata hai..merok single single word me bat ao
+
+type: predefined variable ( as system.defaultWorkingDirectory ) 
+
+JOB-LINT(validation)
+step1 > biome linter-> download biome.exe & Run biome lint
+step2 > markdown linter
+step3 > json linter
+step4 > yml linter
+step5 > css linter -> download csslint.exe & Run csslint
+
+=> What is Linting
+Ans) Linting is the process of automatically checking source code for errors, bugs, stylistic issues, and suspicious patterns to improve code quality and maintain consistency.
+
+> tumra code neat & clean hai or not
+> syntax structure error write or wrong
+>   
+
+dev-pipeline:-
+===============
+trigger: 
+- develop
+pool: Default
+ 
+jobs:
+- job: lint
+  displayName: Lint
+  steps:
+  - task: PowerShell@2
+     continueOnError: true  # iska matlab error ane per pipelein chal sake
+    displayName: Lint javascript(biome)
+    inputs:
+      targetType: 'inline'
+      script: 'biome lint $(system.defaultWorkingDirectory)/src'
+
+
+
+=> Biome download & lint code:
+---------------------------
+Gpt:- bhai powershell se download karne ka command dedo
+
+task: PowerShell@2
+  continueOnError:  true
+  inputs:
+    targetType: 'inline'
+    script: |
+      Invoke-WebRequest -Uri "https://github.com/biomejs/biome/releases/download/%40biomejs%2Fbiome%402.3.11/biome-win32-x64.exe" -OutFile "$(Agent.ToolsDirectory)/biome.exe"  
+      $(Agent.ToolsDirectory)/biome.exe  lint $(system.defaultWorkingDirectory)/src
+
+
+=> sytlelint download & lint code:
+---------------------------
+type: stylelint npm registry
+npm: npm install -g <package_name>
+
+pip: pi install --user <package_name> 
+
+
+- task: PowerShel1@2 
+  continueOnError: true, 
+  displayName: Lint CSS(Styelint)
+  inputs:
+   targetType: 'inline'
+    script: |
+    npm install -g stylelint
+    npm install -g stylelint-config-standard
+   stylelint
+$(System.DefaultworkingDirectory)/src --config stylelint.config.mjs
+
+=> YamlLint  download & lint code:
+---------------------------
+- task: PowerShell@2
+  continueOnError: true
+  displayName: Lint YAML (Yamllint)
+  inputs:
+   targetType: 'inline'|
+   script: |
+    pip install --user yamllint
+    yamllint
+    $(System.DefaultworkingDirectory)
+
+=> markdownLint  download & lint code:
+-------------------------------------
+
+- task: PowerShel1@2 
+  continueOnError: true
+  displayName: Lint Markdown (markdownlint)
+  inputs:
+   targetType: 'inline'|
+   script: |
+   npm install -g markdownlint-cli
+   markdownlint
+   $(System.DefaultWorkingDirectory)/
+
+Homework: use jave Lint(javeLogin repo in devopsinsider 
+
+
+Day-103
+=======
+
+App Pipeline Revision:-
+SonarQube:- Code ka Quality, Bugs, Code Coverage, Vulnerabilities
+
+> BlackDuck:- Vulnerabilities
+> CheckMarx:-
+> Prisma
+> Trivy
+> Veracode 
+> semgrep tool 
+> synk
+
+SonarQube:-
+===========
+1. Install & configure - SonarQube server 
+
+2. install SonarScanner- ek tool hai jo code ko utha kar SonarQube server pr bhjta hai..
+
+3. Scan repo & project code 
+
+4. Quality Gates set
+
+type:- OWASP top 10 vulnerabilities 
+ &  OWASP devsecops guidelines github
+
+What to add in a pipeline:-
+
+DevSecOps pipeline At first, we consider implementing the following steps in a basic pipeline:
+
+Scan git repositories for finding potential credentials leakage.
+SCA (Software Composition Analysis)
+SAST (Static Application Security Test)
+IaC Scanning (Scanning Terraform, HelmChart code to find misconfiguration)
+IAST (Interactive Application Security Testing)
+API Security
+DAST (Dynamic Application Security Test)
+CNAPP (Cloud Native Application Protection)
+Infrastructure scanning
+Continuous Scanning from other tools
+Compliance check
+
+
+Scan:-
+=====
+1. Secret scanning tool---> gittyleaks
+2. SCA Scan (to scan dependencies) --> Blackduck
+3. Static Scanning:(SAST Scan) --> SonarQube, Checkmarx 
+4. Container Scaning(docker image):
+5. IAC Scanning:
+5. Dynamic Scanning(DAST Scan-After deploy)-> ZED Attack, Proxy, burp suit, Veracode, ----scan--> https//jhundu.shop
+
+> Tool:- 1. only CLI tool
+         2. Server-client cli tool
+> SonarQube Server:-Secret Scanning --> Sonar CLI Client upload cod to server --> Build --> Publish Artifact 
+
+Day-104
+=======
+
+=> What are the stages in our pipeline ? 
+Ans:- Our pipeline have two parts one is continuous Integration other is Continuous Deployment  in the CI we have performing linting depends set of files that we have javascript, css, html, & markdown everything we lint all the files even lint our azure pipeline .yaml file  after the linting we have multiple scanning  tool like secret scanning using gittyliaks & SCA scan the sca scan to identify the issues that are present in open source library then we are using stating scanning using SonarQube ,the we are doing container scanning of docker image then we have terraform IAC scan tf scan & all then we do Dynamic scanning after the application deploy on the URL 
+ 
+
+Type: SonarQube  community edition 
+
+=> Download SonarQube & install & login
+     or,
+SonarQube server:-
+1. cloud --> Direct Account create(git account)
+2. Self managed-> zip & Docker 
+
+SonarQube
+Pura end to end scan
+---------------------
+-> Syntax violations 
+-> Security vulnerabilities
+-> Programming errors
+-> Coding standard violations
+-> Undefined values
+
+SonarQube pipeline code:-
+==========================
+- task: PowerShell@2
+  inputs:
+  targetType: 'inline'
+  script: 'sonar -D sonar.host.url=http://localhost:9000 -D sonar.token=sqp_546f3cc20d106676f7ba8e1451029a25f8c67dd7 -D sonar.projectkey
+
+
+Day-105
+=======
+
+Terraform VM Code Recap: 
+pipeline recap:-
+
+Operations Automator:-
+---------------------
+> Infrastructure + Security + Lint + FinOps Automation
+
+> Application + Code Quality + Security + Unit Test Cases Multi Stage Deployment Automation 
+
+> Application pipeline recap:- 
+
+
+Day-106
+=======
+
+Git branching strategy recap:-
+
+Continuous Integration-DevSecOps
+pipeline:-
+===============================
+1. Build Part:-
+2. Linting:-Biome
+3. Security Scans:-
+   1. Static Analysis:- SonarQube
+   2. SCA Scan:- RetireJS, Safety 
+4. Unit Testing:-
+5. Dynamic Scanning:-
+
+CI-pipeline.yaml:-
+==================
+
+trigger: 
+- develop
+pool: Default
+
+stages:
+- stage: staticAnalysis
+  displayName: Static Analysis 
+  jobs:
+  - job: staticAnalysis
+    displayName: Static Analysis(SonarQube)
+    steps:
+    - task: PowerShell@2
+      targetType: 'inline'
+      script: 'sonar -D sonar.host.url=http://localhost:9000 -D sonar.token=sqp_546f3cc20d106676f7ba8e1451029a25f8c67dd7 -D sonar.projectkey
+
+- stage: Linting
+  displayName: Linting 
+  dependsOn: staticAnalysis
+  jobs:
+  - job: Lint
+    displayName: Lint JavaScript(Biome)
+    steps:
+    - task: PowerShell@2
+      continueOnError:  true
+      inputs:
+      targetType: 'inline'
+      script: |
+      Invoke-WebRequest -Uri "https://github.com/biomejs/biome/releases/download/%40biomejs%2Fbiome%402.3.11/biome-win32-x64.exe" -OutFile "$(Agent.ToolsDirectory)/biome.exe"  
+      $(Agent.ToolsDirectory)/biome.exe  lint $(system.defaultWorkingDirectory)/src
+
+- stage: Build
+  displayName: Build
+  dependsOn: staticAnalysis
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: NodeTool@e
+      inputs:
+      versionSource: 'spec'
+      versionSpec: '16.x'
+
+    - task: PowerShel1@2
+      displayName: Npm Install 
+      inputs:
+       targetType: 'inline' 
+       script: npm install'
+
+    - task: PowerShel1@2
+      displayName: Npm Run Build
+      inputs:
+       targetType: 'inline' 
+       script: 'npm run build'
+
+# Artifact stored in Azure artifact
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)/build'
+        artifact: 'todo-ui'
+        publishLocation: 'pipeline'
+
+
+3. Security Scans:-
+   1. Static Analysis:- SonarQube
+   2. SCA Scan:- RetireJS, Safety 
+
+Security Scan pipeline:-
+--------------------
+- stage: scaScan
+  displayName: SCA Scan
+  jobs:
+  - job: scaScan
+    displayName: SCA Scan(Retire.js)
+    steps:
+    - task: PowerShel1@2 
+      inputs:
+       targetType: 'inline'
+       script:
+         npm install -g retire
+         npm install
+         retire
+
+
+Day-107
+=======
+Application Ci Frontend Node problem:-
+
+1. dependency issue
+2. tool version issue
+3. Agent full
+4. Authorisation issue
+5. Configuration mis-match
+6. Token expire
+
+
+> Continuous Deployment Pipeline:-
+---------------------------------- 
+=> Usage: scp -r  source ... target
+
+source: jo copy karwana hai...
+target: Jaha per copy karwana hai..
+target syntax: <username> @<ip_address>:<PATH>
+
+=> target path:- /var/www/html --> is path ka permission nahi hai islia /home ya /tmp per le sakta hai
+
+$ scp -r * devopsadmin@132.233.223.40:/home/devopsadmin
+
+$ SSH
+$ sudo cp -r /home/devopsadmin/*/var/www/html 
+
+====================
+> Static Code Analysis (SonarQube) 
+> Dependency Vulnerability Scan (Retire.js)  
+> Multi-Language Linting Checks 
+> Application Build
+> Artifact Publish to Azure Pipeline
+    Deploy
+> Download Artifact from Azure Pipeline
+$(System.DefaultWorkingDirectory)
+
+
+> scp -r $(System.DefaultWorkingDirectory)/*devopsadmin@135.235.174.55:/home/devopsadmin
+
+> ssh devopsadmin@135.235.174.55 sudo cp -r /home/devopsadmin/* /var/www/html
+
+
+
+
+CD-Pipeline:-
+=============
+
+- stage: deploy
+  displayName: Deploy to Dev VM
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/default')
+  jobs:
+  - job: deploy
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs: 
+       buildType: 'specific'
+       project: 'd3cd4740-2bb6-4ccb-a3f2-252458c0db50 definition: '22"
+       buildVersionToDownload: 'specific'
+       pipelineId: '289'
+       artifactName: 'todo-ui'
+       targetPath: '$(System.DefaultWorkingDirectory)/build_artifacts'
+
+
+# copy file over SSH (ssh service connection create
+> new service connection--> SSH-> next-> hostName=ip ddress--> username/password--> SC Name--> save
+
+
+
+- task: CopyFilesOverSSH@O
+  inputs:
+    sshEndpoint: 'dev-vm'
+    sourceFolder: '$(System.DefaultWorkingDirectory)/build_artifacts'
+    contents: '**'
+    targetFolder: '/home/devopsadmin/'
+    readyTimeout: '20000'
+
+- task: SSH@0 
+  inputs:
+   sshEndpoint: 'dev-vm'
+   runOptions: 'commands'
+   commands: 'sudo cp -r /home/devopsadmin/* /var/www/html'
+   readyTimeout: '20000'
+
+
+=> add branch policy 1-pr & set build validation
+
+commit change:
+------------
+$ git commit -m "update colour to blue"
+> change
+$ git commit --amend -m "update button colour to blue "
+---------------------------
+
+
+Day-108 
+=======
+
+CI & CD pipeline recap:- 
+
+=> user --> vm-pip--> Security ke karan port 22 block ho jae---> add NSG to block port 22
+
+=> Agent Pool = Aise computer jinke upr pipeline ke commands chlte hai..
+
+=> Deployment Group: Aise computer jinke upr website deploy hoti hai..
+
+=> click deployment group--> add a DG--> create a DG Name --> copy 
+
+=> copy the DP ssh karke past karna hai...
+
+
+
+> jobs.job:-  A job is a collection of steps run by an agent or on a server.
+
+> jobs.deployment:- A deployment job is a special type of job. It's a collection of steps to run sequentially against the environment.
+
+> jobs.template:- A set of jobs defined in a template.
+
+=> GPT:- How to deploy on a deployment group using a azure pipeline yaml
+
+=> DG is not suitable eligible for classic pipeline 
+
+
+CD-pipeline(Environment-Group):-
+----------------------------
+
+- stage: deployToDevVM
+  displayName: Deploy To Dev VM
+  jobs:
+  - deployment: deploytovm
+    environment: 
+      name: dev
+    #  resourceName: dev-todo-ui-01  #only one vm se run
+       resourceType: virtualMachine  # all vm run
+    strategy:
+     runOnce:
+      deploy: 
+       steps:
+       - task: Download PipelineArtifact@2
+         inputs:
+          buildType: 'specific'
+          project: 'd3cd4740-2bb6-4ccb-a3f2-252458c0db50'
+          definition: '22'
+          buildVersionToDownload: 'specific'
+          pipelineId: '309'
+          artifactName: 'todo-ui'
+          targetPath: '$(pipeline.workspce)''/var/www/html'
+
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'sudo cp -r $(Pipeline.Workspace)/* /var/www/html/
+
+
+===============
+=> tf-az-unit-module:- rg, vnet, vm, vmss, bastion, aks etc
+
+=> tf-gcp-unit-module:- rg, vnet, vm-instance, vmss, cloudrun, gke, etc
+
+=> MLFlow-tf-module:- main.tf, variable.tf
+   --> release/1.0.0
+
+=> Q & A Discussion 
+
+Day-109 
+=======
+Agile Methodology :-
+=====================
+ 
+> Sprint = Agle 21 din me kya ukhada jaega, 10/15/21 din ke duration ko sprint bolte hai..
+ 
+> jaise 30/31/18/29 din ko month bolte hai..vaise company me 21 din ko sprint bolte hai , 7 din ko week bolte hai 365 din ko year bolte hai...
+
+> Sprint ke pehle ka call = Sprint Planning (1 hr)
+
+> Sprint chlte time roj hone wala call Daily Scrum Call (15min)
+
+> Sprint ke din khatm hone ke baad = Sprint Demo (30min/1 hr)
+
+> Sprint ke din khatm hone ke baad = Sprint Retro (30min)
+
+> Backlog matlab jo jo kaam abhi karna hai vo backlog
+
+=> Scrum Stake Holder:
+   1. product Owner
+   2. Scrum Master( now Rotational Scrum Master) 
+   3. Scrum Team
+
+> Sprint 1 me 4 feature aaya
+> user story1 = App ko Gulabi kardo
+   story point = 1/3/5/7/9
+> user story = Todo ka font update
+
+user story = 1,
+> git clone, git checkout -b feature/101-update-colour-to-gulabi
+
+> colour change in theme .js
+
+> npm run, 
+> local run: $ npm run start
+> git add, commit git push
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4213,12 +7033,3 @@ Day-82
 
 
 https://dev.azure.com/GravitasITSolutions/AIBasedTodoApp/_git/infra-code.git/pullrequest/6
-
-
-
-
-
-
-
-
-

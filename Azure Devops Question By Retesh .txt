@@ -274,3 +274,5 @@ Explain service connections and what is needed to create them.
 199) How do you automate backups and retention?
 200) What are basic Linux commands used in DevOps daily?
 201) What are your steps for securing Terraform and Azure Pipelines?
+
+

@@ -1,0 +1,545 @@
+Pipeline With Steps & condition set:-
+=====================================
+azure-pipeline.yaml--01
+===================
+
+trigger: 
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+steps:
+  - task: TerraformInstaller@1
+    displayName: Terraform Install
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTask@5
+    displayName: Terraform  Init
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      workingDirectory: $(config_path)
+      backendServiceArm: $(service_conn)
+      backendAzureRmStorageAccountName: 'krishnastg567'
+      backendAzureRmContainerName: 'tfstate'
+      backendAzureRmKey: 'dev.terraform.tfstate'
+  - task: TerraformTask@5
+    displayName: Terraform Validate
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: $(config_path)
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: $(config_path)
+      environmentServiceNameAzureRM: $(service_conn)
+
+  # - task: TerraformTask@5
+  #   displayName: Terraform apply
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  #   inputs:
+  #     provider: 'azurerm'
+  #     command: 'apply'
+  #     workingDirectory: '$(config_path)'
+  #     commandOptions: '--auto-approve'
+  #     environmentServiceNameAzureRM: '$(service_conn)' 
+  - task: TerraformTask@5
+    displayName: Terraform Destroy 
+    inputs:
+      provider: 'azurerm'
+      command: 'destroy'
+      workingDirectory: '$(config_path)'
+      commandOptions: '--auto-approve'
+      environmentServiceNameAzureRM: '$(service_conn)'
+
+==========================
+Pipeline with Job
+==================
+azure-pipeline.yaml--02
+-----------------
+
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+
+variables:
+  config_path: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+  - job: terraformInitPlanJob
+    displayName: Terraform Init & plan
+    steps:
+    - task: TerraformInstaller@1
+      displayName:  Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(config_path) 
+        backendServiceArm: $(service_conn) 
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: $(config_path) 
+    - task: TerraformTask@5
+
+      displayName: Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(config_path) 
+        environmentServiceNameAzureRM: $(service_conn) 
+
+  - job: tfsecScanningJob
+    displayName: tfsec Scan
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(config_path) 
+
+  - job: manualValidationJob
+    displayName: Manual Validation
+    dependsOn: terraformInitPlanJob
+    pool: server
+    steps:
+    - task: ManualValidation@1
+      inputs:
+         notifyUsers: 'prabhakarnayak993@gmail.com'
+         approvers: 'prabhakarnayak993@gmail.com'
+         instructions: 'please check plan'
+
+  - job: terraformApplyJob
+    displayName: Terraform Apply
+    dependsOn: manualValidationJob
+    pool: Default
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(config_path) 
+        backendServiceArm: $(service_conn) 
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main' ))
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: $(config_path) 
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: $(service_conn) 
+
+
+===========================
+Pipeline- with parameter set & condition
+=======================
+azure-pipeline.yaml--03
+===================
+
+trigger: none
+#  branches:
+#    include:
+#      - feature/*
+#      - main
+
+pool: Default
+
+parameters:
+  - name: planRequired
+    displayName: Plan Required
+    type: string
+    values:
+      - True
+      - False
+
+  - name: applyRequired
+    displayName: Apply Required
+    type: string
+    values:
+      - True
+      - False
+
+  - name: scanRequired
+    displayName: Scan Required
+    type: string
+    values:
+      - True
+      - False
+
+variables: 
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+jobs:
+  - job: initPlanJob
+    displayName: Terraform Init & Plan
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir)
+        backendServiceArm: $(service_conn)
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Plan
+      condition: eq('${{ parameters.planRequired }}' true)
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(work_dir)
+        environmentServiceNameAzureRM: $(service_conn)
+
+  - job: scanJob
+    displayName: tfsec Scanning
+    dependsOn: initPlanJob
+    condition: eq('${{ parameters.scanRequired }}' true)
+    pool: server
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(work_dir)
+
+  - job: applyJob
+    displayName: Terraform Apply Job    
+    dependsOn: initPlanJob
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(work_dir)'
+        backendServiceArm: '$(service_conn)'
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      condition: eq('${{ parameters.applyRequired }}' true)
+      # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(work_dir)'
+        environmentServiceNameAzureRM: '$(service_conn)'
+
+=====================
+Pipeline with Stages
+====================
+azure-pipeline.yaml--04
+======================
+
+trigger: 
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+
+# parameters:
+#   - name: scanRequired
+#     displayName: Scan Required
+#     type: string
+#     values:
+#       - true
+#       - false
+
+#   - name: mvRequired
+#     displayName: MV Required
+#     type: string
+#     values:
+#       - true
+#       - false   
+
+variables:
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+stages:
+  - stage: buildStage
+    displayName: Build Stage
+    jobs:
+    - job: terraformInitValidateJob
+      displayName: Terraform Init & Validate Job
+      steps:
+      - task: TerraformInstaller@1
+        displayName: Terraform Install
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(work_dir)'
+       
+    - job: terraformInitPlanJob
+      displayName: Terraform Init & Plan
+      steps:
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        displayName: Terraform Plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: $(work_dir)
+          environmentServiceNameAzureRM: $(service_conn)
+  
+  - stage: manualValidationStage
+    displayName: Manual Validation
+    dependsOn: buildStage
+    pool: server
+    jobs:
+    - job: manualValidationJob
+      displayName: MV Job
+      # condition: eq('${{parameters.mvRequired}}', 'true' )
+      steps:
+      - task: ManualValidation@1
+        displayName: Manual Validation
+        inputs:
+          notifyUsers: 'prabhakarnayak993@gmail.com'
+          approvers: 'prabhakarnayak993@gmail.com'
+          instructions: 'please check plan'
+
+  - stage: scanningStage
+    displayName: Scanning Stage
+    jobs:
+    - job: tfsecScanJob
+      displayName: tfsec Scan Job
+      # condition: eq('${{parameters.scanRequired}}', 'true' )
+      steps:
+      - task: tfsec@1
+        displayName: Tfsec Scan
+        inputs:
+          version: 'v1.26.0'
+          dir: $(work_dir)
+
+  - stage: deployStage
+    displayName: Deploy Stage
+    dependsOn:  manualValidationStage
+    jobs:
+    - job: terraformInitApplyJob
+      displayName: Terraform Init & Apply
+      steps:
+      - task: TerraformTask@5
+        displayName: Terraform Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: $(work_dir)
+          backendServiceArm: $(service_conn)
+          backendAzureRmStorageAccountName: 'krishnastg567'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'dev.terraform.tfstate'
+      - task: TerraformTask@5
+        displayName: Terraform Apply
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main' ))
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: $(work_dir)
+          commandOptions: '--auto-approve'
+          environmentServiceNameAzureRM: $(service_conn)
+
+
+=================================
+Pipeline with Stages:--02
+======================
+azure-pipeline.yaml--05
+==================
+
+trigger:
+ branches:
+   include:
+     - feature/*
+     - main
+pool: Default
+
+variables: 
+  work_dir: '$(System.DefaultWorkingDirectory)/environment/dev'
+  service_conn: 'PrabhaSC-WIF'
+
+# -------- VALIDATE + PLAN -(feature ) -------
+stages:
+- stage: buildStage
+  displayName: Build Stage
+  jobs:
+  - job: terraforValidatPlanJob
+    displayName:  Validate & Plan Job
+    steps:
+    - task: TerraformInstaller@1
+      displayName: Terraform Install
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir) 
+        backendServiceArm: $(service_conn) 
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: terraform Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: $(work_dir) 
+    - task: TerraformTask@5
+      displayName: Terraform Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: $(work_dir) 
+        environmentServiceNameAzureRM: $(service_conn) 
+
+# ------- TFSEC SCAN -----(feature) ---------
+- stage: scanningStage
+  displayName: Scanning Stage
+  dependsOn: buildStage
+  jobs:
+  - job: tfSecScanJob
+    displayName: TfSec Scan Job
+    steps:
+    - task: tfsec@1
+      inputs:
+        version: 'v1.26.0'
+        dir: $(work_dir) 
+        
+# ------- MANUAL APPROVAL (ONLY MAIN) -------
+- stage: manualValidationStage
+  displayName: Manual Validation Stage
+  dependsOn: scanningStage
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  pool: server
+  jobs:
+  - job: manualValidationJob
+    displayName: Manual Validation Job
+    steps:
+    - task: ManualValidation@1
+      displayName: Manual validation
+      inputs:
+        notifyUsers: 'prabhakarnayak993@gmail.com'
+        approvers: 'prabhakarnayak993@gmail.com'
+        instructions: 'please check Validation'
+
+# --------- APPLY (ONLY MAIN) ------------
+- stage: deployStage
+  displayName: Deploy Stage
+  dependsOn: manualValidationStage
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - job: terraformInitApplyJob
+    displayName: Terraform Init & Apply Job
+    steps:
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: $(work_dir) 
+        backendServiceArm: $(service_conn) 
+        backendAzureRmStorageAccountName: 'krishnastg567'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'dev.terraform.tfstate'
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: $(work_dir) 
+        commandOptions: '--auto-approve'
+        environmentServiceNameAzureRM: $(service_conn) 
+
+
+=============================
+Pipeline with multi-env :-01
+===========================
+azure-pipeline.yaml--06
+=========================        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

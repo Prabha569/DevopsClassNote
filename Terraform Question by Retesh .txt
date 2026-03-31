@@ -288,6 +288,7 @@ What happens if local tfstate is deleted accidentally?
 18. Terraform - Lifecycle & Dependencies
 =================================
 
+
 212) What is a lifecycle block and why is it used?
 213) What are lifecycle arguments like create_before_destroy, prevent_destroy, ignore_changes?
 214) Where did you use lifecycle in Terraform?

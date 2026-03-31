@@ -652,7 +652,7 @@ $ kubectl delete networkpolicy  --all
 
 
 Class--101/11*
-==========
+========== 
 
 =>Homework Aks Cluster using terraform with foreach & Map
 
@@ -660,7 +660,7 @@ Class--101/11*
 
 => Deploy marke .dono pod ek dusre ko access kar paa raha hai ke nahi vo check karna hai...
 
-=> Beach me network policy laga ke stop karna hai...
+=> Beach me network policy laga ke stop karna hai... 
 
 *) AKS Create:- Create 2 pod Add Network policy
 
@@ -670,7 +670,7 @@ Class--101/11*
 
 private access->Enable private cluster:
 -> jo master node ke andar Api-server by default public hota hai..usko private karne ke lia enable karna hai..
-
+   
 public access-> jis ip ko acces dega usne access kar paiga... 
 
 -> container networking--> Network configuration/plugin defines cluster ke pod & node ko IP address provide karta hai..
@@ -693,14 +693,21 @@ public access-> jis ip ko acces dega usne access kar paiga...
 
 => Dns name prefix-> FQDN->fully qualified domine name-> ek URL hota hai.
 > 
-=> Network policy--> 
+=> Network policy-- > 
 > none-> Network policy not working(after apply NP) 
 > Calico/Azure->Networking policy working
+
+=> Describe the pod details(after create pod) 
+$ kubectl describe pod Laila-pod
 
 create ......
 
 => this AKS access in Azure cli--> 
 -> open cluster -> connect--> copy Azure get subscription, Azure get Credential-> download aks credential create pod using yaml  
+ 
+ingress:
+- ports:
+  - port: 80 (only access this port within other port) 
 
 Class--102/12
 ==========
@@ -718,7 +725,7 @@ Class--103/13
 -> docker run -d --name nginx-container -p 8890:80 nginx
 -> here nginx ka image ka use karke ek container ban gaya..
 -> go inside the container & kill the process
-
+c
 $ docker exec -it nginx-container bash
 
 -> 1 container = 1 process(nginx)
@@ -860,9 +867,7 @@ Class--105/15
 => type-> azurerm container registry
 =>      > azurerm aks
 
-=> Pods are ephemeral(alpakalina) 
-=> Data loss hone ka chance hai. due to ephemeral nature of pod.
-=> Data ka loss bachane ke lie.humne PV & PVC ka concept laya.
+xx
 => PV cluster ke level pr ek storage resource hai jaise storage pool ya disk. 
 => Pvc user ya pod ka request hota hai storage ke lie aur ye pv se bind hota hai..
 
@@ -878,7 +883,8 @@ Class--105/15
    a) Static Provisioning
    b) Dynamic Provisioning
 
-
+> cluster <----pv <----pvc <----pod
+ 
 #> Docker Volume:
 ================
 > Create a docker container, take data inside the container then kill the container that means data & container dead, use volume to persist the data in  docker case 
@@ -916,7 +922,7 @@ $ touch main_bhoot_hu.txt (create a file)
 
 > Container kill ( first back to container ) 
 $ cd ..
-$ kill 1
+$ kill 1 
 
 > checking
 > create a container with same volume in same path
@@ -972,86 +978,414 @@ m) persistentVolumeClaim:-(imp)
 
 => Volume declare karne ke lia
   .spec.volumes
-  .spec.container[*].volumeMounts
+  .spec.containers [*].volumeMounts
 
+*) emptyDr--> homework
 
 Class--106/16
 =============
+Controller:-
+--> Replica Set
+--> Deployment
+--> Daemon Set
+--> Stateful Set
+
+Service:-
+--> Internal
+     --> ClusterIP
+--> External
+      ---> LoadBalancer
+      --> nodePort
+
+
+PV & PVC
+=========
+Kubernetes docs --> storage --> Volumes
+
+*) emptyDr--> homework
+
+=> EmptyDir ek khali folder ya volume hai 
+> EmptyDir banta kab hai.? jab pod kisi node pr bnta hai..
+> Pod delete hoga toh ye bhi delete ho jaega... matlab ye temporary storage hai..
+> Phele Banega volume emptyDr type ka 
+> fir container me mount hoga kisi path pr...
+
+type: cncf landscape (cloud native cloud foundation) 
+
+Class--107/17
+=============
+=> Volume declare karne ke lia
+  .spec.volumes
+  .spec.containers[*].volumeMounts
+=> ek pod pr volume mount karne ka 2 step process
+1)pod ke yaml me .spec.volumes wali field me volume ki details deni pdegi..
+2) .spec.containers[*].volumeMounts
+
+ChatGPt-> bhai ye Kubernetes e Quantity type ka value kya hoti hai..
+
+EMPTYDIRVOLUME:
+================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dhundu-pod  
+spec:
+  volume: # first part
+  - name: aditya-volume
+    emptyDir:
+      sizeLimit: 2Gi
+  containers:
+  - image: nginx
+    volumeMounts: # Second part
+    - mountPath: /home
+      name: aditya-volume
+    name: sample-container
+    ports:
+    - containerPort: 80
+
+=>  to see the volume 
+$ kubectl describe pod dhundu pod
+
+====================
+ConfigMapVolume:
+=================
+democonfig.yaml
+--------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  demo: "Welcome to Prabhakar Nayak "
+
+$ kubectl apply -f democonfig.yaml
+$ kubectl get ConfigMap
+
+config.yaml
+================
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: configmap-pod
+spec:
+  volumes:
+  - name: config-volume
+    configMap:
+      name: demo-config
+      items:
+        - key: "demo"
+          path: "demo-file"
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: config-volume
+      mountPath: /home
+      
+$ kubectl apply -f config.yaml
+$ kubectl get pods
+$ kubectl describe pod configmap-pod
+$ kubectl exec -it configmap-pod -- bash 
+
+Note: in /home path per demo-file nam ka ek file hai usme  config-map ka data hai woo kebal dekh pa raha hu is path per file create nahi kar pa ra hu...
+
+
+Class--108/18
+=============
+Facebook Clone Application
+1. Create Application Code (only frontend Application)
+2. Create Dockerfile
+3. Create Docker image & push to Docker Hub
+4. pod.yaml bana ke k8s pr deployment
+
+
+Type: bolt.new   or, lovable.dev
+> sign in bolt.new 
+> ChatGPT: are bhai ek bdai s prompt likhe ke dena ..mere ko ek facebook ka jabardast clone bnwana hai ye bolt.new se aur lovable.dev se dono ke lia alag alg prompt dena jo bdia kaam kare ...
+
+> terraform code of Kubernetes cluster make this class 
+
+Class--109/19
+=============
+
+=> aks-kubernetes cluster  me facebook-clone application run 
+> connect aks-kubernetes cluster in vs code
+> cd manifests , create pod
+kubectl apply -f pod.yaml
+> then port forwarding
+kubectl port-forward pod/soul-center-pod 45000:80 
+
+> localhost:45000 for access 
+
+ChatGpt => I want to create an web application, where there should be a upload button to upload photos, whatever photos i upload, those photos should be saved in a path /photos in the container or server where ever the app is running. I want a prompt that I can send to lovable.dev to create this type of application.
+Also, I want that whatever photos are present in my photos directory on server those should be visible on screen in the grid format.
+
+=> Ar bhai choti app chahiye. bahut choti .. bilkul natak nautanki jaiki backend jaise db nahi chahiye ..
+=> ek kaam kar python app bana de ..streamlit ui ka use karke ..
+
+=>  bdia hai bhai mast hai bs jaldi ek docker file likh de mera pura code ek main.py file me hai..
+   
+=> Run the photo upload app
+$ python -m streamlit run app.py
+
+=> To create a docker image
+$ docker build -t photos-app:v1 .
+
+=> to create a container from image
+$ docker run -d -p 9090:8501 photos-app:v1
+
+=> For access localhost:9090 & upload photo
+
+=> go inside container
+$ docker exec -it < container-id> bash  
+
+$ cd photos
+
+=> copy a photo in local to container(app/photos) 
+
+docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+
+$ docker cp D:\Kubernetes Practice\Kubernetes\photos-app\desktop photo.jpg <container-id>:/app/photos
+
+$ docker cp ".\desktop photo.jpg" 8fcc7beb08f2:/app/photos   --> Relative path 
+
+=> Docker Hub pr push karne ka tatika 
+  Login ---> tag---> push
+
+=> image ko docker hub/ acr-azure container-registry per rakhtha hai...
+
+=> first creat acr & push
+> az acr login --name <acrName> 
+> then tag
+$ docker tag photos-app:v1 <acrLoginServer>/photos-app:v1
+> then push 
+$ docker ps 
+> docker push < image > 
+
+> create manifests folder where pod.yaml create
+
+pod.yaml
+========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photos-app 
+spec:
+  containers:
+  - image: acrdevopsinsider.azure.io/photos-app:v1
+    name: photos-app
+    ports:
+    - containerPort: 8501
+
+$ kubectl apply -f pod.yaml
 
 
 
 
 
+  Pod Statuses:
+---------------
+1. Running --> Sab kuch sahi hai..
+2. ErrimagePull--> image pull me issue
+3. ImagePullBackoff--
+                     --> image ka naam hi galat.. image exist hi nahi karti
+                    --> Image ko download karne ki permissions nahi hai..
 
 
+4. Crashloopbackoff --> Jab pod ke andar baar baar crash hota hai...
+
+5. Pending --> Pod kisi bhi node pr scehdule nahi hua hai...
+
+6. Completed --> Jab pod ke andar ke contaienr kaa kaam successful ho jae to vo
+completed ho jata hai..
 
 
+==> 2 & 3 error ka resolution pata lagane ka tarika 
+$ kubectl describe pod
+$ kubectl logs
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+=> 2, 3, 4 error for interview purpose
  
 
+Class--110/20
+=============
+Persistent Volume
+================
+> PV-> Cluster level resource hai jisko admin banata hai..
+> pvc-> Connection of PVC to the pod
+
+pod.yaml
+-------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photos-app
+spec:
+  containers:
+   - name: photos-app
+     image: ghatak.azureecr.io/photos-app:v2 
+     ports:
+     - containerPort: 8501
+     volumeMounts:
+     - mountPath: /app/paths
+       name: 4gb-volume
+  volume:
+  - emptyDir:
+      sizeLimit:4gi    
+    name: 4gb-volume
 
 
+=> PV is cluster level resource 
+=> pv & pvc ka claim diagram dekhna 
 
 
+Class--111/21
+=============
+
+persistantVolume.yaml
+--------------------
+apiVersion: v1
+kind: PersistentVolume metadata:
+  name: pyaar-ka-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  azureFile:
+    secretName: shadi kephotos-ka-creds
+    shareName: honeymoon
+  capacity:
+    storage: 4Gi
+
+sectet.yaml
+------------
+apiVersion: v1 
+kind: Secret 
+metadata:
+  name: shadikephotos-ka-creds
+type: Opaque
+stringData:
+  azurestorageaccountname: shadikephotos
+  azurestorageaccountkey: gACP1GPUCUQdUck5TYDes zngdwheYJSGsdzeeuEDWmElkQG9Sg5flZeH/
+
+Class--112/22
+=============
+=> Kubernetes mein Persistent Volume (PV) ek cluster-level resource hota hai, jisme aap storage ki details de dete ho (kaun sa backend, size, access mode, etc.).
+
+=> PersistentVolumeClaim (PVC) ek user request hoti hai storage ke liye.
+
+Binding tab hota hai jab:
+------------------------
+>•  "PVC ka requested storage, accessModes, and volume Mode match karta hai PV se."
+
+> "Aur agar PVC ne kisi specific PV ka naam nahi diya ho (i.e. selector ya volumeName), to system automatically best match dhoondhta hai."
+
+persistantVolume.yaml
+====================
+apiVersion: v1
+kind: PersistentVolume 
+metadata:
+  name: pyaar-ka-storage
+spec:
+  storageClassName: gym-lover       
+  volumeName: pyaar-ka-storage
+  accessModes:
+  - ReadWriteMany
+  azureFile:
+    secretName: shadikephotos-ka-creds
+    shareName: honeymoon
+  capacity:
+    storage: 4Gi
 
 
+pvc.yaml
+=======
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: honeymoon-photos
+spec:
+ storageClassName: gym-lover       
+ volumeName: pyaar-ka-storage
+resources:
+  requests:
+    storage: 1Gi 
+volumeMode: Filesystem
+accessModes:
+- ReadWriteMany
+
+pod.yaml
+===========
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: honeymoons-app
+spec:
+  containers:
+  - name: honeymoons-app
+    image: sonambewafaa/photos-app:v2
+    ports:
+    - containerPort: 8501
+    volumeMounts:
+      mountPath: /app/photos
+      name: mera-volume
+  volumes:
+  - name: mera-volume
+      persistentVolumeClaim:
+      claimName: honeymoon-photos
 
 
+=> PVC Stuck in pending
+ans) StorageClassName, AccessMode, volumeMode - sab kuch match nahi hoga toh pvc pending me chla jaega
+
+=> PV available but not bound
+ans) StorageClassName, AccessMode, volumeMode - sab kuch match nahi hoga toh pvc pending me chla jaega
+
+=> Pod me PVC integrate karna hai
+ans) PV Banaenge, fir PVC banaenge
+
+=> fir podyaml me Volume dalenge, fir container me mount karenge
+
+=> jab PVC delete ho toh PV bhi automatically delete ho jae?
+Homework - ReclaimPolicy
+
+=> MultiplePod, Same storage ko padna chahta hai.. AccessMode hoga
+
+=> ReadWriteMany
+
+==> home work Dynamic provisioning 
+
+=> Persistent Volume:-
+ 1. Statically provisioned
+  > StorageAccountFileShare 
+  > PV-Fileshare connection
+  > PVC request
+
+ 2. Dynamically Provisioned 
+   > PVC request ( 2gi ) 
+   > storageClass-azure-portalfile-share
+
+    
+>>> stg -> 2gi--> pv--bound
+=> StorageClass
+  > azure-portalfile-share
+  > azure connect ka creds
 
 
+dynami-pvc.yaml
+================
 
+=> azure me jisko LoadBalancer bolte hai k8s me services bolte hai
+=> Service is LoadBalancer
+=> Service 3-type
+  1. Cluster IP
+  2. LoadBalancer
+  3. NodePort 
+ 
 
-
-
-
-
+Class--113/23
+=============
 
 
 
