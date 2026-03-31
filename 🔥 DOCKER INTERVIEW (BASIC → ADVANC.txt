@@ -1,0 +1,405 @@
+🔥 DOCKER INTERVIEW (BASIC → ADVANCED + REAL-TIME)
+=============
+1.❓ What is Virtualization ?
+Ans) Virtualization is a technology that allows multiple virtual machines (VMs) to run on a single physical machine using a hypervisor.
+
+Each virtual machine has:
+
+Its own operating system
+Virtual CPU, memory, and storage
+
+2.❓ What is Containerization ?
+Containerization is a lightweight form of virtualization where applications run in isolated environments called containers, sharing the host operating system kernel.
+
+-> Containers package:
+      --> Application code
+      --> Dependencies
+      --> Libraries
+
+👉 Example:
+Using Docker, you can run multiple applications in containers without installing a full operating system for each one.
+
+3.❓ Difference between Virtualization vs Containerization?
+
+Virtualization	Containerization
+Uses Hypervisor	Uses Docker Engine
+Heavy (GBs)	Lightweight (MBs)
+Separate OS	Shared OS kernel
+Slow startup	Fast startup
+
+4.❓ What is Docker?
+Ans) 👉 Docker is a containerization platform that allows you to package an application with all its dependencies into a container so it runs consistently across environments.
+
+5. DOCKER DAEMON:-
+Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+
+6.DOCKER OBJECTS:
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects.
+
+1. IMAGES:-
+
+4. What is a Docker image?
+A Docker image is a lightweight, standalone, and executable package 
+that includes the application code, libraries, dependencies, and 
+runtime needed to run an application.
+
+5. What is a Docker container?
+A Docker container is a runnable instance of a Docker image. It 
+encapsulates the application and its dependencies in an isolated 
+environment.
+
+6. Explain the role of Docker Engine.
+Docker Engine is the core component responsible for building, running, and managing Docker containers. It includes a server, API, and a command-line interface.
+
+
+BASIC DOCKER COMMANDS:-
+
+ Display docker images available in our machine
+$ docker images
+
+ Download docker image.
+$ docker pull <image-name / image-id>
+
+ Run docker image.
+$ docker run <image-name / image-id>
+
+ Delete docker image.
+$ docker rmi <image-name / image-id>
+
+ Display all running docker containers.
+$ docker ps 
+	
+ Display all running and stopped containers.
+$ docker ps -a
+
+ Delete docker container.
+$ docker rm <container-id>
+
+ Delete docker image forcefully.
+$ docker rmi  -f <image-id>
+
+ Stop Docker container.
+$ docker stop <container-id>
+
+ Delete all stopped containers and unused images and unused networks.
+$ docker system prune -a
+
+
+Dockerfile:
+12. What is a Dockerfile?
+A Dockerfile is a script that contains instructions for building a Docker 
+image
+	Filename : Dockerfile
+
+=> To write dockerfile we will use below keywords
+
+	1) FROM
+	2) MAINTAINER
+	3) RUN
+	4) CMD
+	5) COPY
+	6) ADD
+	7) WORKDIR
+	8) EXPOSE
+	9) ENTRYPOINT
+	10) USER
+
+====
+FROM
+=====
+
+=> It is used to specify base image for our application
+Ex: FROM openjdk:17
+FROM python:3.3
+FROM node:19.5
+FROM mysql:8.5
+FROM tomcat:9.0
+
+============
+MAINTAINER
+============
+
+=> MAINTAINER is used to specify who is author of this Dockerfile
+
+Ex :
+
+MAINTAINER Ashok<ashok.b@oracle.com>
+
+=====
+RUN 
+=====
+
+=> RUN keyword is used to specify instructions to execute at the time of docker image creation.
+
+Ex:
+
+RUN 'git clone <url>'
+RUN 'mvn clean package'
+
+Note: We can write multiple RUN instructions in single docker file and all those instructions will be processed in the order.
+
+=====
+CMD
+=====
+
+=> CMD keyword is used to specify instructions to execute at the time of docker container creation.
+
+Ex:
+
+CMD 'java -jar app.jar'
+
+CMD 'app.py'
+
+Note: We can write multiple CMD instructions in single docker file but docker will process only last CMD instruction.
+
+===========
+ENTRYPOINT
+===========
+
+=> Entrypoint is used to execute instructions when docker container is creating.
+
+Ex: 
+
+ENTRYPOINT["java", "-jar", "app.jar"]
+
+ENTRYPOINT["python", "app.py"]
+
+Note: CMD instruction we can override using command line arguments where ENTRYPOINT instruction we can't override.
+
+========
+COPY
+=========
+
+=> It is used to copy files from host machine to container machine
+
+Ex:
+
+COPY target/app.jar  /usr/app/app.jar
+
+COPY target/app.war  /usr/app/tomcat/webapps/app.war
+
+COPY app.py /usr/app/app.py
+
+=============
+ADD Keyword
+=============
+
+=> It is also used to copy files from source to destination.
+
+Ex:
+
+ADD target/app.jar  /usr/app/app.jar
+
+ADD <http-url>  /usr/app/app.jar
+
+==========
+WORKDIR
+==========
+
+=> It is used to set working directory (directory navigation)
+
+COPY target/app.jar  /usr/app/app.jar
+
+WORKDIR /usr/app
+
+CMD 'java -jar app.jar'
+
+======
+USER
+======
+
+=> It is used to set USER to run commands
+
+========
+EXPOSE
+========
+
+=> It is used to specify on which port number our application will run in container
+
+Ex:
+
+EXPOSE 8080
+
+Note: It is only to provide inforation. We can't change container port using EXPOSE.
+
+
+5. What is Docker expose ?
+Docker EXPOSE is a command in a Dockerfile that specifies which ports a container will listen on at runtime. It informs Docker and other users about the ports that should be exposed for communication but does not actually publish them. To make these ports accessible outside the container, you need to use the -p option when running the container.
+
+6. Difference between Copy vs add ? 
+"Copy" means to make an exact duplicate of something, like copying a file on your computer. "Add" means to include something new to what you already have, like adding a new item to a list. So, copying duplicates, while adding increases the total amount.
+
+Question.10)	what is Entrypoint vs CMD in docker ?
+Answer	In Docker, "ENTRYPOINT" defines the main command that will always run when the container starts, like setting a default action. "CMD" provides default arguments for the command defined in ENTRYPOINT or can specify a command if ENTRYPOINT is not set. Think of ENTRYPOINT as the main task and CMD as optional instructions or details for that task.
+
+
+Q) What is the difference between CMD and ENTRYPOINT ?
+We can override CMD instructions in runtime while creating container.
+We can't override ENTRYPOINT instructions.
+
+
+Q) What is the difference between RUN and CMD in Dockerfile ?
+RUN is used to execute instructions while creating images.
+CMD is used to execute instructions while creating Container.
+
+We can write multiple RUN instructions in Dockerfile, docker will process all those instructions one by one.
+If we write multiple CMD instructions in Dockerfile, docker will process only the last CMD instruction.
+
+VOLUME
+	VOLUME is used to specify docker container data storage location.
+
+Note: Volumes are used for storage.
+
+USER
+	We can set a user for creating image / container.
+
+Note: After USER instruction all the remaining commands will execute with given user permissions
+
+ARG
+	It is used to remove hard coded values.
+	Using ARG we can pass values in the BUILD TIME like below.
+
+Question.12)	What is init container and runtime container
+Answer	An init container runs before the main container in a Kubernetes pod, usually to perform setup tasks like initializing databases or preparing configurations. The runtime container is the main container that runs your application or service. Essentially, init containers handle prep work, while runtime containers run your app.
+	
+Question.13)	How to list out number of running Images
+Answer	To list the number of running Docker images, you can use the command docker images or docker image ls in your terminal. This shows all available images, and you can count them manually or use a command like docker images -q | wc -l to get the total count automatically.
+	
+Question.14)	How to login in running container?
+Answer	To log in to a running Docker container, use the command docker exec -it <container_id> /bin/bash or /bin/sh, depending on the container's shell. This opens an interactive terminal session inside the container. Replace <container_id> with the actual ID or name of your container.
+	
+Question.15)	how to check number of images in docker
+Answer	To check the number of images in Docker, use the command docker images or docker image ls to list them. Then, count the lines in the output or use docker images -q | wc -l to get the total number automatically.
+
+5. How to reduce Docker Image size?
+
+Answer:
+
+Use Alpine images
+Multi-stage builds
+Remove unnecessary files
+Combine RUN commands
+
+11. What is Multi-stage Build?
+
+Answer:
+Used to reduce image size by using multiple stages.
+
+
+8. What is the difference between CMD and ENTRYPOINT?
+
+Difference between COPY and ADD?
+COPY → simple file copy
+ADD → supports URL & extraction
+
+13. Explain the significance of the ENTRYPOINT and CMD instructions 
+in a Dockerfile.
+Ans) ENTRYPOINT sets the command to be executed when the container 
+starts, and CMD provides default arguments for the entry point.
+
+
+Docker Networking:
+==============
+
+1. What is Docker Network?
+
+Answer:
+Docker networking allows containers to communicate with each other and with the outside world.
+
+2. What are types of Docker networks?
+
+Answer:
+
+bridge (default)
+host
+none
+overlay
+
+3. What is bridge network?
+
+Answer:
+
+Default network in Docker
+Containers on same host communicate via private IP
+4. What is host network?
+
+Answer:
+
+Container shares host network
+No port mapping needed
+
+
+5. What is none network?
+
+Answer:
+
+No network access
+Fully isolated container
+
+
+2. What is overlay network?
+
+Answer:
+
+Used in multi-host communication
+Works with Docker Swarm
+13. What is ingress network?
+
+Answer:
+
+Used for load balancing in swarm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
