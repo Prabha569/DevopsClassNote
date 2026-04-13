@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: majnu-pod
+  labels:
+    type: tondu
+    height: 4feet
+    weight: 40kg
+spec:
+  containers:
+    - name: netflix-container
+      image: devopsinsiders/netflix-clone
+
+      ports:
+        - containerPort: 80

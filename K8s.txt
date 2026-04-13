@@ -1,0 +1,2403 @@
+=> Kubernetes me one Master Node & 2/3 Worker Node -> called K8s cluster
+
+=>Kubernetes me Pod banane ke tarika->
+=======================================
+1)Imperetive--> Command chalao, pod Banao(kubectl)
+
+2) Declarative  -> File banao(yaml)  aur Apply chalao
+
+1)Imperetive-->
+===============
+*) How to create pod in cli ?
+> # Start a nginx pod
+> run command -> Run a particular image on the cluster
+
+Command banana ka tarika =
+==========================
+1) [ ] bracket ->Optional -> hota hai
+2) Capital -> Jo change hoga
+3) Small -> jo fix thega
+4) | =  OR
+
+=>  kubectl run NAME --image=image [--env="key=value"] [--port=port] [--dry-run=server|client]
+[--overrides=inline-json] [--command] -- [COMMAND] [args...] [options]
+
+> $ kubectl run  NAME --image=image ka nam 
+->here NAME-> pod ka name
+ 
+$ kubectl run dhundu-nginx-pod --image=nginx
+
+=> here dhundu-nginx-pod is name of pod, nginx is name of image...
+
+=> To see the cluster information
+$ kubectl cluster-info
+
+*) Display the nodes
+$ kubectl get nodes
+
+=> To see the pod
+$ kubectl get pods
+$ kubectl get pods -o wide
+
+=> To Delete a pod
+$ kubectl delete pod < pod ka name>
+$ kubectl delete pod --all (This command delete all Pod)
+
+
+-> To see the pod creating status/
+$ kubectl get pods -w ( this command terminal atak jata hai)
+
+=> Port-forwarding--> For Access in browser
+------------------------------------------
+=> kubectl port-forward TYPE/NAME [options] [LOCAL_PORT:]REMOTE_PORT
+[...[LOCAL_PORT_N:]REMOTE_PORT_N]
+
+$ kubectl port-forwarding  TYPE/NAME LOCAL-PORT:REMOTE-PORT
+
+$ kubectl port-forward pod/nginx 9696:80
+
+=> here type=pod, name=nginx, local port=9696, remote-port =nginx ka port 80
+
+=> access in browser: localhost:9696
+
+=> To Go inside pod
+$ kubectl exec --help
+
+Usage:
+  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...]
+[options]
+
+> $ kubectl exec POD  -- COMMAND
+
+>  kubectl exec -it nginx-pod  command ( bash) 
+
+>  kubectl exec -it nginx-pod -- bash
+
+> $ kubectl exec -it nginx-pod -- bash
+
+note: < -- ke bad space hona jaruri>
+=> this command go inside the nginx container
+Note: Declarative process me jab pod banta hai to usme container ka nam nahi lekhta hu islia exec command me -c container ka nam nahi likh ta hu ...
+
+> kill the nginx process id 
+$ kill 1
+
+
+> Nginx:- kubectl run nginx-pod --image=nginx
+> Firefox: kubectl run firefox --image=linuxserver/firefox:1.2404.1
+> DevopsInsider Netflix image:- kubectl run di-netflix-pod  --image=devopsinsiders/netflix-clone
+
+> docker pull sonarqube:alpine
+> docker pull tomcat:jre8-alpine
+> docker pull nginx
+
+&&) Docker pull me dns error solve:
+==================================
+Agar tum Windows pe ho:
+----------------------
+1.Go to:
+
+Control Panel > Network and Internet > Network and Sharing Center > Change Adapter Settings
+
+
+2. Apne active network adapter pe right click > Properties
+
+3. Select: Internet Protocol Version 4 (TCP/IPv4) > Properties
+
+4. Choose:
+   --Use the following DNS server addresses:
+       --- Preferred DNS: 8.8.8.8
+       ---- Alternate DNS: 1.1.1.1
+
+5. OK > Close all
+
+
+
+2) Declarative:--
+==================
+=> File banao(yaml)  aur Apply chalao
+=> .YAML ----> kubectl apply
+
+Q) pod ke under me sabse pahela container banta hai..called pause container
+=> pause container contains/store ip of pod, default namespace
+=> By default pod me hamesa 2-container banta hai.. 1-pause container,2-main container
+=> pause container, sab container ka ip aur baki details ko store karta hai...
+
+Class--96/06
+==========
+=> how to write a pod in Declarative
+
+*) Declarative se pod banane ke lia ek yaml file(dhundu.yaml) banake us file ko apply karenge
+
+=> kubectl apply --help
+
+Usage:
+  kubectl apply (-f FILENAME | -k DIRECTORY) [options]
+
+=   kubectl apply (-f FILENAME | -k DIRECTORY)
+
+$ kubectl apply -f dhundhu.yaml
+
+==> YAML file banane kaa Structure
+=> kubectl explain --help
+
+Usage:
+  kubectl explain TYPE [--recursive=FALSE|TRUE] [--api-version=api-version-group]
+[-o|--output=plaintext|plaintext-openapiv2] [options]
+
+Usage:
+  kubectl explain TYPE
+
+=> here TYPE --> resource--> node, pod, deployment, service, configmap,  secret,
+
+$  kubectl explain pod
+
+*) pod structure ko file me save karna
+$ kubectl explain pods --recursive > pod-document.txt
+
+FIELDS:
+------
+ apiVersion: vi
+ kind: Pod
+ metadata  (here name = pod ka nam)
+ spec  <PodSpec>
+ status <PodStatus>
+
+
+dhundu.yaml
+============
+apiVersion: v1
+kind: pod
+metadata:
+  name: chamkilapod
+spec:
+  containers:
+  - name: tarasing
+    image: nginx
+ 
+$  kubectl apply -f dhundu.yaml  ( here pod created)
+-> to see the pod
+$ kubectl get pods
+
+-> port-forward  to see the container in pod in browser
+
+$ kubectl port-forward pod/chamkilapod  9090:80
+
+=> Access in browser-- http://localhost:9090/
+
+sonar.yaml
+===========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sona-pod
+spec:
+  containers:
+    - name: test-container
+      image: sonarqube:alpine
+
+Usage:
+  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...]
+
+
+> Go inside Pod
+$ kubectl exec -it chamkila-pod -c sample-container -- bash
+           OR
+$ kubectl exec -it pod/chamkila-pod -c sample-container -- bash
+ 
+> Delete a pod
+
+$ kubectl delete pod nginx
+
+Class--97/07
+==========
+*) Ek pod ke under do(2) nginx ka container kese chalaye ?
+> Imperative me ye nahi hoga / Declarative me ho payega
+
+> IP is assigned to a Pod not to be container
+
+nginx-dual-pod.yaml
+-----------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-pod
+spec:
+  containers:
+    - name: nginx-01
+      image: nginx
+      ports:
+      - containerPort: 80
+
+    - name: nginx-02
+      image: nginx:alpine
+      ports:
+      - containerPort: 81
+
+> is me kebal ek ngnx ka pod running hota hai...
+
+Class--98/08
+==========
+=> Pod is a collection of container who share shared storage & shared networking...
+
+=> Proof = Container to container networking = localhost
+
+=> Pod to pod communication - same namespace
+
+=> pod to pod communication -different namespace
+
+1) how to communicate two container in in a single pod( Ans-localhost & ip of pod )
+
+dual-image-pod.yaml
+========================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dual-image-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+
+    - name: firefox-container
+      image: linuxserver/firefox
+      ports:
+      - containerPort: 3000
+
+=> run the pod
+$ kubectl apply -f dual-image-pod.yaml
+
+=> port forward
+$ kubectl port-forward pod/dual-image-pod 6060:3000
+
+=> In a Single pod two container communicate by using localhost
+
+=> localhost:6060 ( open Firefox inside Firefox search localhost:80 -- access nginx)
+
+
+*)  One pod can connect to another pod using it's private IP ....
+
+nginx-pd.yaml
+=============
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-diff-pod1
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+
+firefox-pod.yaml
+================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-diff-pod2
+spec:
+  containers:
+    - name: firefox-container
+      image: linuxserver/firefox
+      ports:
+      - containerPort: 3000
+
+> Run the two pod
+$ kubectl apply -f nginx-pod.yaml
+$ kubectl apply -f firefox-pod.yaml
+
+> Port-forward
+$ kubectl port-forward pod/two-diff-pod2  5050:3000
+
+> to show the ip of pod
+$ kubectl get pods -o wide
+
+> access localhost: 5050 inside firefox search 10.244.0.9 --> nginx accessed 
+
+=> by default two pod access if not access using  network policy..
+
+
+Class--100/10
+==========   Network Policy =====
+
+-> network policy doc. create a file
+$ kubectl explain networkpolicy -recursive > NP-doc.txt
+
+*) Default:- Agar kisi pod pe netwok policy laga di toh sab block h jata hia by default ..
+
+-> pod ka level check karna hai..
+$ kubectl get pods --show-labels
+
+-> show pod ka IP address
+$ kubectl get pods -w wide
+
+-> show the Network policy
+$ kubectl get networkpolicy
+
+==> Create 2 pod in a cluster . by default 2 pod communicate using localhost & its ip but using network policy 2 pod can't communicate
+
+firefox-laila-pod.yaml
+======================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: laila-pod
+  labels:
+    type: chamkila
+    height: 6feet
+spec:
+  containers:
+   - name: firefox-container
+     image: linuxserver/firefox
+     ports:
+     - containerPort: 3000
+ 
+ netflix-majnu-pod.yaml:
+=======================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: majnu-pod
+  labels:
+    type: tondu
+    height: 5feet
+spec:
+  containers:
+   - name: netflix-container
+     image: devopsinsiders/netflix-clone
+     ports:
+     - containerPort: 80
+
+add-NP.yaml:-
+============
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: villan-np-pod
+spec:
+  podSelector:
+    matchLabels:
+      type: tondu
+
+Note: minikube cluster me Network policy kam nahi karta hai...
+
+-> Create pod
+$ kubectl apply -f firefox-laila-pod.yaml
+
+$ kubectl apply -f  netflix-majnu-pod.yaml
+
+-> show the pod labels
+$ kubectl get pods --show-labels
+
+-> show the IP
+$ kubectl get pods -o wide
+
+> Network policy create (run)
+$ kubectl  apply -f add-np.yaml
+
+-> show the network policy
+$ kubectl get networkpolice
+
+-> port forwarding for access
+$ kubectl port-forward pod/laila-pod 8890:3000
+
+> Delete Network Policy
+$ kubectl delete networkpolicy villen-np
+$ kubectl delete networkpolicy --all
+
+Class--101/11
+==========
+=> Create AKS  ( 1-master, 2-Node) in portal
+
+=> Master is managed by Azure
+
+=> Netflix & Firefox ko declarative me deploy karna hai..
+
+=> Deploy marke .dono pod ek dusre ko access kar paa raha hai ke nahi vo check karna hai...
+
+=> Beach me network policy laga ke stop karna hai...
+
+*) AKS Create:- Create 2 pod Add Network policy
+
+->rg-ghatak->gnName--> clusterName-> ghatakcluster
+
+->Netwrking-->
+
+private access->Enable private cluster:
+-> jo master node ke andar Api-server by default public hota hai..usko private karne ke lia enable karna hai..
+ 
+public access-> jis ip ko acces dega usne access kar paiga...
+
+-> container networking--> Network configuration/plugin defines cluster ke pod & node ko IP address provide karta hai..
+
+-> Azure CNI Overlay-->
+========================
+> pod ko IP need ke Regarding
+>  ye fir pod ka ip internal private space se melaga.
+
+=> Azure CNI node subnet-->
+=========================
+> Node ko IP dene ke 2 tarika
+> Automatically naya bana ne do
+> Bring your own Virtual Network
+> Virtual network jisme node hai usi ka IP utha ke pod  
+>Limitation- agar vnet me ip hi khatm ho gae to dikat hai..
+> Fayda->direct Kubernetes ke bahar se pod ko hit mar sakte hai...
+
+-> Bring your own vNet-> khud se banaya hua Virtual Network & Subnet
+
+=> Dns name prefix-> FQDN->fully qualified domine name-> ek URL hota hai.
+> 
+=> Network policy-->
+> none-> Network policy not working(after apply NP) 
+> Calico/Azure->Networking policy working
+
+create ......
+
+=> this AKS access in Azure cli-->
+-> open cluster -> connect--> copy Azure get subscription, Azure get Credential-> download aks credential create pod using yaml
+
+Class--102/12
+==========
+              Total Recap
+             ============
+
+Class--103/13
+==========
+=> Pod ka kam->uske ander ke container ko zinda rakhna..
+
+=> Docker ki case me kese container marta hai..
+
+-> 1st docker run command se ek container bana te hai.
+
+-> docker run -d --name nginx-container -p 8890:80 nginx
+-> here nginx ka image ka use karke ek container ban gaya..
+-> go inside the container & kill the process
+
+$ docker exec -it nginx-container bash
+
+-> 1 container = 1 process(nginx)
+  -> if nginx process dies
+    then container will also die..
+
+->  🔹 ps Command:
+=================
+$ ps-> ka matlab (Process Status) ye command system me chal rahe process(Programs) ki jankari deta hai...
+
+-> ps -e/ps -A--> System me chal rahe savi process ko dekhata hai..
+
+-> ps aux -> sabhi user ke process ko detail dekhata hai..
+
+🔹 kill Command:
+================
+-> kill command ka upayag kisi process ko terminate(bandh) karne ke lia kia jata hai..
+
+$ kill pid--> kill (process ID)
+
+🔹 What is the top Command?
+===========================
+The top command in Linux/Unix is a real-time process monitoring tool. It displays a live view of system processes, including CPU usage, memory usage, process IDs (PIDs), and more.
+$ top
+====================
+=> chatGPT-> bhai dekh mere ko na nginx ke container ke andar dekhna hai ki kon kon si process chal rahi hai..ps aur top command not found aa raha hai kya karu ?
+
+> apt update  \\\&\\\& age install process -y 
+> uske bad hamare ps aux top sab command chalega
+
+$ ps
+$ ps aux
+$ top
+
+> $ ps aux  --> pid 1 me nginx ki master process chal rehe hai..
+> agar is pid ko mar du to us nginx ka container mar jata hai..
+
+$ kill pid
+$ kill 1
+
+> Docker ps ( container killed)
+
+=> Docker ki case me khud se container create nahi hota hai..
+
+=> pod ke case me kya hota hai. dekh na hai..
+-----------------------------------
+
+=> mene yaml file use karke nginx ka ek pod banadiya
+=> us pod ke andar ek nginx ka container hai..
+
+> Go inside the pod
+
+> kubectl exec --help
+> $ kubectl exec POD -c CONTAINER --COMMAND
+
+>  kubectl exec nginx-pod -c( container ka nam command ( bash) 
+
+>  kubectl exec nginx-pod -c nginx --bash
+
+> $ kubectl exec -it nginx-pod -c nginx -- bash
+=> this command go inside the nginx container
+
+> kill the nginx process id 
+$ kill 1
+
+> kubectl get pods 
+
+=> here pod ki case me jitnee bar container marta hai utne bar fir se jinda ho jata  hai...
+
+--------------------------------
+
+
+Class--104/14
+=============
+#) Persistent Volume & Persistent Volume Claims( PV & PVC )
+
+=> pv & pvc test:-
+
+=> Create a pod
+dhundhu.yaml
+-------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chamkilapod
+spec:
+  containers:
+  - image: nginx
+    name: sample-container
+
+=> Go inside into the pod
+$ kubectl exec -it chamkilapod -- bash
+$ ls
+
+=> /home folder me ek file honi chahiya --> main_bhoot_hu.txt
+
+-> Create a file in the container-/home
+     main_bhoot_hu.txt
+
+$) cd/home
+$ touch main_bhoot_hu.txt
+
+=> After killing the container this file is present or not check
+
+> go back to the container \\\& kill it
+cd ..
+
+$ kill 1
+
+> kubectl get pods ( restart pod 1 see) 
+
+>Go inside the container and check file is present or not /here file not present so that a new logic start PV \\\& PVC...
+
+Class--105/15
+=============
+
+=> Pods are ephemeral(alpakalina)
+=> Data loss hone ka chance hai. due to ephemeral nature of pod.
+=> Data ka loss bachane ke lie.humne PV & PVC ka concept laya.
+
+> Step-1--> First the user with admin right on cluster will create PV
+
+> Step-2-> Developer will create PVC, which will have request of storage require.
+
+> Step-3-> PVC will be bound to PV
+
+> Step-4-> Pod PVC to use karta hai...
+
+#) PV banana ka tarika--> 2 tarika
+   a) Static Provisioning
+   b) Dynamic Provisioning
+
+> cluster <----pv <----pvc <----pod
+
+#> Docker Volume:
+================
+> Create a docker Volume
+$ docker volume create nipun-drive
+$ docker volume ls
+
+> Create a docker container with volume
+
+$ docker run -d --volume nipun-drive:/home nginx
+
+=> here nipun-drive--> volume ka naam
+ /home-->path(jis path me dirve rahega)
+nginx- image ka naam
+
+> Volume Check Steps:
+------------------
+> Create a container with adding volume
+
+$ docker run -d --volume nipun-volume:/home nginx
+
+> go inside the container \\\& create a file
+
+$ docker exec -it (container-id) bash
+$ cd /home
+$ touch main_bhoot_hu.txt (create a file)
+
+> Container kill ( first back to container ) 
+$ cd ..
+$ kill 1
+
+> checking
+> create a container with same volume in same path
+$ docker run -d --volume nipun-volume:/home nginx
+
+> go inside the container
+$ docker exec -it (container-id) bash
+$ cd /home
+
+#) proved: main_bhoot_hu.txt this file is present
+
+> checking in another path
+
+$ docker run -d --volume nipun-volume:/usr/share/nginx/html   nginx
+
+#) here also this file is present (proved)
+
+===========================
+          Pod Case Volume
+         ----------------
+> Kubernetes document-->  concept >storage > volume
+
+> Kubernetes  Volume:2 types
+  a) Ephemeral Volume
+  b) Persistent Volume(imp.)
+
+ a) Ephemeral Volume:-
+=======================
+=> Ephemeral Volume types have a lifetime linked to a specific Pod ..
+> Aisa volume jo pod ki jivan shaily se link hota hai...
+
+ b) Persistent Volume(imp.) :-
+==============================
+=> Aisa volume jo pod ki jivan shaily se alg hota hai..
+>Persistent Volume exist beyond the lifetime of any individual pod. when a pod ceases to exist.
+
+=> Volume declare karne ke lia
+  .spec.volumes
+  .spec.container[*].volumeMounts
+
+
+🔹 Simple Meaning (Easy Language)
+
+👉 volumes (Pod ke andar)
+= Storage define karta hai
+
+“Data kaha se aayega / kaunsa storage use hoga”
+
+👉 volumeMounts (Container ke andar)
+= Mount location batata hai
+
+“Container ke andar kis path pe use karna hai”
+
+🔥 Ek Line me yaad rakh
+
+👉 Volume = Storage define
+👉 VolumeMount = Storage use karne ka path
+
+
+Class--106/16
+=============
+=> EmptyDir ek khali folder ya volume hai
+> EmptyDir banta kab hai.? jab pod kisi node pr bnta hai..
+> Pod delete hoga toh ye bhi delete ho jaega... matlab ye temporary storage hai..
+> Phele Banega volume emptyDr type ka 
+> fir container me mount hoga kisi path pr...
+
+
+Class--107/17
+=============
+=> Volume declare karne ke lia
+  .spec.volumes
+  .spec.containers[*].volumeMounts
+=> ek pod pr volume mount karne ka 2 step process
+1)pod ke yaml me .spec.volumes wali field me volume ki details deni pdegi..
+2) .spec.containers[*].volumeMounts
+
+EMPTYDIRVOLUME:
+================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydr-pod
+spec:
+  volumes:
+  - name: nipun-volume
+    emptyDir:
+      sizeLimit: 1Gi
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: nipun-volume
+
+
+=>  to see the volume
+$ kubectl describe pod emptydr-pod
+
+
+2. ConfigMapVolume:
+   =================
+
+democonfig.yaml
+--------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  demo: "Welcome to Prabhakar Nayak "
+
+$ kubectl apply -f democonfig.yaml
+$ kubectl get ConfigMap
+
+config.yaml
+================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  volumes:
+  - name: config-volume
+    configMap:
+      name: demo-config
+      items:
+        - key: "demo"
+          path: "demo-file"
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: config-volume
+      mountPath: /home
+ 
+$ kubectl apply -f config.yaml
+$ kubectl get pods
+$ kubectl describe pod configmap-pod
+$ kubectl exec -it configmap-pod -- bash
+
+Note: in /home path per demo-file nam ka ek file hai usme  config-map ka data hai woo kebal dekh pa raha hu is path per file create nahi kar pa ra hu...
+
+
+Class--109/19
+=============
+
+=> Ek photo upload App banao & is ko local me run karo
+=> cli me photo upload app folder me jake
+
+=> Run the photo upload app
+$ python -m streamlit run app.py
+
+=> & upload photos & see in browser
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.31.72:8501
+
+
+=> is photo upload app ko ek docker file banake app run karega
+
+=> is Docker file ko image & container banake run karke  photo upload karunga
+
+=> To create a docker image from Docker file
+$ docker build -t photos-app:v1 .
+
+=> To See the image
+$ docker images
+
+=> to create a container& port-mapping  from image
+$ docker run -d -p 9090:8501 photos-app:v1
+
+=> To See the running Container
+$ docker ps
+
+$ localhost:9090 & upload the photo
+
+=> go inside container
+$ docker exec -it < container-id> bash
+
+=> to see the photo in cli
+$ cd /home
+$ ls /photos
+$ ls -l photos
+
+=> copy a photo in local to container(app/photos)
+$ docker cp "D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg" <container-id>:/app/photos
+
+$ docker cp "D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg" 329fab9cb475:/app/photos
+
+Note: here source path ko "" coma ke ander kuon ke --> Kubernetes Practice ke ander space hai
+
+                        OR
+docker cp "Toto proj-4 .png" 329fab9cb475:/app/photos/
+
+
+=> copy a photo in  container(app/photos) to local
+docker cp <Container-ID>:/app/photos/krishna.jpg .
+
+$ docker cp 329fab9cb475:/app/photos/krishna.jpg .
+
+=> Container me photo download karna hai < container me reha kar chalana hai ..)
+$ wget <URL of Photo>  -O /app/photos/krishna.jpg
+
+
+=> Docker Hub pr image push karne ka tatika
+  Login ---> tag---> push
+==================================
+> docker login -u prabha060
+> password : ----
+    OR PAT
+> dckr\\\_pat\\\_xFfcJ\\\_\\\_zgifhqghTUg9aZ27EKqI
+
+tag:-docker tag photos-app:v1 YOUR_USERNAME/photos-app:v1
+
+$ docker tag photos-app:v1 prabha060/photos-app:v1
+
+push:-  docker push prabha060/photos-app:v1
+
+
+
+=> ACR  pr image push karne ka tatika
+  Login ---> tag---> push
+=>Account  icon pe jake PAT create karna hai..
+
+=> image ko docker hub/ acr-azure container-registry per rakhtha hai...
+===================================
+
+=> first creat acr & push
+> az acr login --name <acrName> 
+> then tag
+$ docker tag photos-app:v1 <acrLoginServer>/photos-app:v1
+> then push 
+$ docker ps
+> docker push < image > 
+$ docker push <acrLoginServer>/photos-app:v1
+
+> create manifests folder where pod.yaml create
+
+=> pod banana se pehele
+cd manifests & apply for pod creation
+
+
+pod.yaml:
+==========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photo-upload-pod
+  labels:
+    env: dev
+    owner: prabha
+spec:
+  containers:
+  - name: sample-container
+    image: prabha060/photos-app:v1
+    ports:
+    - containerPort: 8501
+
+
+$ kubectl get pods
+
+$ kubectl describe pod photo-upload-pod
+
+=> port-forward
+$ kubectl port-forward pod/photo-upload-app 9090:8501
+
+Access & upload
+$ localhost:9090
+
+* local se container tok photo upload
+======================================
+Usage:
+  kubectl cp <file-spec-src> <file-spec-dest> [options]
+
+kubectl cp "D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg" photo-upload-pod:/app/photos/
+
+                    OR
+ kubectl cp home.jpg photo-upload-pod:/app/photos/
+
+=> To see the log
+$ kubectl logs photo-upload-pod
+
+=> To see the live logs
+$ kubectl logs -f photo-upload-pod
+
+
+==> jab pod ko kill karta hu  upload photo delete hojata hai..because of ephemeral volume
+==> solution :- pod & emptydr volume define
+
+
+Pod Statuses:
+---------------
+1. Running --> Sab kuch sahi hai..
+2. ErrimagePull--> image pull me issue
+3. ImagePullBackoff--
+                     --> image ka naam hi galat.. image exist hi nahi karti
+                    --> Image ko download karne ki permissions nahi hai..
+
+
+4. Crashloopbackoff --> Jab pod ke andar baar baar crash hota hai...
+
+5. Pending --> Pod kisi bhi node pr ccscehdule nahi hua hai...
+
+6. Completed --> Jab pod ke andar ke contaienr kaa kaam successful ho jae to vo completed ho jata hai..
+
+
+==> 2 & 3 error ka resolution pata lagane ka tarika
+$ kubectl describe pod
+$ kubectl logs
+
+=> 2, 3, 4 error for interview purpose
+
+=> To delete the pod
+$ kubectl delete pod photo-upload-pod
+
+
+Class--110/20
+=============
+> PV-> Cluster level resource hai jisko admin banata hai..
+> pvc-> Connection of PVC to the pod
+
+
+==> pod with volume mount(emptyDir volume)
+
+pod2.yaml
+============
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photo-pod
+  labels:
+    env: dev
+    owner: prabha
+spec:
+  volumes:
+  - name: nipun-volume
+    emptyDir:
+      sizeLimit: 1Gi
+  containers:
+  - name: test-container
+    image: prabha060/photos-app:v1
+    ports:
+    - containerPort: 8501
+    volumeMounts:
+    - mountPath: /app/photos
+      name: nipun-volume
+ 
+=> Create pod
+$ kubectl apply -f .\pod2.yaml
+
+$ kubectl get pods
+
+=> port-forward
+$ kubectl port-forward  pod/photo-pod 9595:8501
+
+=> Go inside pod
+$ kubectl exec -it pod/photo-pod  -- bash
+
+=> local to container
+$ kubectl cp "home.jpg" photo-pod:/app/photos/
+
+=> container to local
+kubectl cp "photo-pod:/app/photos/desktop photo.jpg" "./desktop photo.jpg"
+
+Note: file me space hone ke karan "" me command dia hai..
+
+Note:- Here pod ko kill karne per bhi container ke under photo delete nahi hot hai..but ✅ 1. emptyDir volume me pod delete hone per volume bhi delete hojata hai..
+
+
+Note:- ✅ 2. hostPath volume me Pod delete 👉 data safe rehta hai ✅
+
+
+=> Pod with hostPath Volume:-
+=============================
+
+pod3.yaml:-
+==========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-pod
+  labels:
+    env: dev
+    owner: prabha
+spec:
+  volumes:
+  - name: hostpath-volume
+    hostPath:
+      path: /data/photos   # ye node ka folder hai
+      type: DirectoryOrCreate  # agar Directory nahi hai to AutoCreate hoga
+  containers:
+  - name:  just-container
+    image: prabha060/photos-app:v1
+    ports:
+    - containerPort: 8501
+    volumeMounts:
+    - mountPath: /app/photos
+      name: hostpath-volume
+
+=> Create pod
+$ kubectl apply -f pod3.yaml
+
+=> See the pod Status
+$ kubectl get po
+
+=> Port-forward
+$ kubectl  port-forward pod/hostpath-pod 9797:8501
+
+=> Go Inside to Pod
+$ kubectl exec -it pod/hostpath-pod -- bash
+
+Note: pod ko kill karne per photos delete nahi hata hai...
+
+=> Pod delete hone pr kya hota hai dekhna hai..
+=> Delete pod
+$ kubectl delete pod hostpath-pod
+
+Note:- pod delete ho gagya mage hostPath volume me data delete nahi hota hai ye volume minikube ke path per hai
+
+$ minikube ssh
+$ cd /
+$ cd /data  & check ls & ls -l photos Here All photo present
+
+=> IS volume  ko delete karna hai(pura folder ke sath)
+
+$ sudo rm -rf /data/photos
+
+
+=> PV is cluster level resource
+=> pv & pvc ka claim diagram dekhna
+=> EmpytDr ek temporary type of volume jo  pod bante time bante hai & job pod delete hone pr emptyDR volume delete ho jate hai...
+=> But hostPath volume pod delete hone pr data delete nahi hota hai...
+
+
+
+=============
+Class--111/21
+=============
+
+=> $ kubectl api-resources
+> is command se all resources \\\& its short name dekh paege ..
+
+=> jis tara azure me key rakhne ke lia keyVault hai usi tara k8s me Secret object hai ...
+
+🔹 PV (Persistent Volume) kya hota hai?
+=======================================
+PV = Cluster level storage
+👉 Ye ek actual storage resource hota hai jo cluster me available hota hai
+
+🔹 Problem kya thi? (PV kyu aaya)
+==================================
+By default:- Pod delete → data delete 😢
+
+👉 Isko solve karne ke liye PV use hota hai
+👉 Data pod ke bahar store hota hai
+
+1. PV (Persistent Volume)
+> Admin create karta hai
+> Actual storage define karta hai
+
+2. PVC (Persistent Volume Claim)
+> User request karta hai storage
+
+Jaise:- "Mujhe 1GB storage chahiye"
+
+3. Pod
+> PVC use karta hai
+> Volume mount karta hai
+
+🔹 PV ka flow (important for interview 🔥)
+> Admin storage create karta hai → PV
+> User request karta hai storage → PVC (Persistent Volume Claim)
+> PVC bind ho jata hai PV se
+> Pod PVC ko use karta hai
+
+Flow:- PVC → PV → Actual Storage
+
+🔹 PV Types:-
+1. Static Provisioning
+> Admin manually PV create kare
+
+2. Dynamic Provisioning
+> StorageClass use hota hai
+> Auto PV create ho jata hai
+
+🔥 Short Interview Answer (yaad karle bhai)
+------------------------------------------
+
+👉 “Persistent Volume Kubernetes ka cluster-level storage resource hai jo pod lifecycle se independent hota hai. Isko PVC ke through access kiya jata hai aur ye data persistence provide karta hai.”
+
+English:-
+=========
+“Persistent Volume (PV) Kubernetes ka ek cluster-level storage resource hai jo pod ke lifecycle se independent hota hai. Iska matlab hai ki pod delete hone ke baad bhi data safe rehta hai. PV ko directly use nahi kiya jata, balki Persistent Volume Claim (PVC) ke through access kiya jata hai. Ye mainly stateful applications jaise databases aur file storage ke liye use hota hai jahan data persistence required hota hai.”
+
+***) pv, pvc, & pod creation using on minikube:- for testing purpose
+----------------------------------
+🧠 Interview line (solid)
+-------------------------
+=> "To ensure a PVC binds to a specific PV, we disable dynamic provisioning using storageClassName: \""\ and use label selectors to match the desired PV."
+
+🔹 PV.YAML Example
+  =================
+aapiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+  labels:
+    type: locals  # 🔥 label for Binding
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ""  # 🔥 disable dynamic binding
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+
+=> Create PV
+$ kubectl apply -f pv.yaml
+
+=> To see the PV
+$ kubectl get pv
+
+
+🔹 PVC.YAML Example
+  =================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  resources:
+    requests:
+      storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""  # 🔥 MUST (warna dynamic PV banega)
+  selector:
+    matchLabels:
+      type: locals     # 🔥 ensure correct PV bind
+
+=> Create PVC
+$ kubectl apply -f .\pvc.yaml
+
+=> To See PVC
+ $ kubectl get pvc
+
+🔹 POD.YAML Example
+  =================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  volumes:
+  - name: nipun-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: my-container
+    image: nginx
+    ports:
+      - containerPort: 80
+    volumeMounts:
+    - name: nipun-volume
+      mountPath: /home
+ 
+ 
+=> Create Pod
+$ kubectl apply -f .\pod.yaml
+
+=> To See the Pod
+$ kubectl get po
+
+=> Port-forward
+$ kubectl port-forward pod/my-pod  9797:80
+
+=> Access in Browser
+$ localhost:9797
+
+=> Go inside the pod
+$ kubectl exec -it pod/my-pod -- bash
+
+=> Check kill 1 --> Check file is present or not --> file present tested
+=> touch ABC.txt , mkdir Demo
+
+
+🔹 POD2.YAML Example
+  =================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photo-upload-pod
+spec:
+  volumes:
+  - name: nipun-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: photo-container
+    image: prabha060/photos-app:v1
+    ports:
+      - containerPort: 8501
+    volumeMounts:
+    - name: nipun-volume
+      mountPath: /app/photos
+
+=> Create Pod
+$ kubectl apply -f .\pod2.yaml
+
+=> To See the Pod
+$ kubectl get po
+
+=> Port-forward
+$ kubectl port-forward pod/photo-upload-pod  9090:80
+
+=> Access in Browser
+$ localhost:9090
+
+=> Go inside the pod
+$ kubectl exec -it pod/photo-upload-pod -- bash
+
+=> Check kill 1 --> Check file is present or not --> file present tested
+=> upload photo >> but both pod1 & pod2 data same jaga per dikhta hai
+
+Note:- ❌ Tum 2 Pods use kar rahe ho SAME PVC:
+my-pod
+photo-upload-pod
+
+=> Aur PV ka access mode hai:-  ReadWriteOnce
+
+=> ⚠️ Problem kya hai?
+---------------------
+👉 ReadWriteOnce (RWO) ka matlab:
+
+✔️ Sirf 1 node pe mount ho sakta hai
+✔️ Multiple pods use kar sakte hain same node pe
+❌ Different nodes pe use nahi hoga
+
+💡 Tumhare case me kya hoga?
+---------------------------
+✔️ Minikube (single node)
+👉 Dono pod chal jayenge ✅
+👉 Same data share karenge ✅
+
+ 
+🔥 Visualization (simple samajh)
+-------------------------------
+/data (hostPath) minikube node per
+   ↑
+   PV (my-pv)
+   ↑
+   PVC (my-pvc)
+   ↑
+   ├── my-pod (/data)
+   └── photo-upload-pod (/app/photos)
+
+
+👉 Access mode ka matlab:
+> Kitne pod isko use kar sakte hain
+
+Mode	               Meaning
+====                   =======
+ReadWriteOnce (RWO)-->	Sirf 1 node se mount hoga
+
+ReadOnlyMany (ROX)-->	Multiple pod read kar sakte
+
+ReadWriteMany (RWX)-->	Multiple pod read/write
+
+=> Delete minikube /deta
+$ sudo rm -rf /data/*
+
+RECLAIM POLICY:- Retain
+----------------------
+👉 Matlab:
+> PVC delete hone ke baad bhi data safe rahega
+
+==================
+ Problem solve:
+==================
+
+🔷 Azure File kya hota hai?
+---------------------------
+👉 Azure Files:-
+=> Ye ek shared file storage hai (like network drive)
+Multiple pods ek saath use kar sakte hain (RWX support)
+
+🔥 Flow samajh le (important)
+----------------------------
+
+Azure Storage Account
+      ↓
+File Share (Azure Files)
+      ↓
+Kubernetes Secret (credentials)
+      ↓
+PersistentVolume (PV)
+      ↓
+PersistentVolumeClaim (PVC)
+      ↓
+Pod
+
+persistantVolume.yaml
+--------------------
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pyaar-ka-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  azureFile:
+    secretName: shadi kephotos-ka-creds
+    shareName: honeymoon
+  capacity:
+    storage: 4Gi
+
+sectet.yaml
+------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shadikephotos-ka-creds
+type: Opaque
+stringData:
+  azurestorageaccountname: shadikephotos
+  azurestorageaccountkey: gACP1GPUCUQdUck5TYDes zngdwheYJSGsdzeeuEDWmElkQG9Sg5flZeH/
+
+pvc.yaml
+===========
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: honeymoon-photos
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+
+Note:- upar PV, PVC me bound nahi hua
+
+
+Class--112/22
+=============
+
+=> Kubernetes mein Persistent Volume (PV) ek cluster-level resource hota hai, jisme aap storage ki details de dete ho (kaun sa backend, size, access mode, etc.).
+
+=> PersistentVolumeClaim (PVC) ek user request hoti hai storage ke liye.
+
+Binding tab hota hai jab:
+------------------------
+>•  "PVC ka requested storage, accessModes, and volume Mode match karta hai PV se."
+
+> "Aur agar PVC ne kisi specific PV ka naam nahi diya ho (i.e. selector ya volumeName), to system automatically best match dhoondhta hai."
+
+=> yaha pv me storage 4gi hai & pvc me claim 1gi kia is ka matlab 1gi ya 4gi(pura)  ka storage kar paega
+
+=> ek pv se kebal 1 pvc claim ho paega dusura nahi ho paega ..one to one mapping
+& isme storage ma misuse hua hai islia  Dynamic Provisioning use kare--> pvc banayega jitna mangega --utna hi melega ..
+
+
+==================
+pura Problem solve:
+==================
+
+🔷 Azure File kya hota hai?
+---------------------------
+👉 Azure Files:-
+=> Ye ek shared file storage hai (like network drive)
+Multiple pods ek saath use kar sakte hain (RWX support)
+
+🔥 Flow samajh le (important)
+----------------------------
+
+Azure Storage Account
+      ↓
+File Share (Azure Files)
+      ↓
+Kubernetes Secret (credentials)
+      ↓
+PersistentVolume (PV)
+      ↓
+PersistentVolumeClaim (PVC)
+      ↓
+Pod
+
+
+Create:-
+--> pv.yaml
+--> secret.yaml
+--> pvc.yaml
+--> pod.yaml
+--> pod2.yaml
+& Deploy Application
+
+1.PV.yaml
+============
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  storageClassName: my-storage
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  capacity: 
+    storage: 2Gi
+  azureFile:
+    secretName:  my-secret   
+    shareName:  phabha-share
+    readOnly: false
+
+2.secret.yaml
+==============
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+stringData:
+  azurestorageaccountname: prabhastg1221
+  azurestorageaccountkey: -------------------------
+ 3.PVC.yaml
+============
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: my-storage
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+
+4. pod.yaml
+============
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  volumes:
+  - name: nipun-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+      - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: nipun-volume
+
+5. pod2.yaml
+============
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photo-upload-pod
+spec:
+  volumes:
+  - name: nipu-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: photo-container
+    image: prabha060/photos-app:v1
+    ports:
+      - containerPort: 8501
+    volumeMounts:
+    - mountPath: /app/photos
+      name: nipu-volume
+
+
+=> Create Secret
+$ kubectl apply -f secret.yaml
+
+=> Create PV
+$ kubectl apply -f pv.yaml
+
+=> Create PVC
+$ kubectl apply -f pvc.yaml
+
+=> Create pod
+$ kubectl apply -f pod.yaml
+
+=> Create pod2
+$ kubectl apply -f pod2.yaml
+
+
+=> Get Secret, PV, PVC, pod, & pod2
+$ kubectl get secret
+$ kubectl get pv
+$ kubectl get pvc
+$ kubectl get pods
+
+=> port-forward pod
+$ kubectl port-forward pod/nginx-pod 9090:80
+
+=> Go inside pod
+$ kubectl exec -it nginx-pod -- bash
+
+=> port-forward pod2
+$ kubectl port-forward pod/photo-upload-pod 9797:8501
+
+=> Go inside pod2
+$ kubectl exec -it photo-upload-pod -- bash
+
+=> upload photo & file in two dif. pod & test the use cases
+
+=> PVC Stuck in pending
+ans) StorageClassName, AccessMode, volumeMode - sab kuch match nahi hoga toh pvc pending me chla jaega
+
+=> PV available but not bound
+ans) StorageClassName, AccessMode, volumeMode - sab kuch match nahi hoga toh pvc pending me chla jaega
+
+=> Pod me PVC integrate karna hai
+ans) PV Banaenge, fir PVC banaenge
+
+=> fir podyaml me Volume dalenge, fir container me mount karenge
+
+=> jab PVC delete ho toh PV bhi automatically delete ho jae?
+Homework - ReclaimPolicy
+
+=> pod me alag alag ke folder hai, difference pvc bana banake aap us pod ko mount karna hai --kya korege
+
+=> job pvc delete ho apne aap pv delete ho jai kya korege --x
+
+
+=> MultiplePod, Same storage ko padna chahta hai.. AccessMode hoga
+
+=> ReadWriteMany
+
+==> home work Dynamic provisioning
+
+=> Persistent Volume:-
+ 1. Statically provisioned
+  > StorageAccount
+  > FileShare
+  > PV-Fileshare connection
+  > PVC request
+
+ 2. Dynamically Provisioned
+   > PVC request ( 2gi )
+   > storageClass-azure-portalfile-share
+
+=> azure me jisko LoadBalancer bolte hai k8s me services bolte hai
+=> Service is LoadBalancer
+=> Service 3-type
+  1. Cluster IP
+  2. LoadBalancer
+  3. NodePort
+
+
+🚀 1. Dynamic Provisioning (Azure File CSI)
+
+👉 Isme tu PV manually create nahi karega
+👉 PVC create karega → PV auto banega
+
+🔥 Flow samajh (important)
+PVC → StorageClass → Azure File Share auto create → PV auto bind → Pod mount
+
+👉 No secret needed
+👉 No manual PV
+👉 Fully managed 💪
+
+Storageclass.yaml
+======================
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azurefile-csi
+provisioner: file.csi.azure.com
+parameters:
+  skuName: Standard_LRS   # ya Premium_LRS
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+
+2.pvc.yaml
+===========
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-csi
+  resources:
+    requests:
+      storage: 2Gi
+3.pod.yaml
+===========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  volumes:
+  - name: shared-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+      - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: shared-volume
+
+3.pod2.yaml
+===========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: photo-upload-pod
+spec:
+  volumes:
+  - name: shared-volume
+    persistentVolumeClaim:
+      claimName: my-pvc
+  containers:
+  - name: photo-container
+    image: prabha060/photos-app:v1
+    ports:
+      - containerPort: 8501
+    volumeMounts:
+    - mountPath: /app/photos
+      name: shared-volume
+
+=> Create storageclass
+$ kubectl apply -f storageclass.yaml
+
+=> Create PVC
+$ kubectl apply -f pvc.yaml
+
+
+=> Create pod
+$ kubectl apply -f pod.yaml
+
+=> Create pod2
+$ kubectl apply -f pod2.yaml
+
+
+=> Get storageclass,  PVC, pod, & pod2
+
+$ kubectl get pvc
+$ kubectl get pods
+
+
+=> port-forward pod
+$ kubectl port-forward pod/nginx-pod 9090:80
+
+=> Go inside pod
+$ kubectl exec -it nginx-pod -- bash
+
+=> port-forward pod2
+$ kubectl port-forward pod/photo-upload-pod 9797:8501
+
+=> Go inside pod2
+$ kubectl exec -it photo-upload-pod -- bash
+
+=> upload photo & file in two dif. pod & test the use cases
+
+🧠 Static vs Dynamic (Portal pe kya banana padta hai)
+❌ Static (jo tu pehle kar raha tha)
+
+Azure Portal me manually banana padta hai:
+
+✔ Storage Account
+✔ File Share
+✔ Access Key (Secret ke liye)
+
+👉 Phir Kubernetes me PV manually bind
+
+✅ Dynamic Provisioning (Azure File CSI)
+
+👉 Yahan magic hota hai 🔥
+👉 Tu manually File Share nahi banata
+
+📌 Azure Portal pe kya hona chahiye?
+✅ 1. AKS Cluster (Mandatory)
+
+Bas ye hona chahiye:
+
+Azure Kubernetes Service cluster running ho
+Node pool ready ho
+✅ 2. Storage Account (Auto create hota hai)
+
+👉 IMPORTANT:
+
+Tu manually banana optional hai
+AKS khud ek storage account use karta hai
+
+👉 Jab tu PVC create karega:
+
+AKS → Azure API → Storage Account → File Share auto create
+
+✔ Matlab:
+
+Storage account → auto
+File share → auto
+✅ 3. Azure CSI Driver (Already installed 👍)
+
+AKS me by default hota hai:
+
+file.csi.azure.com
+
+👉 Tu check kar sakta hai:
+
+kubectl get csidrivers
+❌ Kya banana zaroori nahi hai?
+Resource	Static	Dynamic
+Storage Account	✔	❌ optional
+File Share	✔	❌
+Secret (access key)	✔	❌
+PersistentVolume	✔	❌
+
+
+🔥 Behind the scenes kya hota hai
+
+Jab tu ye apply karega:
+
+storageClassName: azurefile-csi
+
+👉 internally:
+
+AKS identity use hoti hai
+Azure API call hoti hai
+Ek new file share create hota hai
+PV auto create hota hai
+PVC bind ho jata hai
+🔐 Importan
+
+
+Class--113/23
+=============
+Service:-
+===========
+🔥 Interview Line (Yaad rakhna)
+-------------------------------
+=> 🔷 Kubernetes Service kya hai?
+---------------------------------
+=> Kubernetes me Service ek abstraction hai jo:
+
+> Pods ke group ko expose karta hai
+> Stable IP + DNS name deta hai
+> Load balancing karta hai
+
+👉 "Kubernetes Service is an abstraction that provides stable networking and load balancing for dynamic pods."
+
+=> 👉 Endpoints = Service ke piche actual Pods ke IP addresses ki list... 
+
+
+ChatGpt-> Hi ChatGpt I want a index.html page that prints hello Dhondhu id bold in center & there is photo of Dhundhu belos that. it should be a funny page
+
+-> I want one more for hello Tondu
+-> I want similar for hell Rundu
+
+Note:- Create 3 different html file helodhund, hellopundu, hellomundu & html file code find in chatGpt
+
+DockerFile:
+===============
+FROM nginx
+COPY index.html /usr/share/nginx/html
+
+1> create image of hellodhundu docker file
+$ docker build -t hellodhundu .
+1> Port-forward of hellodhundu
+$ docker run -d -p 9090:80 hellodhundu
+
+
+2> create image of hellomundu docker file
+$ docker build -t hellomundu .
+2> Port-forward of hellomundu
+$ docker run -d -p 9091:80 hellomundu
+
+
+3> create image of hellopundu docker file
+$ docker build -t hellopundu .
+3> Port-forward of hellopundu
+$ docker run -d -p 9092:80 hellopundu
+
+
+1) push to the docker hub Hellodhundu
+$ docker tag hellodhundu prabha060/hellodhundu 
+$ docker push prabha060/hellodhundu
+
+2) push to the docker hub hellomundu
+$ docker tag hellomundu prabha060/hellomundu
+$ docker push prabha060/hellimundu
+
+3) push to the docker hub hellopundu
+$ docker tag hellopundu prabha060/hellopundu
+$ docker push prabha060/hellopundu
+
+pod.yaml
+=======
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dhundu-pod
+  labels:
+    app.kubernetes.io/name: hellodhundu
+    env: dev
+spec:
+  containers:
+  - name: hellodhundu
+    image: prabha060/hellodhundu
+    ports:
+      - containerPort: 80
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mundu-pod
+  labels:
+    app.kubernetes.io/name: hellomundu
+    env: dev
+spec:
+  containers:
+  - name: hellomundu
+    image: prabha060/hellomundu
+    ports:
+      - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pundu-pod
+  labels:
+    app.kubernetes.io/name: hellopundu
+    env: dev
+spec:
+  containers:
+  - name: hellopundu
+    image: prabha060/hellopundu
+    ports:
+      - containerPort: 80
+
+
+service.yaml
+==============
+apiVersion: v1
+kind: Service
+metadata:
+  name: ramu-service
+spec:
+  selector:
+    env: dev
+  ports:
+  - port: 9000
+    targetPort: 80
+  type: LoadBalancer
+
+=> Create pod
+$ kubectl apply -f ./pod.yaml
+$ kubectl get pods
+
+=> Create Service
+$ kubectl apply -f ./service.yaml
+$ kubectl get service
+
+Note:- whenever type= LoadBalancer the automatically a publicIP create in the portal copy this ip & access in browser publicIP:9000 see the website & test it for service/ loadBalancer
+
+Note: whenever type = ClusterIP then PublicIP not create only privateIP created then how to access in this same network another firefox pod created & port-forward it & in the firefox side we can access the service 
+localhost:80
+122.23.23.221:9000
+
+service.yaml
+==============
+apiVersion: v1
+kind: Service
+metadata:
+  name: ramu-service
+spec:
+  selector:
+    env: dev
+  ports:
+  - port: 9000
+    targetPort: 80
+  type: ClusterIP
+
+
+pod2.yaml
+========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firefox-pod
+spec:
+  containers:
+  - name:  fire
+    image: linuxserver/firefox
+    ports:
+      - containerPort: 3000
+
+
+Class--114/24
+=============
+
+service.yaml
+==============
+apiVersion: v1
+kind: Service
+metadata:
+  name: ramu-service
+spec:
+  selector:
+    env: dev
+  ports:
+  - port: 9000
+    targetPort: 80
+  type: ClusterIP
+
+
+pod2.yaml
+========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firefox-pod
+spec:
+  containers:
+  - name:  fire
+    image: linuxserver/firefox
+    ports:
+      - containerPort: 3000
+
+
+Class--114/24
+=============
+service.yaml
+==============
+apiVersion: v1
+kind: Service
+metadata:
+  name: ramu-service
+spec:
+  selector:
+    env: dev
+  ports:
+  - port: 9000
+    targetPort: 80
+  type: ClusterIP
+
+
+pod2.yaml
+========
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firefox-pod
+spec:
+  containers:
+  - name:  fire
+    image: linuxserver/firefox
+    ports:
+      - containerPort: 3000
+
+Kubernetes Service:-
+------------------
+=> Pod ke upr traffic ko loadBalancer karti hai.
+1. LoadBalancer type--> publicIP
+2. ClusterIP type --> PrivateIP
+
+=> Jab type loadbalancer deta hai service me, toh automatically ek external loadbalancer bnta hai jispe public ip attach hota hai. & ek or bi default cluster ip bhi bnjata hai...
+
+=> Home work:- Ye internal ClusterIP bhi bn raha  hai toh traffic kese ghoomta hua jata hai Loadbalancer service me ..
+
+=> Dard:- ye pod.yaml se autoscaling/descaling nahi ho paa raha hai..
+
+Requirement:-
+=> Agar app chahete ho ki 4 pod chle aur usme se agar koi ek pod bhi down ho gaya toh ek pod apne aap create ho jae...
+
+=> 
+Controller:-
+============
+=> Desired State & Actual State ko match karwane ka kaam karta hai...
+
+-> Desired = 6 pod     Actual => 5 
+
+> Controller Ye 5 kaise ho gae ..fir se 1 banana pdega..
+
+=> Types Of Controller:-
+1. ReplicaSet:-
+2. Deployment:- Most user/sabse important
+3. StatefulSet:-
+4. Daemon Set:-
+
+
+replicaSet.yaml:-
+---------------
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      name: my-pod
+      labels: 
+        env: dev    
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        
+
+Controller:-
+-----------
+🔥 What is a Controller in Kubernetes?
+======================================
+=> A Controller in Kubernetes is a control loop that continuously monitors the state of the cluster and ensures that the actual state matches the desired state defined by the user.
+
+⚙️ How it works:-
+-----------------
+=> You define a desired state (e.g., 3 pods should be running)
+=> The controller checks the current state
+=> If there is a mismatch, it takes corrective actions
+>>👉 This process runs continuously.
+
+📦 Types of Kubernetes Controllers
+====================================
+1. ReplicaSet Controller:-
+------------------------
+-> Maintains a fixed number of pod replicas
+-> Ensures high availability
+
+2. Deployment Controller ⭐ (Most Important)
+============================================
+-> Manages ReplicaSets
+-> Supports:
+     > Rolling updates
+      > Rollbacks
+-> Zero downtime deployments
+
+👉 Most commonly used in real-world applications
+
+3. StatefulSet Controller:-
+==========================
+-> Used for stateful applications (databases)
+-> Provides:
+    > Stable network identity
+    > Persistent storage
+    > Ordered deployment
+
+4. DaemonSet Controller:-
+=========================
+-> Ensures one pod runs on every node
+
+👉 Used for:
+   > Monitoring agents
+   > Logging systems
+
+5. Job Controller:-
+===================
+-> Runs a task once and completes
+👉 Example:
+     > Backup jobs 
+     > Batch processing
+
+6. CronJob Controller:-
+------------------------
+-> Runs jobs on a schedule
+👉 Example:
+     > Daily backups
+     > Scheduled reports
+
+
+🔄 Flow in Kubernetes
+============================
+User → Deployment
+       ↓
+Deployment → ReplicaSet
+       ↓
+ReplicaSet → Pods
+       ↓
+Controller ensures everything is correct
+
+
+Class--115/25
+=============
+=> Controller ek aisi chiz hai jo hmesha cluster ke state ko observe karta hai aur desired state jo apn yaml me likhte hai uspe lane ka koshish karta hai...
+
+=> Desired State <------> Actual State
+
+=>ChatGPT-> Hame 4 nginx ka pod banana hai aur 4 netflix ka pod banana hai image hai devopsinsiders/netflix-clone naam se.. to kitne tarike se bana sakte hai.....
+
+=> Controller types:-
+----------------------
+1. Replica Set:-
+2. Deployment:-
+3. Stateful Set:-
+4. Daemon Set:-
+5. Job:-
+6. CronJob:- 
+ 
+
+Note:-Controller related interview Questions
+=> Controller ka kam
+=> ReplicaSet vs Deployment ?
+=> StatefulSet Vs DaemonSet
+=> Horizontal Pod Autoscaler ?
+=> job & Cron job 
+
+1. ReplicaSet:-
+------------
+> Replica Set kya hota hai..? 
+
+=> Ek aisa controller hai jo multiple pods ki replicas ko manage karta hai..
+
+replicaSet.yaml:-
+---------------
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        env: dev    
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        
+
+=> Create replicaSet
+$ kubectl apply -f replicaSet.yaml
+
+$ kubectl get pods
+
+$ kubectl describe pod nginx1
+
+$ kubectl get rs
+
+$ kubectl delete pod nginx1
+
+Note:- automatically replicaSet controller create one new pod  is ka nam to change hoga magar labels same hoga
+
+$ kubectl get pods --show-labels
+
+=> Advantages of RepliaSet:-
+----------------------
+=> Auto Healing Capability of Pods 
+
+RepliaSet Important fields:-
+------------------------
+=> ReplicaSet
+     Replicas
+     Selector
+     template
+
+Home Work:-
+=> Agar hum chahe same replicaset se ek aur label hai us label ka app=ecommerce hai, kya hum log multiple labels replicasets me dal sakte hai.
+
+=> Problems in ReplicaSet:
+ -> No rolling update features
+ -> Slight Down Time
+
+
+=> Kubernetes Doc-->workload Management-->Deployments
+
+
+Class--116/26
+=============
+Deployment:-
+
+=> Rolling Update kya hota hai..?
+
+=> Rolling update ka Fayda ?
+  1. Zero Downtime
+  2. Rollback
+  3. Version Management
+
+=> Deployment = ReplicaSet + Strategy
+
+=> Strategy:-
+ 1. Recreate:-
+> Zhandu bam Strategy
+> Bahut Jyada Downtime
+
+ 2. Rolling Update:- default & recommended
+1. Max Surge
+2. Max Unabailable
+ 
+DEPLOYMENT STRATEGIES:-
+=====================
+
+1. Recreate:-
+> Delete All, Then Add All
+> Downtime
+
+2. Rolling Update:-
+> Replace Gradually
+> Zero Downtime
+> Production Based Application
+
+3. Blue/Green:-
+> 2-Environment banta hai
+> Blue --- Green
+> Old  --- New
+> No Downtime
+> High Cost
+
+4. Canary:-
+> 2-Environment banta hai
+> thoda thoda users ko new application pr shift karte hai 
+> No Downtime
+> High Cost
+
+Deployment.yaml:-
+===================
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: useless-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      name: useless-pod
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: useless-container
+        image: prabha060/useless:red
+        ports:
+        - containerPort: 80
+  strategy:
+    type: Recreate
+
+
+=> Create Deployment
+$ kubectl apply -f deployment.yaml
+
+$ kubectl get deploy
+$ kubectl get pods
+
+=> Create Service 
+$ kubectl apply -f service.yaml
+$ kubectl get svc
+
+=> kubectl describe deployment useless
+
+=> port-forward to service 
+$ kubectl port-forward service/ramu-service  9393:80 
+
+=> Rollout history
+$ kubectl rollout history deployment/useless
+
+=> undo red version 
+$ kubectl rollout undo deployment/useless --to-revision=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

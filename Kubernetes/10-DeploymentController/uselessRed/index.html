@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Useless Red Button Collection</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffe6e6, #fff5f5);
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ff4d4d;
+      font-size: 40px;
+    }
+
+    p {
+      color: #555;
+    }
+
+    .btn-container {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #ff4d4d, #ff1a1a);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: linear-gradient(to right, #ff1a1a, #cc0000);
+    }
+
+    .card {
+      margin-top: 40px;
+      padding: 20px;
+      border-radius: 15px;
+      background: #fff0f0;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🤡 Useless Red Button Collection</h1>
+  <p>This is the Hall of Fame for things that do nothing 😎</p>
+
+  <div class="btn-container">
+    <button onclick="alert('I told you not to press 😤')">DO NOT PRESS</button>
+    <button onclick="alert('Calories burned: 0 😂')">Calorie Burner</button>
+    <button onclick="wiggle()">Make Page Wiggle</button>
+    <button onclick="alert('I am shy 😳')">Shy Button</button>
+    <br>
+    <button onclick="alert('Nothing launched 🚀... literally')">Launch Nothing</button>
+    <button onclick="alert('You touched air 🤣')">Air Touch</button>
+    <button onclick="alert('Out of Office 🏖️')">Out of Office</button>
+    <button onclick="alert('Still useless 😅')">Purpose Finder</button>
+    <br>
+    <button onclick="alert('Mystery... still nothing 🤡')">Mystery Summon</button>
+    <button onclick="alert('Congrats! You won nothing 🎉')">Win Nothing</button>
+  </div>
+
+  <div class="card">
+    <h3>😂 Joke of the Moment</h3>
+    <p id="joke">Click button for joke</p>
+    <button onclick="newJoke()">Get Joke</button>
+  </div>
+
+  <footer>
+    ❤️ Powered by Zero Productivity — 2026
+  </footer>
+
+  <script>
+    function wiggle() {
+      document.body.style.transform = "rotate(2deg)";
+      setTimeout(() => {
+        document.body.style.transform = "rotate(-2deg)";
+      }, 100);
+
+      setTimeout(() => {
+        document.body.style.transform = "rotate(0deg)";
+      }, 200);
+    }
+
+    function newJoke() {
+      const jokes = [
+        "Why did the developer go broke? Because he used up all his cache.",
+        "Why JavaScript is so calm? Because it doesn't react 😂",
+        "Why do programmers hate nature? Too many bugs 🐛",
+        "Why HTML never fights? It always tags along 😆"
+      ];
+
+      document.getElementById("joke").innerText =
+        jokes[Math.floor(Math.random() * jokes.length)];
+    }
+  </script>
+
+</body>
+</html>

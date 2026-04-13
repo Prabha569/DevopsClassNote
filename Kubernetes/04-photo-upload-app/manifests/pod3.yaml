@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: hostpath-pod
+  labels:
+    env: dev
+    owner: prabha
+spec:
+  volumes:
+  - name: hostpath-volume
+    hostPath:
+      path: /data/photos   # ye node ka folder hai
+      type: DirectoryOrCreate  # agar Directory nahi hai to AutoCreate hoga
+  containers:
+  - name:  just-container
+    image: prabha060/photos-app:v1
+    ports:
+    - containerPort: 8501
+    volumeMounts:
+    - mountPath: /app/photos
+      name: hostpath-volume
+
+

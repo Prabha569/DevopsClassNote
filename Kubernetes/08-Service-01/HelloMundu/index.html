@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mundu Madness 🤪</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Comic Sans MS;
+            background: linear-gradient(90deg, red, yellow, lime, cyan, blue, magenta);
+            background-size: 600% 600%;
+            animation: rainbow 4s infinite alternate;
+            text-align: center;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: left; }
+            100% { background-position: right; }
+        }
+
+        h1 {
+            font-size: 70px;
+            color: white;
+            margin-top: 60px;
+            animation: zigzag 0.3s infinite alternate;
+            text-shadow: 5px 5px black;
+        }
+
+        @keyframes zigzag {
+            0% { transform: translateX(-30px) rotate(-5deg); }
+            100% { transform: translateX(30px) rotate(5deg); }
+        }
+
+        img {
+            width: 220px;
+            margin-top: 30px;
+            border-radius: 50%;
+            box-shadow: 0 0 25px black;
+            animation: crazy 2s infinite;
+        }
+
+        @keyframes crazy {
+            0%   { transform: rotate(0deg) scale(1); }
+            25%  { transform: rotate(20deg) scale(1.1); }
+            50%  { transform: rotate(-20deg) scale(0.9); }
+            75%  { transform: rotate(10deg) scale(1.2); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        p {
+            font-size: 28px;
+            color: black;
+            margin-top: 20px;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 15px 30px;
+            font-size: 20px;
+            background: black;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: lime;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🤪 HELLO MUNDU 🤪</h1>
+
+    <!-- Apni image yaha lagao -->
+    <img src="mundu.jpg" alt="Mundu Photo">
+
+    <p>⚡ Mundu aa gaya... SYSTEM HANG 😂💻</p>
+
+    <button onclick="munduAttack()">Click at your own risk 💀</button>
+
+    <script>
+        function munduAttack() {
+            alert("💀 Mundu ne system crash kar diya 😂");
+            document.body.style.background = "black";
+        }
+    </script>
+
+</body>
+</html>

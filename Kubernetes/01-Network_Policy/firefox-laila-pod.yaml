@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: laila-pod
+  labels:
+    type: chamkila
+    height: 6feet
+    weight: 60kg
+spec:
+  containers:
+    - name: firefox-container
+      image: linuxserver/firefox
+      ports:
+      - containerPort: 3000 
+  

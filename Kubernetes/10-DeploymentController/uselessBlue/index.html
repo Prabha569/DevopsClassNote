@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Useless Blue Button Collection</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #e6f0ff, #f0f8ff);
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #007bff;
+      font-size: 42px;
+    }
+
+    p {
+      color: #555;
+    }
+
+    .btn-container {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 22px;
+      margin: 10px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(to right, #007bff, #0056b3);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: linear-gradient(to right, #0056b3, #003f7f);
+    }
+
+    .card {
+      margin-top: 40px;
+      padding: 25px;
+      border-radius: 15px;
+      background: #e6f2ff;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🔵 Useless Blue Button Collection</h1>
+  <p>Same useless things... but cooler in blue 😎</p>
+
+  <div class="btn-container">
+    <button onclick="alert('Still useless 😅')">DO NOT PRESS</button>
+    <button onclick="alert('Calories burned: 0 😂')">Calorie Burner</button>
+    <button onclick="wiggle()">Make Page Wiggle</button>
+    <button onclick="alert('Feeling shy 😳')">Shy Button</button>
+    <br>
+    <button onclick="alert('Nothing launched 🚀')">Launch Nothing</button>
+    <button onclick="alert('You touched air 🤣')">Air Touch</button>
+    <button onclick="alert('Out of Office 🏖️')">Out of Office</button>
+    <button onclick="alert('Still no purpose 😆')">Purpose Finder</button>
+    <br>
+    <button onclick="alert('Mystery = Nothing 🤡')">Mystery Summon</button>
+    <button onclick="alert('You won nothing 🎉')">Win Nothing</button>
+  </div>
+
+  <div class="card">
+    <h3>😂 Joke of the Moment</h3>
+    <p id="joke">Click below for joke</p>
+    <button onclick="newJoke()">Get Joke</button>
+  </div>
+
+  <footer>
+    💙 Powered by Blue Vibes — 2026
+  </footer>
+
+  <script>
+    function wiggle() {
+      document.body.style.transform = "rotate(2deg)";
+      setTimeout(() => {
+        document.body.style.transform = "rotate(-2deg)";
+      }, 100);
+
+      setTimeout(() => {
+        document.body.style.transform = "rotate(0deg)";
+      }, 200);
+    }
+
+    function newJoke() {
+      const jokes = [
+        "Why do programmers prefer dark mode? Because light attracts bugs 🐛",
+        "Why JavaScript dev sad? Because null 😅",
+        "Why CSS broke up? Too many issues with display 😂",
+        "Why backend dev calm? Because no UI stress 😎"
+      ];
+
+      document.getElementById("joke").innerText =
+        jokes[Math.floor(Math.random() * jokes.length)];
+    }
+  </script>
+
+</body>
+</html>

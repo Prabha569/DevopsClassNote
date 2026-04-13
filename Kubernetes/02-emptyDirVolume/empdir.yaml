@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: emptydr-pod
+spec:
+  volumes:
+  - name: nipun-volume
+    emptyDir:
+      sizeLimit: 1Gi
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /home
+      name: nipun-volume

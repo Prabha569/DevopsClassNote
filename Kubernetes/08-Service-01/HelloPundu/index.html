@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pundu Madness 😂</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Comic Sans MS;
+            background: linear-gradient(45deg, red, yellow, blue, green, pink, orange);
+            background-size: 400% 400%;
+            animation: bgMove 5s infinite alternate;
+            text-align: center;
+        }
+
+        @keyframes bgMove {
+            0% {background-position: left;}
+            100% {background-position: right;}
+        }
+
+        h1 {
+            font-size: 60px;
+            color: white;
+            margin-top: 80px;
+            animation: zigzag 0.5s infinite alternate;
+        }
+
+        @keyframes zigzag {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(20px); }
+        }
+
+        img {
+            width: 250px;
+            margin-top: 30px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px black;
+            animation: spin 3s infinite linear;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        p {
+            font-size: 30px;
+            color: black;
+            margin-top: 20px;
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(5px, -5px); }
+            50% { transform: translate(-5px, 5px); }
+            75% { transform: translate(5px, 5px); }
+            100% { transform: translate(-5px, -5px); }
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 15px 25px;
+            font-size: 20px;
+            background: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>😂 HELLO PUNDU 😂</h1>
+
+    <!-- Apni image yaha lagao -->
+    <img src="pundu.jpg" alt="Pundu Photo">
+
+    <p>🔥 Pundu is coming... SAVE YOURSELF! 🏃‍♂️💨</p>
+
+    <button onclick="scare()">Click to scare Pundu 👻</button>
+
+    <script>
+        function scare() {
+            alert("👻 BOOO!!! Pundu aa gaya 😂");
+        }
+    </script>
+
+</body>
+</html>

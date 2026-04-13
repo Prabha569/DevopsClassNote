@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dhundu-pod
+  labels:
+    app.kubernetes.io/name: hellodhundu
+    env: dev
+spec:
+  containers:
+  - name: hellodhundu
+    image: prabha060/hellodhundu
+    ports:
+      - containerPort: 80
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mundu-pod
+  labels:
+    app.kubernetes.io/name: hellomundu
+    env: dev
+spec:
+  containers:
+  - name: hellomundu
+    image: prabha060/hellomundu
+    ports:
+      - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pundu-pod
+  labels:
+    app.kubernetes.io/name: hellopundu
+    env: dev
+spec:
+  containers:
+  - name: hellopundu
+    image: prabha060/hellopundu
+    ports:
+      - containerPort: 80

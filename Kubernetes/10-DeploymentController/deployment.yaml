@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: useless-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      name: useless-pod
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: useless-container
+        image: prabha060/useless:red
+        ports:
+        - containerPort: 80
+  strategy:
+    type: Recreate
+
+
