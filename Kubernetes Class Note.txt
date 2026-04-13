@@ -12,11 +12,11 @@ Class--91/01
 
 => master computer/Control Plane ----> controller,Scheduler, API-server, ETCD contains
 
-=> Node/worker computer--> Kubectl, Kube-proxy, container-runtime etc contains 
+=> Node/worker computer--> Kubectl, Kube-proxy, container-runtime etc contains
 
 Class--92/02
 ==========
-=> ChatGPT--> I want to setup k8s cluster on my personal pnprem server what should i take  ? 
+=> ChatGPT--> I want to setup k8s cluster on my personal pnprem server what should i take  ?
 => onprem pr setup ke disadvantages kya hai...
 => onPrem pr setup kaise hota hai..
 
@@ -40,7 +40,7 @@ a) kubectl      a) yaml
 => chatGPT--> bhai hum naya hai.. kya kya sawal architecture discussion me puchna  chahiye customer se .. btado taki main direct customer ko direct bhj ju .. ek dum clear batana Naukri ka sawal hai...
 => bhai ek development environment banana hai.. limited user hai 100..iske lia kya Kubernetes ka configuration hona chahhiya..
 
-=> Azure-Kubernetes-service--> 
+=> Azure-Kubernetes-service-->
 => How to create azure Kubernetes cluster using azure portal
 
 
@@ -55,29 +55,29 @@ Class--93/03
 
 => ChatGPT-> Are munna ye step complete karwa de
 
-=> Create Azure Kubernetes service in portal > > 
+=> Create Azure Kubernetes service in portal > >
 
 -> k8s name->devopsinsiderk8s->
 
 => kubectl download  & path setting
-=> az login 
+=> az login
 => az account set --subscription
 => az aks get -credentials -----------
 
-( go to portal --> name of Kubernetes cluster  --> connect--> azure Cli--> set cluster contet --> past it in azure CLI )  
-Q) kaise tum Kubernetes cluster connect karte ho ? 
-Ans-> First az login -> jis subscription me cluster banaya hua hai usko account ko  set karenga then k8s ki jo bhi credential get karenge 
+( go to portal --> name of Kubernetes cluster  --> connect--> azure Cli--> set cluster contet --> past it in azure CLI )
+Q) kaise tum Kubernetes cluster connect karte ho ?
+Ans-> First az login -> jis subscription me cluster banaya hua hai usko account ko  set karenga then k8s ki jo bhi credential get karenge
 
 => how to create pod in cli ?
 => kubectl --help
 > kubectl run --help
 > get command --> to see the 
 > kubectl get -> here get-->kubectl api resource 
-$ kubectl get nodes 
+$ kubectl get nodes
 
 Class--94/04
 ==========
-=> Kubernetes me Container ko marne nahi dunga... 
+=> Kubernetes me Container ko marne nahi dunga...
 
 => Requirement--> Run a Nginx Image on Kubernetes cluster
 
@@ -112,7 +112,7 @@ $ kubectl run dhundu-nginx-pod --image=nginx
 *) Display the nodes
 $ kubectl get nodes
 
-q) private Kubernetes Cluster ( Read ) 
+q) private Kubernetes Cluster ( Read )
 
 => To see the cluster information
 $ kubectl cluster-info
@@ -154,7 +154,7 @@ Class--95/05
 
 > Documentation
 > Get started
-> Overview & etc...see this page 
+> Overview \& etc...see this page 
 > Object/resource in k8s 
 
 => Kubernetes ke mathe me jo cheese chalayge usi ko Workload kela ya ga ..
@@ -162,18 +162,18 @@ Class--95/05
 => Cluster = set of pods
 => Cluster ke andar Pods chalega..
 => pod = set of container
-=> Pod is a group of one or more containers, with shared storage & network resources 
+=> Pod is a group of one or more containers, with shared storage & network resources
 
 => Best practice is to run one container in one pad..
 
-=> pod banae ka tarika -> 
+=> pod banae ka tarika ->
 =========================
-1) imperetive--> Command chalao, pod Banao 
-2) Declarative  -> File banao aur Apply chalao 
+1) imperetive--> Command chalao, pod Banao
+2) Declarative  -> File banao aur Apply chalao
  
-=> Local me Cluster banane ke lia --> Minicube ( google -> minicube install & path by power shell ) 
+=> Local me Cluster banane ke lia --> Minicube ( google -> minicube install & path by power shell )
 
-=> minikube start --> karne ke lia docker desktop open karna padega 
+=> minikube start --> karne ke lia docker desktop open karna padega
 
 $ kubectl run nginx --image=nginx
 
@@ -183,7 +183,7 @@ $ kubectl get pods
 
 $ kubectl port-forwarding  TYPE/NAME LOCAL-PORT:REMOTE-PORT
 
-$ kubectl port-forward pod/nginx 9696:80 
+$ kubectl port-forward pod/nginx 9696:80
 
 => here type=pod, name=nginx, local port=9696, remote-port =nginx port 80
 
@@ -197,7 +197,7 @@ Q) pod ke under me sabse pahela container banta hai..called pause container
 => By default pod me hamesa 2-container banta hai.. 1-pause container,2-main container
 => pause container, sab container ka ip aur baki details ko store karta hai...
  
-=> ---------- YAML ----------------- 
+=> ---------- YAML -----------------
 
 
 Server                client
@@ -294,7 +294,7 @@ message: 'Hello, world!'
 Class--96/06
 ==========
 
-=> how to write a pod in Declarative 
+=> how to write a pod in Declarative
 => dhundhu.yaml
 ==============
 podName: dhundhu-pod
@@ -306,7 +306,7 @@ image: nginx
 Usage:
   kubectl apply (-f FILENAME | -k DIRECTORY) [options]
 
-=   kubectl apply (-f FILENAME | -k DIRECTORY) 
+=   kubectl apply (-f FILENAME | -k DIRECTORY)
 
 $ kubectl apply -f dhundhu.yaml
 
@@ -322,9 +322,9 @@ Usage:
 
 
 Usage:
-  kubectl explain TYPE 
+  kubectl explain TYPE
 
-=> here TYPE --> resource--> node, pod, deployment, service, configmap,  secret, 
+=> here TYPE --> resource--> node, pod, deployment, service, configmap,  secret,
 
 $  kubectl explain pod
 
@@ -338,14 +338,14 @@ dhundu.yaml
 apiVersion: v1
 kind: pod
 metadata:
-  name: chamkilapod   
+  name: chamkilapod
 spec:
   containers:
   - name: tarasing
     image: nginx
-      
+ 
 $  kubectl apply -f dhundu.yaml  ( here pod created)
--> to see the pod 
+-> to see the pod
 $ kubectl get pods
 
 -> port-forward  to see the container in pod in browser
@@ -369,25 +369,25 @@ Class--97/07
 
 => Pod ke jarurat kyu padi ? kya chull thi?
 
-=> Pod ke jarurat padi container ko zinda rakhne ke lia... 
+=> Pod ke jarurat padi container ko zinda rakhne ke lia...
 
 =>  IP is assigned to a Pod not to be container
 
-=> Requirement-> Ek namespace banao development nam ka 
-=> US namespace ke andar me ak pod banao nginx ka 
-=> Pod ke andar two containers chale 2 container chle 
+=> Requirement-> Ek namespace banao development nam ka
+=> US namespace ke andar me ak pod banao nginx ka
+=> Pod ke andar two containers chale 2 container chle
 => Agar ek container ko mare, toh wapas  se nay container bn jae...
 
 => chat GPT -> Beta sun chatgpt, bura mt manio, mereko na ek pod banana hai isme 2 nginx ke container chahiye, possible hai kya?
 
-=> ye docker compose nahi chahiya bhai kubectl se chahhiuye 
+=> ye docker compose nahi chahiya bhai kubectl se chahhiuye
 
-=> Imperative process me 2 container nahi ban payega..use declarative  method 
+=> Imperative process me 2 container nahi ban payega..use declarative  method
 
-=> chatGPT-> yaml bana ke do jisme do nginx ka container chale .. ek pod ka 
+=> chatGPT-> yaml bana ke do jisme do nginx ka container chale .. ek pod ka
 -> step by step btao
 
-=>  ------ yaml -------- 
+=>  ------ yaml --------
 nginx-dual-pod.yaml
 -----------------
 apiVersion: v1
@@ -404,13 +404,13 @@ spec:
     - name: nginx-02
       image: nginx:alpine
       ports:
-      - containerPort: 81  
+      - containerPort: 81
 
 > is me kebal ek ngnx ka pod running hota hai..
 
 Class--98/08
 ==========
-=> Pod is a collection of container who share shared storage & shared networking... 
+=> Pod is a collection of container who share shared storage & shared networking...
 
 => Proof = Container to container networking = localhost
 
@@ -423,14 +423,14 @@ Class--98/08
 => Internal Load Balancer -Cluster IP
 => External Load Balancer -Load balancer type /Node Port
 => Ingress Controllers
-=> 
+=>
 
-*) How Networking Works In Kubernetes ? 
+*) How Networking Works In Kubernetes ?
 =======================================
 $ kubectl explain pod --recursive  > pod.txt
 => ye pod lekhne ka document structure late hai..
 
-=> chatGPT-> Are bhai ye pod jo hota hai..Kubernetes me uske bhi port hota hai kya ? 
+=> chatGPT-> Are bhai ye pod jo hota hai..Kubernetes me uske bhi port hota hai kya ?
 
 1) how to communicate two container in in a single pod
 
@@ -448,14 +448,14 @@ spec:
      - containerPort: 80
 
    - name: firefox-container
-     image: linuxserver/firefox   
+     image: linuxserver/firefox
      ports:
      - containerPort: 3000
-      
-=> pod create karna 
+ 
+=> pod create karna
 $ kubectl apply pod -f pod.yaml
 
-=> to see the pod 
+=> to see the pod
 $ kubectl get pods
 
 -> port-forward  to see the container in pod in browser
@@ -467,10 +467,10 @@ firefox open -->under search me localhost:80 nginx access
 
 *^) Container to Container Communication = localhost..
 
-=> Container to Container  Communicaion = localhost:<port> 
+=> Container to Container  Communicaion = localhost:<port>
 ---------------------------------
 
-2) Two different pod how to communicate within same network ? 
+2) Two different pod how to communicate within same network ?
 
 => Every pod get an IP
 
@@ -491,10 +491,10 @@ metadata:
 spec:
   containers:
    - name: firefox-container
-     image: linuxserver/firefox   
+     image: linuxserver/firefox
      ports:
      - containerPort: 3000
-      
+ 
 firefox-pod.yaml
 ===================
 apiVersion: v1
@@ -512,7 +512,7 @@ spec:
 $ kubectl apply -f netflix-pod.yaml
 $ kubectl apply -f firefox-pod.yaml
 
--> To see the pod 
+-> To see the pod
 $ kubectl get pods
 
 -> port forwarding
@@ -538,7 +538,7 @@ $  kubectl get pod -o wide
 Class--99/09
 ==========
               Total Recap
-             ============ 
+             ============
 
 -> To see the pod creating status/
 $ kubectl get pods -w
@@ -547,14 +547,14 @@ $ kubectl get pods -w
 Class--100/10
 ==========
              Network Policy
-            ================ 
+            ================
 -> network policy explain document
 $ kubectl explain networkpolicy
 
 -> network policy doc. create a file
 $ kubectl explain networkpolicy -recurc
 
--> Network policy--> spec--> 
+-> Network policy--> spec-->
 
 1. egress ->( Inbound )-->  Bahar se pod ke under traffic ka rule
 
@@ -565,9 +565,9 @@ $ kubectl explain networkpolicy -recurc
 3.1) matchExpressions	<[]LabelSelectorRequirement>
 3.2) matchLabels	<map[string]string>
 
-4. policyType -> 
+4. policyType ->
 
-*) Default:- Agar kisi pod pe netwok policy laga di toh sab block h jata hia by default .. 
+*) Default:- Agar kisi pod pe netwok policy laga di toh sab block h jata hia by default ..
 
 -> pod ka level check karna hai..
 $ kubectl get pods --show-labels
@@ -591,12 +591,12 @@ metadata:
 spec:
   containers:
    - name: firefox-container
-     image: linuxserver/firefox   
+     image: linuxserver/firefox
      ports:
      - containerPort: 3000
-      
+ 
  netflix-majnu-pod.yaml:
-=======================     
+=======================
 apiVersion: v1
 kind: Pod
 metadata:
@@ -622,7 +622,7 @@ spec:
     matchLabels:
       type: tondu
 
--> Create pod 
+-> Create pod
 $ kubectl apply -f firefox-laila-pod.yaml
 
 $ kubectl apply -f  netflix-majnu-pod.yaml
@@ -642,9 +642,9 @@ $ kubectl get networkpolice
 -> port forwarding for access
 $ kubectl port-forward pod/laila-pod 8890:3000
 
-Note: here after applying Network policy both pod are accessing 
+Note: here after applying Network policy both pod are accessing
 
--> delete all pod 
+-> delete all pod
 $ kubectl delete pod --all
 
 -> delete Network policy
@@ -652,7 +652,7 @@ $ kubectl delete networkpolicy  --all
 
 
 Class--101/11*
-========== 
+==========
 
 =>Homework Aks Cluster using terraform with foreach & Map
 
@@ -660,18 +660,18 @@ Class--101/11*
 
 => Deploy marke .dono pod ek dusre ko access kar paa raha hai ke nahi vo check karna hai...
 
-=> Beach me network policy laga ke stop karna hai... 
+=> Beach me network policy laga ke stop karna hai...
 
 *) AKS Create:- Create 2 pod Add Network policy
 
 ->rg-ghatak->gnName--> clusterName-> ghatakcluster
 
-->Netwrking-->  
+->Netwrking-->
 
 private access->Enable private cluster:
 -> jo master node ke andar Api-server by default public hota hai..usko private karne ke lia enable karna hai..
-   
-public access-> jis ip ko acces dega usne access kar paiga... 
+ 
+public access-> jis ip ko acces dega usne access kar paiga...
 
 -> container networking--> Network configuration/plugin defines cluster ke pod & node ko IP address provide karta hai..
 
@@ -680,7 +680,7 @@ public access-> jis ip ko acces dega usne access kar paiga...
 > pod ko IP need ke Regarding
 >  ye fir pod ka ip internal private space se melaga.
 
-=> Azure CNI node subnet--> 
+=> Azure CNI node subnet-->
 =========================
 > Node ko IP dene ke 2 tarika
 > Automatically naya bana ne do
@@ -693,21 +693,21 @@ public access-> jis ip ko acces dega usne access kar paiga...
 
 => Dns name prefix-> FQDN->fully qualified domine name-> ek URL hota hai.
 > 
-=> Network policy-- > 
+=> Network policy-- >
 > none-> Network policy not working(after apply NP) 
 > Calico/Azure->Networking policy working
 
-=> Describe the pod details(after create pod) 
+=> Describe the pod details(after create pod)
 $ kubectl describe pod Laila-pod
 
 create ......
 
-=> this AKS access in Azure cli--> 
--> open cluster -> connect--> copy Azure get subscription, Azure get Credential-> download aks credential create pod using yaml  
+=> this AKS access in Azure cli-->
+-> open cluster -> connect--> copy Azure get subscription, Azure get Credential-> download aks credential create pod using yaml
  
 ingress:
 - ports:
-  - port: 80 (only access this port within other port) 
+  - port: 80 (only access this port within other port)
 
 Class--102/12
 ==========
@@ -743,27 +743,27 @@ $ ps-> ka matlab (Process Status) ye command system me chal rahe process(Program
 ================
 -> kill command ka upayag kisi process ko terminate(bandh) karne ke lia kia jata hai..
 
-$ kill pid--> kill (process ID) 
+$ kill pid--> kill (process ID)
 
 🔹 What is the top Command?
 ===========================
 The top command in Linux/Unix is a real-time process monitoring tool. It displays a live view of system processes, including CPU usage, memory usage, process IDs (PIDs), and more.
 $ top
 ====================
-=> chatGPT-> bhai dekh mere ko na nginx ke container ke andar dekhna hai ki kon kon si process chal rahi hai..ps aur top command not found aa raha hai kya karu ? 
+=> chatGPT-> bhai dekh mere ko na nginx ke container ke andar dekhna hai ki kon kon si process chal rahi hai..ps aur top command not found aa raha hai kya karu ?
 
-> apt update  && age install process -y 
+> apt update  \&\& age install process -y 
 > uske bad hamare ps aux top sab command chalega
 
 $ ps
 $ ps aux
-$ top 
+$ top
 
 > $ ps aux  --> pid 1 me nginx ki master process chal rehe hai..
 > agar is pid ko mar du to us nginx ka container mar jata hai..
 
 $ kill pid
-$ kill 1 
+$ kill 1
 
 > Docker ps ( container killed)
 
@@ -772,7 +772,7 @@ $ kill 1
 => pod ke case me kya hota hai. dekh na hai..
 -----------------------------------
 
-=> mene yaml file use karke nginx ka ek pod banadiya 
+=> mene yaml file use karke nginx ka ek pod banadiya
 => us pod ke andar ek nginx ka container hai..
 
 > Go inside the pod
@@ -788,7 +788,7 @@ $ kill 1
 => this command go inside the nginx container
 
 > kill the nginx process id 
-$ kill 1 
+$ kill 1
 
 > kubectl get pods 
 
@@ -799,7 +799,7 @@ $ kill 1
 Class--104/14
 =============
 
-=> Docker interview Question... 
+=> Docker interview Question...
 => Kubernetes ka SABAL
 -----------------------
 > Kubernetes ka architectures ? 
@@ -826,21 +826,21 @@ Class--104/14
 #) Persistent Volume & Persistent Volume Claims( PV & PVC )
 ======================================
 
-=> Create a pod 
+=> Create a pod
 dhundhu.yaml
 -------------
 apiVersion: v1
 kind: Pod
 metadata:
-  name: chamkilapod  
+  name: chamkilapod
 spec:
   containers:
   - image: nginx
     name: sample-container
 
-=> Go inside into the pod 
+=> Go inside into the pod
 $ kubectl exec -it chamkilapod -- bash
-$ ls 
+$ ls
 
 => /home folder me ek file honi chahiya --> main_bhoot_hu.txt
 
@@ -852,23 +852,23 @@ $ touch main_bhoot_hu.txt
 
 => After killing the container this file is present or not check
 
-> go back to the container & kill it
+> go back to the container \& kill it
 cd ..
 
-$ kill 1 
+$ kill 1
 
 > kubectl get pods ( restart pod 1 see) 
 
->Go inside the container and check file is present or not /here file not present so that a new logic start PV & PVC...
+>Go inside the container and check file is present or not /here file not present so that a new logic start PV \& PVC...
 
 Class--105/15
 =============
-
+=> container registry & azurerm aks code  likhna hai in terraform
+ 
 => type-> azurerm container registry
 =>      > azurerm aks
 
-xx
-=> PV cluster ke level pr ek storage resource hai jaise storage pool ya disk. 
+=> PV cluster ke level pr ek storage resource hai jaise storage pool ya disk.
 => Pvc user ya pod ka request hota hai storage ke lie aur ye pv se bind hota hai..
 
 > Step-1--> First the user with admin right on cluster will create PV
@@ -887,7 +887,7 @@ xx
  
 #> Docker Volume:
 ================
-> Create a docker container, take data inside the container then kill the container that means data & container dead, use volume to persist the data in  docker case 
+> Create a docker container, take data inside the container then kill the container that means data \& container dead, use volume to persist the data in  docker case 
 
 > Create a docker Volume
 $ docker volume create nipun-drive
@@ -914,15 +914,15 @@ nginx- image ka naam
 
 $ docker run -d --volume nipun-volume:/home nginx
 
-> go inside the container & create a file
+> go inside the container \& create a file
 
 $ docker exec -it (container-id) bash
 $ cd /home
-$ touch main_bhoot_hu.txt (create a file) 
+$ touch main_bhoot_hu.txt (create a file)
 
 > Container kill ( first back to container ) 
 $ cd ..
-$ kill 1 
+$ kill 1
 
 > checking
 > create a container with same volume in same path
@@ -938,7 +938,7 @@ $ cd /home
 
 $ docker run -d --volume nipun-volume:/usr/share/nginx/html   nginx
 
-#) here also this file is present (proved) 
+#) here also this file is present (proved)
 ===========================
           Pod Case Volume
          ----------------
@@ -946,7 +946,7 @@ $ docker run -d --volume nipun-volume:/usr/share/nginx/html   nginx
 
 > Kubernetes  Volume:2 types
   a) Ephemeral Volume
-  b) Persistent Volume(imp.) 
+  b) Persistent Volume(imp.)
 
  a) Ephemeral Volume:-
 =======================
@@ -962,7 +962,7 @@ $ docker run -d --volume nipun-volume:/usr/share/nginx/html   nginx
       =======================
 a) awsElasticBlockStore:-(deprecated)
 b) azureDisk:(deprecated)
-c) azureFile:-(deprecated) 
+c) azureFile:-(deprecated)
 d) cephfs(removed):-
 e) cinder(deprecated):-
 f) configMap:-
@@ -974,7 +974,7 @@ i) gitRepo(deprecated):-
 j) glusters(removed):-
 k) hostPath
 l) nfs
-m) persistentVolumeClaim:-(imp) 
+m) persistentVolumeClaim:-(imp)
 
 => Volume declare karne ke lia
   .spec.volumes
@@ -1004,13 +1004,13 @@ Kubernetes docs --> storage --> Volumes
 
 *) emptyDr--> homework
 
-=> EmptyDir ek khali folder ya volume hai 
+=> EmptyDir ek khali folder ya volume hai
 > EmptyDir banta kab hai.? jab pod kisi node pr bnta hai..
 > Pod delete hoga toh ye bhi delete ho jaega... matlab ye temporary storage hai..
 > Phele Banega volume emptyDr type ka 
 > fir container me mount hoga kisi path pr...
 
-type: cncf landscape (cloud native cloud foundation) 
+type: cncf landscape (cloud native cloud foundation)
 
 Class--107/17
 =============
@@ -1028,7 +1028,7 @@ EMPTYDIRVOLUME:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: dhundu-pod  
+  name: dhundu-pod
 spec:
   volume: # first part
   - name: aditya-volume
@@ -1043,7 +1043,7 @@ spec:
     ports:
     - containerPort: 80
 
-=>  to see the volume 
+=>  to see the volume
 $ kubectl describe pod dhundu pod
 
 ====================
@@ -1065,7 +1065,7 @@ config.yaml
 ================
 apiVersion: v1
 kind: Pod
-metadata: 
+metadata:
   name: configmap-pod
 spec:
   volumes:
@@ -1083,11 +1083,11 @@ spec:
     volumeMounts:
     - name: config-volume
       mountPath: /home
-      
+ 
 $ kubectl apply -f config.yaml
 $ kubectl get pods
 $ kubectl describe pod configmap-pod
-$ kubectl exec -it configmap-pod -- bash 
+$ kubectl exec -it configmap-pod -- bash
 
 Note: in /home path per demo-file nam ka ek file hai usme  config-map ka data hai woo kebal dekh pa raha hu is path per file create nahi kar pa ra hu...
 
@@ -1110,12 +1110,12 @@ Type: bolt.new   or, lovable.dev
 Class--109/19
 =============
 
-=> aks-kubernetes cluster  me facebook-clone application run 
+=> aks-kubernetes cluster  me facebook-clone application run
 > connect aks-kubernetes cluster in vs code
 > cd manifests , create pod
 kubectl apply -f pod.yaml
 > then port forwarding
-kubectl port-forward pod/soul-center-pod 45000:80 
+kubectl port-forward pod/soul-center-pod 45000:80
 
 > localhost:45000 for access 
 
@@ -1126,11 +1126,11 @@ Also, I want that whatever photos are present in my photos directory on server t
 => ek kaam kar python app bana de ..streamlit ui ka use karke ..
 
 =>  bdia hai bhai mast hai bs jaldi ek docker file likh de mera pura code ek main.py file me hai..
-   
+ 
 => Run the photo upload app
 $ python -m streamlit run app.py
 
-=> To create a docker image
+=> To create a docker image from Docker file
 $ docker build -t photos-app:v1 .
 
 => to create a container from image
@@ -1139,30 +1139,61 @@ $ docker run -d -p 9090:8501 photos-app:v1
 => For access localhost:9090 & upload photo
 
 => go inside container
-$ docker exec -it < container-id> bash  
+$ docker exec -it < container-id> bash
 
-$ cd photos
+=> to see the photo in cli
+$ cd /home
+$ ls /photos
+$ ls -l photos
 
-=> copy a photo in local to container(app/photos) 
+=> copy a photo in local to container(app/photos)
+$ docker cp "D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg" <container-id>:/app/photos
 
-docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+$ docker cp "D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg" 329fab9cb475:/app/photos
+
+Note: here source path ko "" coma ke ander kuon ke --> Kubernetes Practice ke ander space hai
+
+                        OR
+docker cp "Toto proj-4 .png" 329fab9cb475:/app/photos/
+
+
+=> copy a photo in  container(app/photos) to local
+docker cp <Container-ID>:/app/photos/krishna.jpg .
+
+$ docker cp 329fab9cb475:/app/photos/krishna.jpg .
+
+=> Container me photo download karna hai < container me reha kar chalana hai ..)
+$ wget <URL of Photo>  -O /app/photos/krishna.jpg
+
+=============================
+
+
+=> copy a photo in local to container(app/photos)
+
+docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|
+-docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
+
+docker cp D:\Kubernetes Practice\Kubernetes\photo-upload-app\home.jpg 329fab9cb475:/app/photos
 
 $ docker cp D:\Kubernetes Practice\Kubernetes\photos-app\desktop photo.jpg <container-id>:/app/photos
 
-$ docker cp ".\desktop photo.jpg" 8fcc7beb08f2:/app/photos   --> Relative path 
+$ docker cp ".\desktop photo.jpg" 8fcc7beb08f2:/app/photos   --> Relative path
 
-=> Docker Hub pr push karne ka tatika 
+=> Docker Hub pr image push karne ka tatika
   Login ---> tag---> push
 
 => image ko docker hub/ acr-azure container-registry per rakhtha hai...
+
+Google:- How to push a docker image to Azure Container Registry
 
 => first creat acr & push
 > az acr login --name <acrName> 
 > then tag
 $ docker tag photos-app:v1 <acrLoginServer>/photos-app:v1
 > then push 
-$ docker ps 
+$ docker ps
 > docker push < image > 
+$ docker push <acrLoginServer>/photos-app:v1
 
 > create manifests folder where pod.yaml create
 
@@ -1171,7 +1202,7 @@ pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
-  name: photos-app 
+  name: photos-app
 spec:
   containers:
   - image: acrdevopsinsider.azure.io/photos-app:v1
@@ -1181,7 +1212,7 @@ spec:
 
 $ kubectl apply -f pod.yaml
 
-
+**) ye mera  image:- prabha060/photos-app:v1
 
 
 
@@ -1196,13 +1227,12 @@ $ kubectl apply -f pod.yaml
 
 4. Crashloopbackoff --> Jab pod ke andar baar baar crash hota hai...
 
-5. Pending --> Pod kisi bhi node pr scehdule nahi hua hai...
+5. Pending --> Pod kisi bhi node pr ccscehdule nahi hua hai...
 
-6. Completed --> Jab pod ke andar ke contaienr kaa kaam successful ho jae to vo
-completed ho jata hai..
+6. Completed --> Jab pod ke andar ke contaienr kaa kaam successful ho jae to vo completed ho jata hai..
 
 
-==> 2 & 3 error ka resolution pata lagane ka tarika 
+==> 2 & 3 error ka resolution pata lagane ka tarika
 $ kubectl describe pod
 $ kubectl logs
 
@@ -1213,7 +1243,11 @@ Class--110/20
 =============
 Persistent Volume
 ================
+👉 PV ka matlab:
+> Cluster ke andar ek permanent storage space define karna
+
 > PV-> Cluster level resource hai jisko admin banata hai..
+
 > pvc-> Connection of PVC to the pod
 
 pod.yaml
@@ -1225,29 +1259,51 @@ metadata:
 spec:
   containers:
    - name: photos-app
-     image: ghatak.azureecr.io/photos-app:v2 
+     image: ghatak.azureecr.io/photos-app:v2
      ports:
      - containerPort: 8501
      volumeMounts:
-     - mountPath: /app/paths
+     - mountPath: /app/photos
        name: 4gb-volume
   volume:
   - emptyDir:
-      sizeLimit:4gi    
+      sizeLimit:4gi
     name: 4gb-volume
 
 
-=> PV is cluster level resource 
-=> pv & pvc ka claim diagram dekhna 
+=> PV is cluster level resource
+=> pv & pvc ka claim diagram dekhna
+=> EmpytDr ek temporary type of volume jo  pod bante time bante hai & job pod delete hone pr emptyDR volume delete ho jate hai...
 
 
 Class--111/21
 =============
+=> $ kubectl api-resources
+> is command se all resources \& its short name dekh paege ..
+
+=> jis tara azure me key rakhne ke lia keyVault hai usi tara k8s me Secret object hai ...
+
+=> ChatGPT-> Bhai dekh mereko ka ek secret banane ka hai jo main persistant volume ko dunga jisse vo azure file share se connect hoga... secret ke andar storage acccount name and key hona chahiye...
+
+main secret ka document dekha toh usme itti sari fields bhrne ka bol
+raha hai... jo mere samjh me nahi aa raha hai... toh mujhe aasan
+shabho me smjhae...
+
+apiVersion: v1
+data:
+immutable:
+kind:
+metadata:
+stringData:
+type:
+
+=> AccessModes -> ke lia Kubernetes document dekho
 
 persistantVolume.yaml
 --------------------
 apiVersion: v1
-kind: PersistentVolume metadata:
+kind: PersistentVolume
+metadata:
   name: pyaar-ka-storage
 spec:
   accessModes:
@@ -1260,14 +1316,30 @@ spec:
 
 sectet.yaml
 ------------
-apiVersion: v1 
-kind: Secret 
+apiVersion: v1
+kind: Secret
 metadata:
   name: shadikephotos-ka-creds
 type: Opaque
 stringData:
   azurestorageaccountname: shadikephotos
   azurestorageaccountkey: gACP1GPUCUQdUck5TYDes zngdwheYJSGsdzeeuEDWmElkQG9Sg5flZeH/
+
+pvc.yaml
+===========
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: honeymoon-photos
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+
+
 
 Class--112/22
 =============
@@ -1281,14 +1353,20 @@ Binding tab hota hai jab:
 
 > "Aur agar PVC ne kisi specific PV ka naam nahi diya ho (i.e. selector ya volumeName), to system automatically best match dhoondhta hai."
 
+=> yaha pv me storage 4gi hai & pvc me claim 1gi kia is ka matlab 1gi ya 4gi(pura)  ka storage kar paega
+
+=> ek pv se kebal 1 pvc claim ho paega dusura nahi ho paega ..one to one mapping
+& isme storage ma misuse hua hai islia  Dynamic Provisioning use kare--> pvc banayega jitna mangega --utna hi melega ..
+
 persistantVolume.yaml
 ====================
 apiVersion: v1
-kind: PersistentVolume 
+
+kind: PersistentVolume
 metadata:
   name: pyaar-ka-storage
 spec:
-  storageClassName: gym-lover       
+  storageClassName: gym-lover
   volumeName: pyaar-ka-storage
   accessModes:
   - ReadWriteMany
@@ -1299,26 +1377,38 @@ spec:
     storage: 4Gi
 
 
+sectet.yaml
+------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shadikephotos-ka-creds
+type: Opaque
+stringData:
+  azurestorageaccountname: shadikephotos
+  azurestorageaccountkey: gACP1GPUCUQdUck5TYDes zngdwheYJSGsdzeeuEDWmElkQG9Sg5flZeH/
+
+
 pvc.yaml
 =======
 apiVersion: v1
-kind: PersistentVolumeClaim 
+kind: PersistentVolumeClaim
 metadata:
   name: honeymoon-photos
 spec:
- storageClassName: gym-lover       
+ storageClassName: gym-lover
  volumeName: pyaar-ka-storage
 resources:
   requests:
-    storage: 1Gi 
+    storage: 1Gi
 volumeMode: Filesystem
 accessModes:
 - ReadWriteMany
 
 pod.yaml
 ===========
-apiVersion: v1 
-kind: Pod 
+apiVersion: v1
+kind: Pod
 metadata:
   name: honeymoons-app
 spec:
@@ -1350,23 +1440,29 @@ ans) PV Banaenge, fir PVC banaenge
 => jab PVC delete ho toh PV bhi automatically delete ho jae?
 Homework - ReclaimPolicy
 
+=> pod me alag alag ke folder hai, difference pvc bana banake aap us pod ko mount karna hai --kya korege
+
+=> job pvc delete ho apne aap pv delete ho jai kya korege --x
+
+
 => MultiplePod, Same storage ko padna chahta hai.. AccessMode hoga
 
 => ReadWriteMany
 
-==> home work Dynamic provisioning 
+==> home work Dynamic provisioning
 
 => Persistent Volume:-
  1. Statically provisioned
-  > StorageAccountFileShare 
+  > StorageAccount
+  > FileShare
   > PV-Fileshare connection
   > PVC request
 
- 2. Dynamically Provisioned 
-   > PVC request ( 2gi ) 
+ 2. Dynamically Provisioned
+   > PVC request ( 2gi )
    > storageClass-azure-portalfile-share
 
-    
+ 
 >>> stg -> 2gi--> pv--bound
 => StorageClass
   > azure-portalfile-share
@@ -1381,95 +1477,9 @@ dynami-pvc.yaml
 => Service 3-type
   1. Cluster IP
   2. LoadBalancer
-  3. NodePort 
+  3. NodePort
  
+=> 4 pod banaye ge  in yaml nginx ka & level dege env:todo wo ek single yaml file me banayege x
 
 Class--113/23
 =============
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
