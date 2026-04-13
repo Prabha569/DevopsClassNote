@@ -1,0 +1,410 @@
+VIRTUALIZATION:-
+===================
+Virtualization is the process of sharing hardware resources across several virtually isolated and mutually independent systems. It is achieved by using a hypervisor which acts as a bridge between the Operating System of each of the virtual machines and the underlying hardware.
+Applications in virtual environments run on a host operating system on top of the hypervisor.
+
+CONTAINERIZATION:-
+==================
+Containerization refers to the process of creating virtually isolated instances of applications along with the required dependencies called containers. The containers so created are independent of the underlying operating system and are portable from one OS to the other. A container engine acts as a bridge between the containers and the underlying OS.
+
+1. What is Docker, and why is it used?*
+=======================================
+Answer: Docker is a platform that uses containers to package and deploy applications and their dependencies in an isolated environment, ensuring that the application runs consistently across various systems. It is used to automate the deployment of applications in lightweight, portable containers that can be easily moved between environments, from development to production.
+
+
+4. What is the difference between a Docker image and a Docker container?*
+Answer:
+
+Docker Image: A Docker image is a blueprint for creating containers. It is a static, read-only file that includes everything needed to run a program (e.g., libraries, binaries, etc.).
+
+Docker Container: A container is a running instance of a Docker image. It is an isolated environment where the application executes. Containers are lightweight and can be started, stopped, and moved around quickly.
+
+5. How do you create docker image?*
+
+Ans:- To create a Docker image, you write a Dockerfile that defines the software and its environment. Then, you run the command docker build -d my-image-name . to build the image based on this Dockerfile. This process packages your application and its dependencies into a reusable image.
+
+Key Concepts of Containerization in Docker:
+===================================
+DOCKER OBJECTS:
+==================
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects.
+
+Docker Engine:*
+===============
+The Docker engine is the runtime environment that runs Docker containers. It manages container lifecycle (building, running, and stopping containers) and ensures isolation between containers.
+
+Docker Hub:*
+==============
+Docker Hub is a cloud-based registry service where users can store and share Docker images. It provides both public and private repositories for Docker images.
+
+DOCKER DAEMON:*
+===============
+Docker daemon (docker) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+
+DOCKER CLIENT:
+=============
+The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon.
+
+DOCKER REGISTRIES:
+=================
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry.
+When you use the docker pull or docker run commands, the required images are pulled from your configured registry. When you use the docker push command, your image is pushed to your configured registry.
+
+Docker registry url: https://hub.docker.com
+
+
+================
+Docker Network
+================
+A Docker network is a virtual network that allows Docker containers to communicate with each other and with the outside world. It is an essential feature in Docker that helps manage the communication between multiple containers running on the same host or across different hosts.
+
+          or,
+
+=> Network is all about communication
+
+=> Docker network is used to provide isolated network for containers
+
+=> If we run 2 containers under same network then one container can communicate with another container.
+
+=> Docker supports several types of networks:
+
+=> By default we have 3 networks in Docker
+
+	1) bridge
+	2) host
+	3) none
+
+=> Bridge network is used to run standalone containers. It will assign one IP for container. It is the default network for docker container.
+
+=> Host network is also used to run standalone containers. This will not assign any ip for our container.	
+
+=> None means no network will be available.
+
+=> We can use 2 other networks also in docker
+
+   1) Overlay
+   2) MacvLan
+
+=> Overlay network is used for Orchestration purpose (Docker Swarm)	
+
+=> Macvlan network will assign physical Ip for our container.	
+
+# display docker networks
+$ docker network ls
+
+# create docker network
+$ docker network create ashokit-nw
+
+# inspect docker network
+$ docker network inspect ashokit-nw
+
+# create docker container with custom network
+$ docker run -d -p 8080:8080 --network ashokit-nw sb-app-image
+
+# delete docker network
+$ docker network rm ashokit-nw
+
+
+
+Dockerfile:
+============
+A Dockerfile is a text file that contains a series of instructions for building a Docker image. It defines the environment inside the container, including the base image, the software to install, configurations, and the commands to run when the container starts.
+
+=> To write dockerfile we will use below keywords
+
+	1) FROM
+	2) MAINTAINER
+	3) RUN
+	4) CMD
+	5) COPY
+	6) ADD
+	7) WORKDIR
+	8) EXPOSE
+	9) ENTRYPOINT
+	10) USER
+====
+FROM
+=====
+=> It is used to specify base image for our application
+Ex: 
+FROM openjdk:17
+FROM python:3.3
+FROM node:19.5
+FROM mysql:8.5
+FROM tomcat:9.0
+
+============
+MAINTAINER
+============
+=> MAINTAINER is used to specify who is author of this Dockerfile
+Ex :
+MAINTAINER Ashok<ashok.b@oracle.com>
+
+=====
+RUN 
+=====
+=> RUN keyword is used to specify instructions to execute at the time of docker image creation.
+Ex:
+RUN 'git clone <url>'
+RUN 'mvn clean package'
+Note: We can write multiple RUN instructions in single docker file and all those instructions will be processed in the order.
+
+=====
+CMD
+=====
+=> CMD keyword is used to specify instructions to execute at the time of docker container creation.
+Ex:
+CMD 'java -jar app.jar'
+CMD 'app.py'
+
+Note: Generally application deployment process can be done by using cmd instruction
+Note: We can write multiple CMD instructions in single docker file but docker will process only last CMD instruction.  
+
+===========
+ENTRYPOINT
+===========
+=> Entrypoint is used to execute instructions when docker container is creating.
+Ex: 
+ENTRYPOINT["java", "-jar", "app.jar"]
+ENTRYPOINT["python", "app.py"]
+Note: CMD instruction we can override using command line arguments where ENTRYPOINT instruction we can't override.
+
+========
+COPY
+=========
+=> It is used to copy files from host machine to container machine
+
+Ex:
+COPY target/app.jar  /usr/app/app.jar
+COPY target/app.war  /usr/app/tomcat/webapps/app.war
+COPY app.py /usr/app/app.py
+
+=============
+ADD Keyword
+=============
+=> It is also used to copy files from source to destination.
+Ex:
+ADD target/app.jar  /usr/app/app.jar
+ADD <http-url>  /usr/app/app.jar
+==========
+WORKDIR
+==========
+=> It is used to set working directory (directory navigation)
+
+COPY target/app.jar  /usr/app/app.jar
+WORKDIR /usr/app
+CMD 'java -jar app.jar'
+
+======
+USER
+======
+=> It is used to set USER to run commands
+
+========
+EXPOSE
+========
+=> It is used to specify on which port number our application will run in container
+Ex: EXPOSE 8080
+Note: It is only to provide information. We can't change container port using EXPOSE.
+
+java :port: 8080
+python :  5000
+angular : 4200
+react   : 3000
+
+Q) What is the difference between COPY and ADD commands ?
+Ans:- - `COPY` is used to copy files from the local machine to the container, while `ADD` can do the same but also supports extracting tar files and downloading remote URLs.
+
+Q) What is the difference between RUN and CMD in Dockerfile ?
+
+Q) What is the difference between CMD and ENTRYPOINT ?
+Ans:- ENTRYPOINT sets the command to be executed when the container 
+starts, and CMD provides default arguments for the entry point. 
+
+Q) What is the difference between `docker run` and `docker exec`?
+Ans:- `docker run` is used to create and start a new container, while `docker exec` is used to run commands in an already running container.
+
+
+*) What is docker best practices ?
+
+
+
+
+Docker Image:
+============
+A Docker image is a lightweight, standalone, and executable package that includes everything needed to run a software application—such as the code, libraries, and environment variables.
+
+Images are used to create containers. You can think of an image as a blueprint or template from which containers are launched.
+
+===========================
+How to create docker image
+===========================
+
+=> Default name for docker file  : Dockerfile
+
+=> Syntax-1 : docker build -t < image-name >
+
+=> Syntax-2 : docker build -t < image-name > -f < docker-file-name > .
+
+Docker Container:
+===============
+A Docker container is a running instance of a Docker image. It is the encapsulated environment where the application runs.
+
+Containers are isolated from the host system and other containers. They share the host operating system's kernel, making them more lightweight than virtual machines.
+
+=============================
+Install Docker in Linux VM
+=============================
+
+Step-1 : Create EC2 VM (amazon Linux) & connect with that vm using ssh client
+
+Step-2 : Execute below commands
+
+# Install Docker
+sudo yum update -y
+sudo yum install docker -y
+sudo service docker start
+
+# Add ec2-user user to docker group
+sudo usermod -aG docker ec2-user
+
+# Exit from terminal and Connect again
+exit
+
+# Verify Docker installation
+docker -v
+
+
+Execution below command to see docker status.
+$ docker info
+
+BASIC DOCKER COMMANDS:-
+======================
+
+ Display docker images available in our machine
+$ docker images
+
+ Download docker image.
+$ docker pull <image-name / image-id>
+
+ Run docker image.
+$ docker run <image-name / image-id>
+   or,
+  docker run -d nginx
+
+ Delete docker image.
+$ docker rmi <image-name / image-id>
+
+ Delete docker image forcefully.
+$ docker rmi  -f <image-id>
+$ docker rmi <image-id> --force
+
+ Display all running docker containers.
+$ docker ps 	
+
+ Display all running and stopped containers.
+$ docker ps -a
+
+ Delete docker container.
+$ docker rm <container-id>
+$ docker rm <container-id> --force
+
+ Stop Docker container.
+$ docker stop <container-id>
+
+ Stop Docker container.
+$ docker start <container-id>
+
+ Delete all stopped containers and unused images and unused networks.
+$ docker system prune -a
+
+Command to login with dockerhub account
+
+$ docker login
+
+Note: We need to enter our dockerhub account credentials correctly (it will ask only first time)
+
+Command to tag our docker image.
+
+$ docker tag  <image-name>  <tag-name>
+
+Ex:  $ docker tag myfirstimage javabyraghu/myfirstimage
+
+Command to push docker image to Docker hub account.
+
+$ docker push <tag-name>
+
+Note: Delete all unused images and stopped containers
+
+$ docker system prune -a
+
+Pull the image from Docker hub.
+
+$ docker pull javabyraghu/myfirstimage
+
+Run the image.
+
+$ docker run javabyraghu/myfirstimage
+
+
+DOCKER VOLUMES
+===================
+Stateful Containers Vs Stateless Containers:
+• Stateless Container means container will not persist data after destroying and creating a new one. 
+• When we re-create the new container, we will lose old data.
+• By default, docker containers are stateless containers.
+• If we deploy the latest code or if we re-create the containers, we should not lose our old data. 
+• Our data should remain in the database/directories.
+• If we don't want to lose the data even if we re-create the container, then we need to make our Docker Container as Stateful Container.
+• To make Docker Containers stateful, we need to use Docker Volumes.
+
+
+Docker Volumes:
+============
+Docker volumes are a feature that allows you to persist and share data between Docker containers. They provide a way to store and manage data generated by containers, even if the containers are stopped, removed, or replaced.
+
+
+• We use docker volumes for file systems, databases, and object storage servers.
+• Application will store data in database, even if we delete application container or Database container data should be available.
+• To make sure data is available even after the container is deleted then we need to use Docker Volumes concept.
+
+
+Volumes are the preferred mechanism for persisting data generated by and used by Docker containers.
+---------------------------------------------------------------------------------------------------
+Docker has 3 types of volumes,
+-----------------------------
+1) Anonymous Volumes (without name)
+2) Named Volumes (Will have a name) ** Recommended
+3) Bind Mounts ( Storing on Host Machine )
+
+
+Q) What is Dangling volume in Docker ?
+The volumes which are created but not associated to any container are called as Dangling Volumes
+
+# Delete all dangling volumes
+$ docker volume rm $(docker volume ls -q -f dangling=true);
+
+# Create Docker volume
+$ docker volume create <vol-name>
+
+# Display all docker volumes
+$ docker volume ls
+
+# Inspect Docker Volume
+$ docker volume inspect <vol-name>
+
+# Delete docker volume
+$ docker volume rm <vol-name>
+
+# Delete all docker volumes
+$ docker system prune --volumes
+
+
+
+
+
+
+
+
+
+

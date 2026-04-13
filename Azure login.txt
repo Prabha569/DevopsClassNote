@@ -1,0 +1,35 @@
+Digambar@mukeshsvsugmail.onmicrosoft.com  ---   Nayak@123
+Digambar@jeetoo0601gmail.onmicrosoft.com
+
+
+DigambarNayak@vikramsingh2829outlook.onmicrosoft.com
+
+
+
+DigambarNayak@vivekbln20gmail.onmicrosoft.com
+
+DigambarNayak@chandankumar02731gmail.onmicrosoft.com
+
+Nayak@123
+
+Credit card no:diga
+cno-5334670016092054
+03/26
+483
+
+
+
+
+
+==> code . -> cmd to vs code app open
+
+https://dev.azure.com/OpsCatalyst/Doremon/_git/Doremon?path=/.pipeline
+
+
+"Driver={ODBC Driver 17 for SQL Server};Server=tcp:sqltodoserver.database.windows.net,1433;Database=sqltododb;Uid=prabha;Pwd=admin@123;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+
+
+cp -r build/* /var/www/html
+
+
+Suppose we are designing one architecture and we are migrating from on prem to cloud for and monolithic application so what questions I need to discuss with the customer at the time of HLD and LLD for customer call.
