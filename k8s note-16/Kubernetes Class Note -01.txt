@@ -1738,6 +1738,81 @@ DEPLOYMENT STRATEGIES:-
 ReplicaSet Ka test:-
 
 
+Deployment.yaml:-
+===================
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: useless-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      name: useless-pod
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: useless-container
+        image: prabha060/useless:red
+        ports:
+        - containerPort: 80
+  strategy:
+    type: Recreate
+
+
+=> Create Deployment
+$ kubectl apply -f deployment.yaml
+
+$ kubectl get deploy
+$ kubectl get pods
+
+=> Create Service 
+$ kubectl apply -f service.yaml
+$ kubectl get svc
+
+=> kubectl describe deployment useless
+
+=> port-forward to service 
+$ kubectl port-forward service/ramu-service  9393:80 
+
+=> Rollout history
+$ kubectl rollout history deployment/useless
+
+=> undo red version 
+$ kubectl rollout undo deployment/useless --to-revision=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
