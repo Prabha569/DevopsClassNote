@@ -154,7 +154,7 @@ Class--95/05
 
 > Documentation
 > Get started
-> Overview \& etc...see this page 
+> Overview \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& etc...see this page 
 > Object/resource in k8s 
 
 => Kubernetes ke mathe me jo cheese chalayge usi ko Workload kela ya ga ..
@@ -752,7 +752,7 @@ $ top
 ====================
 => chatGPT-> bhai dekh mere ko na nginx ke container ke andar dekhna hai ki kon kon si process chal rahi hai..ps aur top command not found aa raha hai kya karu ?
 
-> apt update  \&\& age install process -y 
+> apt update  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\&\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& age install process -y 
 > uske bad hamare ps aux top sab command chalega
 
 $ ps
@@ -852,14 +852,14 @@ $ touch main_bhoot_hu.txt
 
 => After killing the container this file is present or not check
 
-> go back to the container \& kill it
+> go back to the container \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& kill it
 cd ..
 
 $ kill 1
 
 > kubectl get pods ( restart pod 1 see) 
 
->Go inside the container and check file is present or not /here file not present so that a new logic start PV \& PVC...
+>Go inside the container and check file is present or not /here file not present so that a new logic start PV \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& PVC...
 
 Class--105/15
 =============
@@ -887,7 +887,7 @@ Class--105/15
  
 #> Docker Volume:
 ================
-> Create a docker container, take data inside the container then kill the container that means data \& container dead, use volume to persist the data in  docker case 
+> Create a docker container, take data inside the container then kill the container that means data \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& container dead, use volume to persist the data in  docker case 
 
 > Create a docker Volume
 $ docker volume create nipun-drive
@@ -914,7 +914,7 @@ nginx- image ka naam
 
 $ docker run -d --volume nipun-volume:/home nginx
 
-> go inside the container \& create a file
+> go inside the container \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& create a file
 
 $ docker exec -it (container-id) bash
 $ cd /home
@@ -1279,7 +1279,7 @@ spec:
 Class--111/21
 =============
 => $ kubectl api-resources
-> is command se all resources \& its short name dekh paege ..
+> is command se all resources \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\& its short name dekh paege ..
 
 => jis tara azure me key rakhne ke lia keyVault hai usi tara k8s me Secret object hai ...
 
@@ -1509,7 +1509,7 @@ Service:-
 > There is limit this time of scalling
 
 2. Horizontal Scalling:-
-> pehele pod size 2GbRam& 8 Core
+> pehele pod size 2GbRam\\\\\\\\\\\\\\\& 8 Core
 > Scalling ka bad same size ka ek or laya
 > matlab-> Number of Pods ka increase kar    raha hai..
 
@@ -1517,8 +1517,8 @@ Service:-
 
 => Kubernetes Service:-
 -------------------
--> iske upr IP hoga vo dotype ka ho sakta hai-->  
-1. Private IP--> Cluster ke bahar se access nahi ho paega 
+-> iske upr IP hoga vo dotype ka ho sakta hai-->
+1. Private IP--> Cluster ke bahar se access nahi ho paega
 
 -> Type:- ClusterIP
 
@@ -1554,7 +1554,7 @@ Class--114/24
 =============
 
 
-=> same in minikube 
+=> same in minikube
 
 => Service type--> ClusterIP
 
@@ -1579,12 +1579,12 @@ Kubernetes Service:-
 Requirement:-
 => Agar app chahete ho ki 4 pod chle aur usme se agar koi ek pod bhi down ho gaya toh ek pod apne aap create ho jae...
 
-=> 
+=>
 Controller:-
 ============
 => Desired State & Actual State ko match karwane ka kaam karta hai...
 
--> Desired = 6 pod     Actual => 5 
+-> Desired = 6 pod     Actual => 5
 
 > Controller Ye 5 kaise ho gae ..fir se 1 banana pdega..
 
@@ -1613,7 +1613,7 @@ Class--115/25
 3. Stateful Set:-
 4. Daemon Set:-
 5. Job:-
-6. CronJob:- 
+6. CronJob:-
  
 => Agar pod yaml ke andar me likh dia ki 4 replica hona chahiye & agar ek bhi pod crash karta hai toh controller usko jinda kar dega...
 
@@ -1624,7 +1624,7 @@ Note:-Controller related interview Questions
 => ReplicaSet vs Deployment ?
 => StatefulSet Vs DaemonSet
 => Horizontal Pod Autoscaler ?
-=> job & Cron job 
+=> job & Cron job
 
 1. ReplicaSet:-
 ------------
@@ -1634,17 +1634,17 @@ Note:-Controller related interview Questions
 
 replicaSet.yaml:-
 ---------------
-apiVersion: apps/v1 
-kind: ReplicaSet 
+apiVersion: apps/v1
+kind: ReplicaSet
 metadata:
   name: dhondhu-rs
 spec:
-  replicas: 4 
+  replicas: 4
   selector:
     matchLabels: app: nginx
   template:
     metadata:
-      name: nginx-pod 
+      name: nginx-pod
       labels: app: nginx
     spec:
       containers:
@@ -1670,7 +1670,7 @@ $ kubectl get pods --show-labels
 
 => Advantages of RepliaSet:-
 ----------------------
-=> Auto Healing Capability of Pods 
+=> Auto Healing Capability of Pods
 
 RepliaSet Important fields:-
 ------------------------
@@ -1710,9 +1710,9 @@ Deployment:-
  2. Rolling Update:- default & recommended
 1. Max Surge
 2. Max Unabailable
-=> 
-DEPLOYMENT STRATEGIES:-
 
+DEPLOYMENT STRATEGIES:-
+====================
 1. Recreate:-
 > Delete All, Then Add All
 > Downtime
@@ -1742,7 +1742,7 @@ Deployment.yaml:-
 ===================
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: useless-deployment
 spec:
   replicas: 3
@@ -1770,35 +1770,1027 @@ $ kubectl apply -f deployment.yaml
 $ kubectl get deploy
 $ kubectl get pods
 
-=> Create Service 
+=> Create Service
 $ kubectl apply -f service.yaml
 $ kubectl get svc
 
 => kubectl describe deployment useless
 
-=> port-forward to service 
-$ kubectl port-forward service/ramu-service  9393:80 
+=> port-forward to service
+$ kubectl port-forward service/ramu-service  9393:80
 
 => Rollout history
 $ kubectl rollout history deployment/useless
 
-=> undo red version 
+=> undo red version
 $ kubectl rollout undo deployment/useless --to-revision=
 
 
+Class--117/27
+=============
+DEPLOYMENT STRATEGIES:-
+====================
+1. Recreate:-
+> Delete All, Then Add All
+> Downtime
+
+2. Rolling Update:-
+> Replace Gradually
+> Zero Downtime
+> Production Based Application
+
+3. Blue/Green:-
+> 2-Environment banta hai
+> Blue --- Green
+> Old  --- New
+> No Downtime
+> High Cost
+
+4. Canary:-
+> 2-Environment banta hai
+> thoda thoda users ko new application pr shift karte hai 
+> No Downtime
+> High Cost
+
+=> Rolling Update:-
+   1. Max Surge:-
+>> kitna extra pod ek time me launch kar sakte hai during updates
+
+   2. Max Unavailable:-
+ >> Kitne pods unavailable ho sakta hai during updates...
+
+==============================
+===============================
+🔄 1. strategy (DeploymentStrategy)
+----------------------------------
+👉 Ye batata hai:
+Deployment update ka method kya hoga
+
+strategy:
+  type: RollingUpdate
+
+⚔️ 2. type
+
+type: RollingUpdate   # default
+type: Recreate
+
+🟢 RollingUpdate (MOST IMPORTANT)
+-------------------------------
+Pods gradually replace hote hain
+✔ Zero downtime
+✔ Production use
+
+🔴 Recreate
+----------
+Sab purane pods delete → fir naye create
+❌ Downtime aata hai
+✔ Simple
+⚙️ 3. rollingUpdate (tab use hota hai jab type=RollingUpdate)
+rollingUpdate:
+  maxSurge: 1
+  maxUnavailable: 1
+
+📈 4. maxSurge
+----------
+👉 Extra pods kitne temporarily bana sakte ho
+
+Type: Int ya %  (25 % only)
+Example:
+maxSurge: 1
+
+👉 Agar replicas = 3
+→ max pods = 4 (3 + 1)
+
+✔ Fast deployment
+❌ Extra resources lagte hain
+
+📉 5. maxUnavailable
+
+👉 Update ke time kitne pods down ho sakte hain
+
+maxUnavailable: 1
+
+👉 Agar replicas = 3
+→ 1 pod down allowed
+
+✔ Stability maintain hoti hai
+✔ Users ko impact kam
+
+🧩 Combined Example
+-------------------
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+
+
+===================================
+===================================
+
+apiVersion: v1 kind: Deployment metadata
+name: dhondhu-deploy
+spec:
+replicas: 12
+selector:
+app: dev
+template: <PodSpec>
+strategy:
+
+=> Secrets
+=> ConfigMaps
+=> Resourcts- Request/limits
+=> ImagePull Secrets
+=> Liveilness & readiness probes
+=> Affinity/antiAffinity Taint/Tolerations
+
+chatGPT:- bhai isko use karke sab concept laga ke production ready deployment file banao aur badia se samjhao..
+
+=> hum ko kuch smajh nahi aa raha hai ek ek chiz samjhao,,,
+
+
+TodoApp Microservice Based
+============================
+1. frontend->dockerimage->deploy-> pod1,pod2->
+service-1-->publicIP
+Backend:
+2. add-task-microservice
+3. delete-task-microservice
+4. get-task-microservice
 
 
 
 
+Class--118/28
+=============
+ChatGpt:- Create a HLD document for todo app that need to be deployed on AKS & it is a microservice application
+
+=> TodoApp Microservice Based:- Application Deploy
+
+1. Frontend:-
+-> https://github.com/devopsinsiders/MicroTodoUI.git
+
+2. Backend:-
+   -> BetTasksBackend
+   -> AddTaskbackend:-
+   -> DeleteTaskBackend
+
+3. Database:
+
+
+=> Backend:-
+
+1. https://github.com/devopsinsiders/GetTasksTodoMicroservice.git
+
+2. https://github.com/devopsinsiders/AddTaskTodoMicroservice.git
+
+3. https://github.com/devopsinsiders/DeleteTaskTodoMicroservice.git
+
+
+
+Class--119/29 GitHub Action:-1
+==============================
+
+=>  Todo Application Karta kya hai?
+
+=> Todo Application ko End to End automation se set karne ke lie kon kon se tools use karenge?
+
+=> Application HLD
+
+=> Infra HLD
+
+pura project:-
+==========
+-> IAC - Terraform
+-> Pipelines - Azure Pipelines
+-> SCM - Azure Repos
+-> Image Build - GitHub Actions
+-> Image Scan - Trivy Scan, prisma Scan
+-> Code Analysis Tools - SonarQube, BlackDuck, Checkmarx
+-> Deployment - ArgoCD with helm charts
+-> Api Testing- postman
+-> Monitoring- Prometheus/Grafana, Datadog
+->
+
+TERRAFORM-TODOAPP-INFRA
+======================
+environments
+  dev
+  prod
+modules
+  azurerm_container_registry
+  azurerm_key_vault
+  azurerm_kubernetes_cluster
+  azurerm_managed_identity
+  azurerm_resource_group
+  azurerm_sql_database
+  azurerm_sql_server
+  azurerm_storage_account
+
+chatGpT:- Ek aisa GitHub action bana kedo jisme feature aur main branch se automatic pipeline trigger ho, feature branches bs plan tk chle aur main branch se terraform apply se chle ..
+
+=> Azure pr  deployment karna hai toh az login bhi add karna pdega..
+
+
+
+Class--120/30 GitHub Action:-2
+==============================
+
+Microsoft hosted / self hosted:-
+----------------------------
+-> Variable Groups
+-> Azure DevOps Marketplace
+-> Stages hoti hai
+-> Pipeline
+
+github hosted/ self hosted
+-------------------------
+-> GitHub Secrets
+-> GitHub Marketplace
+-> Only till jobs
+-> Workflow
+
+=> Runners:-
+  1. GitHub Hosted
+  2. Self Hosted
+
+
+type:- GitHub action yaml
+
+
+=> Runner set karnae ke process
+
+=>type:- GitHub action yaml
+
+=> Azure Devops:- me
+-> pipeline ----> yaml-repo me
+->               repo me kahi bhi ho sakte hai
+
+=> GitHub Action:- me
+->  100% yaml se
+-> .GitHub/workflows
+   -> dev.yaml
+   -> prod.yaml
+
+
+type:- GitHub action yaml
+
+-> Workflow syntax for GitHub Actions
+
+=> you must store workflow(pipeline) file in the .GitHub/workflows directory of your repository ...
+
+=> Trigger----> on
+
+=> eg: on:
+         push:
+           branches:
+           - feature/*
+           - main
+
+=> runs-on ----> pool
+
+eg: on:
+      push:
+        branches:
+        - feature/*
+        - main
+jobs:
+  DhondhuMaharaj:
+   name: Dhondhu Maharaj
+   runs-on: dhondhu-maharaj
+   steps:
+   - name: Dhondhu Maharaj Rocks!
+     run: echo Dhondhu Maharaj
+
+   - name: Rondu Maharaj Rocks!
+     run: echo Rondu Maharaj
+
+   - name: Tondu Maharaj Rocks!
+     run: echo Rondu Maharaj
+
+Class--121/31 GitHub Action:-3
+==============================
+
+=> Requirement:- Create GitHub action workflow with az login, terraform init, validate, plan, & apply
+
+=> on:-- on ke andar events aate hai jaise
+   -> push
+   -> workflow_dispatch   means manual trigger
+   -> schedule
+ 
+Note: select karke tab dabane se aage shift+tab dabane se piche jaega
+
+
+name: "Infra Pipeline Kuch Bhi"
+
+on: workflow_dispatch
+
+jobs:
+  terraform-job:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+
+      - name: Install Terraform
+        uses: little-core-labs/install-terraform@v2.0.0
+        with:
+          version: 1.13.0
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+         with:
+           client-id:
+           tenant-id:
+           subscription-id:
+
+
+Class--122/32 GitHub Action:-4
+==============================
+=> az login:-
+ -> OIDC-Workload identity federation->1Hr.
+ -> Managed Identiy--> 24Hours
+ -> Service Principle with Secret--> ?
+
+
+
+name: "Infra Pipeline Kuch Bhi"
+
+on: workflow_dispatch
+
+jobs:
+  terraform-job:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+
+      - name: Install Terraform
+        uses: little-core-labs/install-terraform@v2.0.0
+        with:
+          version: 1.13.0
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+         with:
+           client-id:
+           tenant-id:
+           subscription-id:
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: environments/dev
+
+     - name: Terraform Init
+       id: init
+       run: terraform init
+       -input=false
+       working-directory: environments/dev
+
+
+- name: Terraform Validate
+id: validate
+run: terraform validate -no-color
+working-directory: environments/dev
+- name: Terraform Plan
+id: plan
+run: terraform plan -no-color input=false continue-on-error: true
+working-directory: environments/dev
 
 
 
 
+Class--123/33 GitHub Action:-5
+==============================
+
+=> Bada homework
+
+-> Infra ka code for Vm, LoadBalancer, Kubernetes & ACR
+
+-> Azure aur GitHub Actions ka pipeline
+
+=> LoadBalancer:-
+-----------------
+  -> FrontendIP Configuration
+  -> BackendPool
+  -> HealthProbe
+  -> LBRules
+
+=> Pipeline:-
+----------------
+1) Azure DevOps:-
+  --> stages
+  -->   job
+  -->     steps
+
+2) GitHub Actions:-
+  --> job
+  -->  steps
+
+Requirement:-
+
+
+
+Workflow:- pull_request trigger
+========   push trigger to main
+trigger: push to main
+jobs:
+
+terraform-init-plan
+terraform-init
+terraform-plan
+
+terraform scanning
+tf-sec
+tf-linting
+checkov
+trufflehog
+
+terraform-apply
+condition: only branch main
+terraform init
+terraform apply
 
 
 
 
+Class--124/34 GitHub Action:-6
+==============================
+on:
+  push:
+    branches:
+    - feature/*
+    - main
 
+jobs:
+  terraform-init-plan:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id:
+          tenant-id:
+          subscription-id:
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: environments/dev
+
+- name: Terraform Init
+  id: init
+  run: terraform init -input=false
+  working-directory: environments/dev
+
+- name: Terraform Validate
+  id: validate
+  run: terraform validate -no-color
+  working-directory: environments/dev
+
+- name: Terraform Plan
+  id: plan
+  run: terraform plan -no-color -input=false
+  continue-on-error: true
+  working-directory: environments/dev
+
+terraform-apply:
+runs-on: self-hosted
+if: github.ref == 'refs/heads/main' needs: terraform-init-plan
+environment: dev
+steps:
+  -name: Checkout
+   uses: actions/checkout@v5.0.0
+   name: Azure Login
+   uses: Azure/login@v2.3.0
+   with:
+     client-id:
+     tenant-id:
+     subscription-id:
+
+  - name: Terraform Init
+  id: init
+  run: terraform init -input=false
+  working-directory: environments/dev
+ 
+  - name: Terraform apply
+  id: apply
+  run: terraform apply --auto-approve
+  continue-on-error: true
+  working-directory: environments/dev
+
+
+Note:- PR based & manual Request based workflow
+
+=> Dev pipeline
+=> prod pipeline
+
+
+
+Class--125/35 GitHub Action:-7
+==============================
+
+az login:-
+az login --tanant < tanant id>
+
+Container Job: kisi job lo self hosted me na chala ke kisi none/container me chalana
+
+type:- github.com/sonambewafaa
+
+=> infra pipeline ready
+=> project repo clone
+
+
+
+1. Frontend:-
+-> https://github.com/devopsinsiders/MicroTodoUI.git
+
+2. Backend:-
+   -> BetTasksBackend
+   -> AddTaskbackend:-
+   -> DeleteTaskBackend
+
+3. Database:
+
+
+=> Backend:-
+
+1. https://github.com/devopsinsiders/GetTasksTodoMicroservice.git
+
+2. https://github.com/devopsinsiders/AddTaskTodoMicroservice.git
+
+3. https://github.com/devopsinsiders/DeleteTaskTodoMicroservice.git
+
+=> FINAL PROJECT: ke ander all repo & infra
+
+
+copilot:- chatbot:- pleace create docker file for the all folder & help to push in the respective repo
+
+=> bhai ye nonroot user se banake do yr
+
+
+==> Code-->Dockerfile-->build-->Dockerimage-->deploy---->kubernetes
+
+=> Docker file to Docker image
+$ docker build -t <image name>:tag .
+$ docker build -t todo-ui:v1 .
+
+docker image send to ACR
+1. login  2. tag   3 push
+
+1. az acr login --name <your_registry_name>
+
+$ az acr login --name acrprabha01
+$ login succussed
+
+2. tag
+=> az acr show --name <your_registry_name> --query loginServer --output table
+
+=> docker tag <local_image_name>:<tag> <registry_login_server>/<repository_name>:<tag>
+
+$ docker tag todo-ui:v1 <registryloginserve>/todo-ui:v1
+
+3. push
+
+az acr build --registry <your_registry_name> --image <repository_name>:<tag> .
+
+$ docker push <registryloginserverURL>/todo-ui:v1
+
+
+Class--126/36
+=============
+
+=> Docker file to Docker Image \
+$ docker build -t todo-ui:v1
+
+$ Docker Tag - docker tag todo-ui:v1 acrdevtodoapp01.azurecr.io/todo-ui:v1
+
+=> Push Docker Image to ACR
+$ docker push acrdevtodoapp01.azurecr.io/todo-ui:v1
+
+=> Scanning Tools:-
+  1. SAST Scanning
+-> SonarQube, ChekMarx, Trivy, prisma,
+
+  2. DAST Scanning
+-> Qualys Tool
+
+=> Dockerfile-> todo-ui-> scan(sonarScan,Checkmark)-->Build-->tag--> Push to ACR--> trivy
+
+
+=> CD-> Jo image build hua wo sare images ko utha kar cluster pr pod ke form tme deploy karna hi deployment hai...
+
+=> preprod Cluster-->ns-preprod
+=> prod Cluster--> ns-prod
+
+=> Manifest file to Deploy on K8s cluster
+=> Deployment.yaml
+=> Service.yaml, ingress.yaml
+=> secret.yaml-Cluster level secret
+=> secretProviderClall.yaml
+=> configMap.yaml
+
+=> HelmChat:-
+-> values-preprod.yaml
+-> values-prod.yaml
+
+=> Application Gateway ingress Controler
+
+=> Normal CD - AzureDevops/GitHub Action
+
+=> GitOps CD- ArgoCD tool final Goal
+
+ChatGPT:- ek dum basic se ELK stack ke baare me batao bhai
+
+Class--127/37
+=============
+
+=> Kubernetes Master Node:-
+-> 1. API Server  2. Scheduler
+   3. ETCD        4. Controller
+
+=> Worker Node:-
+-> kubectl
+-> kube-proxy
+-> Container Runtime
+
+=> Setup ArgoCD
+=> Argo CD ka image download karke ACR me push karenge
+=>
+
+=> Push Based Deployment:-
+-------------------push-------
+pod.yaml ----> kubectl apply-f--->K8s
+service.yaml
+
+=> Pull Based Deployment/GitOps:-
+-------------------------------
+GitHub Repo ----> pull --> ArgoCD->K8s
+pod.yaml
+service.yaml
+
+=>  SetUP ArgoCD
+=> Create Namespace-Kubectl Create ns argocd
+
+=> imperative process:-
+---------------------
+=> Create namespace of argoCD
+$ kubectl create namespace ajay-argocd-ns
+
+=>Type: argo cd setup
+
+
+1. Connect Repo
+2. Create Application
+
+
+Class--128/38
+=============
+
+=> Pull Based Deployment:- /GitOps
+=> Type: argocd installation on Kubernetes
+
+
+=> Install ArgoCD setup
+
+$ kubectl create namespace argocd
+$ kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+
+=>  to see the argocd
+$ kubectl get pods -n argocd (here all are running)
+
+=> ArgoCD ko access karne ka tarika 2-types
+1> Normal Log -ArgoCD UI
+2> AbnoNormal Log -> yaml se
+
+2. Download Argo CD CLI
+
+3. port-forward the argoCD
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+4. Login Using The CLI¶
+uid:- admin
+pwd ke liedo ye command chalao
+
+$ argocd account update-password
+
+
+Open argoCD ui
+
+
+2> AbnoNormal Log -> yaml se
+ 
+=> application banayege in yaml
+
+$ kubectl get application
+$ kubectl get application -A
+
+$ kubectl explain applications --recursive > app.txt
+
+application.yaml:
+====================
+ apiVersion: argoproj.io/v1
+ kind: Application
+ metadata:
+  name: Rahul-ji-app
+  namespace: argocd
+spec:
+ destination:
+   namespace: default
+   server: https://kubernetes.default.svc
+ project: default
+ source:
+   repoURL: < copy of git hub URL>
+   path: . <dot>
+   ref: main
+ syncPolicy:
+   automated:
+     enabled: true
+
+
+$ kubect apply -f  application.yaml
+
+$ kubectl get application  -n argocd
+
+$ argocd --help
+
+$ argocd app create --help
+
+$
+
+
+
+Class--129/39
+=============
+
+
+
+Class--130/40
+=============
+
+
+1.  May know what kind of application you have build using Azure Devops
+2.  Could you please explain the structure of CICD pipeline for the scratch to the deployment for all environment
+3.  Where are you save the artifact which you build
+4.  Suppose you are pushing the atrifact to the ACR so you are using docker so what steps and prerequisite you needs to build an docker image
+5.  Can you explain what is docker file what is contain and how to optimize it
+6.  What is the difference between CMD and Entry point
+7.  Suppose once you build the image inside the pipeline you have calling that docker task so what all the input you need to call the docker task inside the pipeline
+8.  So what is It in docker build command
+9.  So once it is build and push to ACR so there should be some connection between Devops and ACR how will you make the connection
+10. Why we use service connection why it is required
+11. So you push the image to ACR and pull that image from ACR so how you will store the image because every time you run the different different images so how you will store the images in ACR and how you will find out
+12. So you are following any format for tagging the image because there are different format for tagging the image? So which format you follow
+13. Once you pull the image from the ACR to tell me the inputs you will pass and save the AKS task to deploy the application
+14. Inside the deployment.yml what thinks you mention
+15. Which services you used inside the services.yml in your porject
+16. Tell me Suppose you are creating the AKS what are you will check before you create AKS means what information you required before it
+17. What is kubenet in AKS
+18. What is CNI and what it will do in AKS
+19. Suppose you deploy the application and application experience in heavy traffic so do you handle this situation
+20. Suppose the pod stocked in a pending state for long time so what make be the regions
+21. Suppose if you want to schedule a pod on a particular node how will I do that
+22. In ADO what is Agent pool and what is the different between self-hosted agent and Microsoft hosted agent
+23. How do you write the terraform script for storage blobs
+24. Suppose there are manual change in a cloud how do you resolve that conflict it is not created through terraform
+25. What is the terrform workspace
+26. What is a module in terraform and why we use it
+27.What is the difference between terraform plan and terrform fmt
+
+28. Tell me what is terraform providers
+
+29 How do you handle the connectivity of data in terraform It means secret.
+
+24. Suppose there are manual change in a cloud how do you resolve that conflict it is not created
+through terraform
+25. What is the terraform workspace
+26. What is a module in terraform and why we use it
+27. What is the difference between terraform plan and terraform fmt
+28. Tell me what is terraform providers
+29. How do you handle the sensitivity of data in terraform I means secret
+30. How do you maintain secret in Azure pipeline
+31. What are quality gets and why it is important
+32. Why we use sonar qube in cicd
+33. Suppose you facing some vulnerability issue using sonar who will be fixing that vulnerability your
+end or from developer end
+34. How do you implement the cicd pipeline using GitHub action
+35. Do you write any shell script which you have used for automation in your pipeline any task you
+automated using shell script
+36. Which branching followed in GitHub
+37. Have you faced any issue in your pipeline where you have solve this single hendedly in your
+project
+
+=============================
+
+=> user--> UI PublicIP--> API-->Database
+
+1>    frontend:-(repo)-->
+  -> Dockerfile -->Manifests
+  -> GitHubAction--->AgroCD
+  -> ACR         ---> Kubernetes
+
+
+2>Backend GetTaskAPI:-(repo)-->
+  -> Dockerfile   -->Manifests
+  -> GitHubAction -->AgroCD
+  -> ACR       ---> Kubernetes
+
+3>Backend DeleteTaskAPI:-(repo)-->
+  -> Dockerfile -->Manifests
+  -> GitHubAction--->AgroCD
+  -> ACR       ---> Kubernetes
+
+
+4>Backend AddTaskAPI:-(repo)-->
+  -> Dockerfile   -->Manifests
+  -> GitHubAction  -->AgroCD
+  -> ACR       ---> Kubernetes
+
+
+=> ArgoCD Login karege
+
+
+Class--131/41
+=============
+
+      ------Frontend----------
+User--> todo-ui -> Todo UI Application
+ 
+        -----------Backend----------
+add-task-api-->get-tasks-api-->delete-task-api
+
+                       SQL
+
+-->     Database URL/Username/Password
+=> connection_string = url + username + password
+
+=> Connection_String= {Driver= ODBC Driver set}
+
+
+2. add-task-api ya dusri api ko kaise batae ki connection string ka hai?
+
+--> add task api ke code me hardcode kardo(not
+recommended
+--> Externalizing Configuration
+
+
+1--> Source Code + Connection String-->Docker build-->Image ( code + connection string)
+
+2--> Source Code-->Docker build-->Image (code)
+
+3--> image(Code)---> pod(docker container)--> Connection-string ==> Externalizing configuration  kehete hai...
+
+
+=> Add-task-api me database ka connection:-
+------------------------------------------
+
+kind: Deployment metadata:
+name: todo-get-task-api
+spec:
+replicas: 2
+selector:
+matchLabels:
+app: todo-get-task-api
+template:
+metadata:
+labels:
+app: todo-get-task-api
+spec:
+  containers:
+  - name: todo-get-task-api
+    image: acrdevtodoappe1.azurecr.io/todo-get-tas
+    ports:
+    - containerPort: 8000
+    env:
+      name: CONNECTION STRING
+      value= driver=(ODBC-driver set)
+
+
+
+
+Class--132/42
+=============
+
+=> Ingress Controller ko set karna
+=> Ingress Rule banana
+
+=> Ingress ek Kubernetes ka object hai.. jo traffic bahar se aa raha hai.. usko cluster pr chal rahe service tak  route karta hai...
+
+=> Path Based Routing & Host Based Routing is supported
+
+=> Ingress Controller types:-
+  -> nginx ingress controller
+  -> Application Gateway Ingress Controllers
+
+=>   nginx ingress controller:-
+
+=> Type: nginx ingress controller installation -> install nginx ingress controller--> installation with manifests
+
+=> nginx ingress controller:-
+  1. nginx ingress controller--PAID
+  2. nginx ingress controller --Open Source
+
+=> Type: nginx ingress controller--> Ingress NGINX Controller for Kubernetes(GitHub wali)
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-ui-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ui.jhandu.shop
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: todo-ui
+              port:
+                number: 80
+
+
+$ kubectl get ingrescass
+
+==============
+
+
+Class--133/43
+=============
+
+main.tf: resource_group
+===========================
+
+resource "azurerm_resource_group" "rg" {
+  for_each = var.resource_groups
+
+  name = each.value.name
+  location = each.value.location
+  tags = each.value.tags
+}
+
+variable.tf:-
+---------------
+
+variable "resource_groups" {
+  type = map(object({
+  name = string
+  location = string
+  tags = optional(map(string))
+  }))
+}
+
+
+=> module call:
+------------------
+locals {
+  common_tags = {
+  "ManagedBy" = "Terraform"
+  "Owner" = "TodoAppTeam"
+  "Environment" = "dev"
+  }
+}
+
+module "rg" {
+  source= "../../modules/azurerm_resource_group"
+
+  resource_groups = {
+  rg1 = {
+  name = "rg-ankur-ji"
+  location = "centralindia"
+  tags = local.common_tags
+  }
+}
+
+=> Unitary Modules:-
+-----------------
+-> Resource group -> with out for_each
+-> vnet, subnet, bastion...
+
+=> Integration Module:-
+----------------------
+-> networking module-> for_each
+
+=> Application Repos-->dev->networking module-> Map pass
+
+=> Resource sab for_each lagake value tfvars me pass karege
+
+
+=> java-pom.xml-->mvn install->jar/war--->vm tomcat server /opt/tomcat/webapps
+
+=> Dotnet->.csproj/.sin-->dotnet restore-->dotnet build-->.dll artifacts-->vm IIS Server
+
+
+
+Class--134/44
+=============
 
 
 
