@@ -1,0 +1,363 @@
+Course Introduction:- AI/ML + Data Science 
+=====================
+=> AI-->Machine Learning(ML)-->Deep Learning(DL)
+
+=>What are we going to Learn?
+===========================
+• Python
+• Data Pre-processing ->Numpy, Pandas
+• Data Visualization -> Seaborn, Matplotlib
+• Math for Al (Statistics & Probability)
+• Precision, Recall, F1
+• Bias/Variance Tradeoff
+• Machine learning -> scikit-learn
+• Supervised (Regression, classification)
+• Unsupervised (Clustering, association)
+• Reinforcement learning
+· Logistic regression
+• SVM, Decision Tree
+• K-means clustering OpenAI APIs
+• Deep learning
+• Perceptron
+• FNN, CNN & RNN architecture
+• Transformer
+• PyTorch
+• Intro to GenAl
+• Intro to LLMs
+• Intro to NLP
+• RAG
+• GAN
+• Flask (Development with AI)
+• SQL for Data science
+• Git & GitHub
+• Docker
+• Kubernetes
+• Multiple minor & major projects
+
+
+Lecture Schedule:-
+==================
+fri & sat --> 8PM
+
+
+
+Python:-
+==========
+• Easy & Intuitive
+• Great Ecosystem of Libraries
+• Platform Independent
+• Integration with other Tools
+• Rapid Prototyping
+
+What we'll Install
+====================
+• Python
+• Visual Studio Code 
+
+30 Days Challenge:- 2-hour everyday 
+===================
+
+=========================================
+=========================================
+
+LinkedIn Mentorship:-
+=====================
+=> 3-Brand Pillars:-
+1. Competence 2. sincere 3. Excitement  
+
+
+=====================================
+4. Course Introduction:-
+==============================
+=> => AI-->Machine Learning(ML)-->Deep Learning(DL)
+
+=>What are we going to Learn?
+===========================
+• Python
+• Data Pre-processing ->Numpy, Pandas
+• Data Visualization -> Seaborn, Matplotlib
+• Math for Al (Statistics & Probability)
+• Precision, Recall, F1
+• Bias/Variance Tradeoff
+• Machine learning -> scikit-learn
+• Supervised (Regression, classification)
+• Unsupervised (Clustering, association)
+• Reinforcement learning
+· Logistic regression
+• SVM, Decision Tree
+• K-means clustering OpenAI APIs
+• Deep learning
+• Perceptron
+• FNN, CNN & RNN architecture
+• Transformer
+• PyTorch
+• Intro to GenAl
+• Intro to LLMs
+• Intro to NLP
+• RAG
+• GAN
+• Flask (Development with AI)
+• SQL for Data science
+• Git & GitHub
+• Docker
+• Kubernetes
+• Multiple minor & major projects
+
+Lecture Schedule:-
+==================
+fri & sat --> 8PM
+
+=> 30 Days Challenge:- 2-hour everyday 
+
+
+Python:-
+==========
+• Easy & Intuitive
+• Great Ecosystem of Libraries
+• Platform Independent
+• Integration with other Tools
+• Rapid Prototyping
+
+What we'll Install
+==================== 
+• Visual Studio Code 
+• Anaconda
+• jupyter notebook/jupterLab
+
+
+======================================
+5. python Fundamental part-01
+======================================
+
+code.py
+========
+print("hello world")
+print("Hello World \nWith Python")
+print("Hello world", "with Python")
+
+Note:- here print--> ek function & "hello world" -> ek string 
+\n --> different line print karna 
+
+
+2. Variable:-
+=============
+name = "prabha"
+age =  35 
+pi = 3.14
+
+print(name)
+print(pi)
+print("My Name Is-", name)
+print("My Name Is-", name, "& age is-", age)
+print("My Name Is-", name, "& age is-", age+5)
+
+output:
+=========
+prabha
+3.14
+My Name Is- prabha
+My Name Is- prabha & age is- 35
+My Name Is- prabha & age is- 40
+
+Note:- here name, age, pi ko identifiers kehete hai..
+
+
+3. Data Types:-
+=============
+-> Integer -> all +ve, -ve, & zero
+-> String -> 
+-> Float -> decimal
+-> Boolean ->
+-> None -> 
+
+
+name = "prabha"
+age =  35 
+pi = 3.14
+
+print(type(age))
+print(type(age), type(pi), type(name)) 
+
+Note:- here type is a function type se kisi bhai variable & number ka type pata kar sakte hai..
+
+
+num = 2
+isPrime = True
+print(isPrime)
+
+
+isPrime = None
+print(type(isPrime))
+
+output:-
+========
+<class 'int'> <class 'float'> <class 'str'>
+True
+<class 'NoneType'>
+
+
+4. Keywords & Comments:-
+========================
+Keywords
+===========
+• False
+• None
+• def
+• in
+• del
+• is
+• while
+• with
+• True
+• elif
+• lambda
+• yield
+• and
+• else
+• match
+• case
+• as
+• except
+• nonlocal
+• assert
+• finally
+• not
+• async
+• await
+• break
+• for
+• from
+• global
+• class
+• if
+• or
+• pass
+• raise
+• return
+
+
+Comments:-
+==========
+-> Single line Comment- # our first program
+
+-> multiple line comment( single quote)
+
+'''
+this is a 
+multiple line 
+comment 
+'''
+
+5. Style Guide:-
+================
+-> Different style hote hai ek single variable ko batane ke lia  jese-
+
+-> tot_price = 100 --> Snake case
+totPrice = 100     -> Camel Case
+TotPrice = 100     -> Pascal Case 
+
+type:- google python style guide 
+
+Q) WAP to calculate sum of 2 numbers ? 
+a = 20
+b = 30
+sum = a+b
+print(sum)
+
+
+6. Operators:-
+================
+• Arithmetic -> +,-,*,/, %(modulo), **
+
+-> % -> (modulo operator me reminder pata karte hai  
+-> aᵇ---ko--> a**b 
+👉 * = asterisk = star jaisa symbol ⭐
+• Relational / Comparison
+• Assignment
+• Logical
+
+🧠 1. Arithmetic Operators
+==========================
+a = 20
+b = 4
+print(a+b)
+print(a-b)
+print(a*b)
+print(a/b)
+print(a%b) # module means reminder kya hai 
+print(a**b) # astarisk 
+
+
+🧠 1. Arithmetic Operators (math wale)
+Operator	Meaning	Example
++	Add	              2+3 = 5
+-	Subtract	      5-2 = 3
+*	Multiply	      2*3 = 6
+/	Divide	              5/2 = 2.5
+//	Floor division	      5//2 = 2
+%	Modulus (remainder)   5%2 = 1
+**	Power	              2**3 = 8
+
+👉 Example:
+a = 5
+b = 2
+print(a+b, a-b, a*b, a/b, a//b, a%b, a**b)
+
+🔍 2. Comparison Operators (compare karte hain)
+Operator	Meaning
+==	Equal
+!=	Not equal
+>	Greater
+<	Less
+>=	Greater equal
+<=	Less equal
+
+👉 Example:
+
+print(5 > 3)   # True
+print(5 == 5)  # True
+
+⚡ 3. Logical Operators
+Operator	Meaning
+and	    Dono true hone chahiye
+or	    Ek bhi true ho
+not	   Ulta kar deta hai
+
+👉 Example:
+
+print(True and False)  # False
+print(True or False)   # True
+print(not True)        # False
+🧩 4. Assignment Operators
+Operator	Example
+=	    a = 5
++=	    a += 2
+-=	    a -= 2
+*=	   a *= 2
+/=	  a /= 2
+
+👉 Example:
+
+a = 5
+a += 2   # a = 7
+
+🧬 5. Identity Operators
+Operator	Meaning
+is	     Same object
+is not	     Different object
+
+👉 Example:
+
+a = [1,2]
+b = a
+print(a is b)  # True
+📦 6. Membership Operators
+Operator	Meaning
+in	      Present hai
+not in	      Present nahi
+
+👉 Example:
+
+print(2 in [1,2,3])  # True
+
+
