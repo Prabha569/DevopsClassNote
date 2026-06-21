@@ -1,0 +1,360 @@
+# Python Functions & Built-in Cheat Sheet 🐍
+
+## 1. Print & Input Functions
+
+| Function  | Use                    | Example          |
+| --------- | ---------------------- | ---------------- |
+| `print()` | Output show karta hai  | `print("Hello")` |
+| `input()` | User se input leta hai | `name = input()` |
+| `type()`  | Data type batata hai   | `type(10)`       |
+
+```python
+name = input("Enter name: ")
+print(name)
+```
+
+---
+
+# 2. Type Conversion Functions
+
+| Function  | Use                   |
+| --------- | --------------------- |
+| `int()`   | String → Integer      |
+| `float()` | Decimal number        |
+| `str()`   | Number → String       |
+| `bool()`  | True/False            |
+| `list()`  | Convert to list       |
+| `tuple()` | Convert to tuple      |
+| `set()`   | Convert to set        |
+| `dict()`  | Convert to dictionary |
+
+```python
+a = "10"
+print(int(a) + 5)
+```
+
+---
+
+# 3. Math Functions
+
+| Function   | Use                  |
+| ---------- | -------------------- |
+| `abs()`    | Absolute value       |
+| `pow(a,b)` | Power                |
+| `round()`  | Round number         |
+| `max()`    | Maximum              |
+| `min()`    | Minimum              |
+| `sum()`    | Total                |
+| `divmod()` | Quotient & remainder |
+
+```python
+print(pow(2,3))
+print(round(5.678,2))
+```
+
+---
+
+# 4. String Functions
+
+| Function        | Use                  |
+| --------------- | -------------------- |
+| `.upper()`      | Capital letters      |
+| `.lower()`      | Small letters        |
+| `.title()`      | Title format         |
+| `.capitalize()` | First letter capital |
+| `.strip()`      | Space remove         |
+| `.replace()`    | Replace text         |
+| `.split()`      | String → List        |
+| `.join()`       | List → String        |
+| `.find()`       | Position find        |
+| `.count()`      | Count words          |
+| `.startswith()` | Start check          |
+| `.endswith()`   | End check            |
+| `.isdigit()`    | Number check         |
+| `.isalpha()`    | Alphabet check       |
+
+```python
+name = "python"
+print(name.upper())
+```
+
+---
+
+# 5. List Functions
+
+| Function     | Use               |
+| ------------ | ----------------- |
+| `.append()`  | Add item          |
+| `.extend()`  | Multiple add      |
+| `.insert()`  | Specific position |
+| `.remove()`  | Remove value      |
+| `.pop()`     | Remove by index   |
+| `.clear()`   | Empty list        |
+| `.sort()`    | Sort              |
+| `.reverse()` | Reverse           |
+| `.index()`   | Find index        |
+| `.count()`   | Count value       |
+
+```python
+a = [1,2,3]
+a.append(4)
+print(a)
+```
+
+---
+
+# 6. Tuple Functions
+
+| Function   | Use        |
+| ---------- | ---------- |
+| `.count()` | Count item |
+| `.index()` | Find index |
+
+```python
+t = (1,2,3)
+print(t.index(2))
+```
+
+---
+
+# 7. Set Functions
+
+| Function          | Use           |
+| ----------------- | ------------- |
+| `.add()`          | Add item      |
+| `.update()`       | Add multiple  |
+| `.remove()`       | Remove item   |
+| `.discard()`      | Safe remove   |
+| `.pop()`          | Random remove |
+| `.union()`        | Combine       |
+| `.intersection()` | Common values |
+
+```python
+s = {1,2}
+s.add(3)
+```
+
+---
+
+# 8. Dictionary Functions
+
+| Function    | Use         |
+| ----------- | ----------- |
+| `.keys()`   | All keys    |
+| `.values()` | All values  |
+| `.items()`  | Key + Value |
+| `.get()`    | Safe access |
+| `.update()` | Update dict |
+| `.pop()`    | Remove key  |
+| `.clear()`  | Empty dict  |
+
+```python
+d = {"name":"Prabha"}
+print(d.get("name"))
+```
+
+---
+
+# 9. Loop Functions
+
+| Function      | Use             |
+| ------------- | --------------- |
+| `range()`     | Number sequence |
+| `enumerate()` | Index + value   |
+| `zip()`       | Combine lists   |
+
+```python
+for i in range(5):
+    print(i)
+```
+
+---
+
+# 10. File Functions
+
+| Function   | Use        |
+| ---------- | ---------- |
+| `open()`   | Open file  |
+| `.read()`  | Read file  |
+| `.write()` | Write file |
+| `.close()` | Close file |
+
+```python
+f = open("a.txt","w")
+f.write("Hello")
+f.close()
+```
+
+---
+
+# 11. Useful Built-in Functions
+
+| Function     | Use                |
+| ------------ | ------------------ |
+| `len()`      | Length             |
+| `id()`       | Memory address     |
+| `sorted()`   | Sorted list        |
+| `reversed()` | Reverse iterator   |
+| `help()`     | Help               |
+| `dir()`      | All methods        |
+| `eval()`     | Execute expression |
+
+```python
+print(len("Python"))
+```
+
+---
+
+# 12. Lambda Functions
+
+```python
+square = lambda x: x*x
+print(square(5))
+```
+
+---
+
+# 13. Exception Handling
+
+```python
+try:
+    print(10/0)
+except:
+    print("Error")
+```
+
+---
+
+# 14. Important Operators
+
+| Operator | Meaning        |
+| -------- | -------------- |
+| `+`      | Addition       |
+| `-`      | Subtraction    |
+| `*`      | Multiply       |
+| `/`      | Divide         |
+| `//`     | Floor division |
+| `%`      | Modulus        |
+| `**`     | Power          |
+| `==`     | Equal          |
+| `!=`     | Not equal      |
+| `>`      | Greater        |
+| `<`      | Less           |
+
+```python
+print(2**3)
+```
+
+---
+
+# 15. Most Important Interview Functions 🔥
+
+| Function      | Why Important  |
+| ------------- | -------------- |
+| `map()`       | Apply function |
+| `filter()`    | Filter data    |
+| `reduce()`    | Reduce values  |
+| `sorted()`    | Sorting        |
+| `zip()`       | Combine        |
+| `enumerate()` | Indexing       |
+| `any()`       | Any True       |
+| `all()`       | All True       |
+
+```python
+a = [1,2,3]
+print(list(map(lambda x:x*2,a)))
+```
+
+---
+
+# 16. OOP Functions
+
+| Function     | Use            |
+| ------------ | -------------- |
+| `__init__()` | Constructor    |
+| `self`       | Current object |
+| `super()`    | Parent access  |
+
+```python
+class A:
+    def __init__(self):
+        print("Hello")
+```
+
+---
+
+# 17. Python Modules
+
+| Module     | Use              |
+| ---------- | ---------------- |
+| `math`     | Math operations  |
+| `random`   | Random values    |
+| `os`       | Operating system |
+| `sys`      | System functions |
+| `datetime` | Date & time      |
+
+```python
+import math
+print(math.sqrt(16))
+```
+
+---
+
+# 18. Advanced Functions
+
+| Function    | Use                |
+| ----------- | ------------------ |
+| `*args`     | Multiple arguments |
+| `**kwargs`  | Keyword arguments  |
+| `yield`     | Generator          |
+| `decorator` | Modify function    |
+
+```python
+def add(*a):
+    print(sum(a))
+```
+
+---
+
+# 19. Must Remember Commands 💯
+
+```python
+print()
+input()
+len()
+type()
+range()
+open()
+int()
+str()
+list()
+dict()
+set()
+tuple()
+```
+
+---
+
+# 20. Python Practice Topics 🚀
+
+1. Calculator
+2. Number guessing game
+3. File handling
+4. OOP projects
+5. API calling
+6. Automation scripts
+7. Web scraping
+8. Kubernetes automation with Python
+9. Flask API
+10. Django basics
+
+Agar tu chahe to mai:
+
+* Python complete roadmap
+* Interview questions
+* DSA in Python
+* Real projects
+* DevOps automation scripts
+* PDF notes
+
+bhi de sakta hu 👍
